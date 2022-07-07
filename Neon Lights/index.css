@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+body {
+  background-color: black;
+}
+
+.redText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonRed 5s infinite;
+}
+
+.orangeText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonOrange 5s infinite;
+}
+
+.yellowText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonYellow 5s infinite;
+}
+
+.greenText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonGreen 5s infinite;
+}
+
+.blueText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonBlue 5s infinite;
+}
+
+.purpleText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonPurple 5s infinite;
+}
+
+.pinkText {
+  font-family: 'Pacifico';
+  color: white;
+  animation: neonPink 5s infinite;
+}
+
+.redButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: #ff5353;
+}
+
+@keyframes neonRed {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #ff5353 0 0 14px,
+      #ff5353 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+
+.orangeButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: #ff8a3c;
+}
+
+@keyframes neonOrange {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #ff8a3c 0 0 14px,
+      #ff8a3c 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+
+.yellowButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: #ffd83c;
+}
+
+@keyframes neonYellow {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #ffd83c 0 0 14px,
+      #ffd83c 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+
+.greenButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: #8ef859;
+}
+
+@keyframes neonGreen {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #8ef859 0 0 14px,
+      #8ef859 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+
+.blueButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: #6495ED;
+}
+
+@keyframes neonBlue {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #6495ED 0 0 14px,
+      #0047AB 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+
+.purpleButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: #df55fe;
+}
+
+@keyframes neonPurple {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #df55fe 0 0 14px,
+      #df55fe 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+.pinkButton {
+  border-radius: 8px;
+  font-family: 'Pacifico';
+  background-color: pink;
+}
+
+@keyframes neonPink {
+  0%, 39%, 41%, 59%, 61%, 100% {
+    text-shadow:
+      white 0 0 12px,
+      #ff3aad 0 0 14px,
+      #ff3aad 0 0 20px;
+  }
+  
+  40%, 60% {
+    text-shadow: none;
+  }
+}
+
