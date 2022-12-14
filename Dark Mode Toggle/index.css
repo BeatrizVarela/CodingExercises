@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap");
+
+body {
+  background-color: #ffb7d1;
+  transition: all 0.5s;
+}
+
+h1 {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  font-size: 50px;
+  color: #383838;
+  transition: all 0.5s;
+}
+
+.dark {
+  background-color: #623446;
+}
+
+.dark h1 {
+  color: #ffcece;
+}
+
+.dark-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1vw;
+  height: 1vw;
+  background-color: #dc5b51;
+  border: 0;
+  border-radius: 50%;
+  padding: 4%;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+
+.dark-light:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 20px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 20px rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 20px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+}
