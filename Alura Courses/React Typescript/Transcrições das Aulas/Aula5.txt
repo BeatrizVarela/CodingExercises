@@ -1,0 +1,106 @@
+Já sabemos rodar o nosso código, e agora vamos abrir o VSCode e entender o que
+já temos pronto no projeto e o que precisamos mudar para começarmos a construir
+o Alura Studies.
+
+De volta ao terminal, pressionaremos "Ctrl + C" para interromper a execução e
+rodaremos o código code . para abrir o VSCode. De volta ao terminal,
+executaremos npm start novamente.
+
+No VSCode, temos os arquivos package.json e package-lock.json, que pertencem ao
+NPM. O package.json é padrão para qualquer projeto que utiliza o NPM, e tem o
+nome do projeto, a versão, as dependências que está usando e se ele é privado
+ou não. Os scripts são os comandos que ele pode executar, como npm start, que
+se refere ao comando react-scripts start.
+
+O eslintConfig são configurações de ESLint, uma forma de padronização (boas
+práticas) de código. Nessa seção temos react-app e react-app/jest, uma
+configuração de testes que comentaremos no futuro. O browserlist lista alguns
+navegadores que suportam essa aplicação.
+
+O package-lock.json é um arquivo fechado que nunca vamos alterar. Normalmente
+quando instalamos alguma dependência ou coisas do tipo, todo o histórico é feito
+nesse arquivo.
+
+A pasta "node_modules" contém literalmente todos os pacotes que foram instalados
+no projeto. Nós também não vamos alterar o conteúdo dessa pasta, pois ele é
+gerenciado pelo NPM.
+
+O .gitignore é um arquivo do Git, referente a tudo que o Git irá ignorar quando
+fizermos commits, por exemplo, como os pacotes em "node_modules", os arquivos de
+debug e assim por diante.
+
+O tsconfig.json possui algumas configurações de Typescript, e o README.md é a
+documentação da nossa aplicação.
+
+A pasta "src" é a principal do projeto, e é onde trabalharemos nosso código.
+Nela temos o arquivo App.css, que possui todas as marcações de CSS que
+atualmente constroem nossa página. O App.test.tsx é um arquivo de testes dessa
+aplicação.
+
+O App.tsx tem os códigos HTML da página, incluindo o logo e o texto que está
+sendo exibido na tela.
+
+O index.css possui as configurações de reset, e o index.tsx importa e renderiza
+o nosso App, e entenderemos mais sobre esse processo mais tarde. Também temos o
+logo.svg que está sendo usado na página da aplicação.
+
+O react-app-env.d.ts é um arquivo de descrição utilizado pelo Typescript, algo
+que também entenderemos melhor no futuro. O reportWebVitals.ts é um pacote que o
+create-react-app nos traz, mas também não nos atentaremos muito a ele. E o
+setupTests.ts é literalmente uma configuração de testes.
+
+Vamos remover tudo que não iremos utilizar, nesse caso os arquivos App.css,
+App.test.tsx, logo.svg, reportWebVitals.ts e setupTests.ts. Depois de deletarmos
+esses arquivos, um erro passará a ser exibido no navegador. Isso mostra duas das
+vantagens do create-react-app: a primeira é o Hot Reload, que automaticamente
+recarrega a página sempre que fazemos alterações no código, e a tela de erro que
+nos mostra exatamente onde estão os problemas da aplicação.
+
+Em index.tsx, removeremos a importação do arquivo reportWebVitals que foi
+deletado e a utilização dele.
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+Em App.tsx, removeremos a importação do App.css e do logo. Também removeremos o
+<header>, mantendo somente uma <div> vazia.
+
+import React from 'react';
+
+function App() {
+  return (
+    <div className="App">
+
+    </div>
+  );
+}
+
+export default App;
+
+Retornando ao http://localhost:3000, teremos uma tela em branco. Agora
+conseguiremos fazer o famoso "Hello World" em nossa <div>.
+
+import React from 'react';
+
+function App() {
+  return (
+    <div className="App">
+      Hello World
+    </div>
+  );
+}
+
+export default App;
+
+Após salvarmos, o texto "Hello World" será exibido na página. Já entendemos como
+nossos arquivos estão estruturados e como fazer um "Hello World" na tela. No
+próximo vídeo criaremos nosso primeiro componente.

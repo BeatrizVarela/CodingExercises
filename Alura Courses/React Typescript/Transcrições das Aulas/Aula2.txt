@@ -1,0 +1,15 @@
+SETUP LINUX
+Para preparar o ambiente, precisaremos ter algumas coisas instaladas no
+computador, sendo elas:
+
+Nodejs:
+Para instalar o Node, abra o terminal e digite sudo apt install nodejs
+Para conferir se o download ocorreu corretamente, digite node -v ou
+node --version
+
+Git
+Para instalar o git, abra o terminal e digite sudo apt install git-all
+Para conferir se o download ocorreu corretamente, digite git --version
+
+Visual Studio Code
+Entre no link e baixe a versão de Linux.

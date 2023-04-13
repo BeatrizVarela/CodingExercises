@@ -1,0 +1,81 @@
+Antes de tudo, vamos entender por que o React foi criado. Como muita gente
+sabe, o React foi criado pelo Facebook em 2013. Ele começou a ser criado no XHP
+do PHP, em uma tentativa de utilizar XML no PHP. Depois disso, surgiu o FaxJs,
+um framework criado por um interno do Facebook em Javascript.
+
+A empresa gostou bastante da ideia e, na criação do feed de notícias da
+aplicação, tiveram a ideia de emitir uma notificação com um número quando um
+novo post era publicado. Entretanto, tiverem bastante dificuldade para criar
+essa comunicação, e precisavam de um pacote que conseguisse reaproveitar parte
+dessas telas e facilitar a comunicação entre elas. Daí surgiu o React.
+
+O React tem duas premissas principais. A primeira delas é a componentização.
+Com ela você pode ter, por exemplo, um ícone de Home, outro de Marketplace e
+outro de Watch, reaproveitando esses componentes e alterando somente as partes
+diferentes entre elas. Sendo assim, os ícones podem ter os mesmos aspectos, as
+mesmas cores e os mesmos comportamentos, alterando aquilo que é necessário.
+
+A segunda premissa é o gerenciamento de estado. O React é "reativo", enquanto o
+Javascript normalmente é imperativo. Nesse cenário você deve, por exemplo,
+instruir a barra de notificação a se inscrever nos posts e incrementar a
+quantidade de posts na notificação sempre que um novo post for publicado. Isso
+fica muito custoso, muito imperativo.
+
+Ao invés disso, é possível criar algo reativo, por exemplo, "sempre que algo
+mudar nos posts, faça determinada coisa". Ou seja, temos um componente que
+reage à quantidade de posts, o que torna o gerenciamento mais fácil. Você
+simplesmente instrui do que o componente depende, e ele renderiza/atualiza
+automaticamente com base nessa dependência - por exemplo, essa lista de posts.
+
+Sabendo das premissas do React, vamos para o terminal para aprendermos a criar
+esse projeto. Antes disso, vou abrir o navegador e acessar o https://npmjs.com.
+Nós vamos usar o gerenciamento de pacotes do node (NPM) para criarmos o
+projeto, e ele normalmente vem instalado com o Node. Você pode abrir o terminal
+e executar node -v para verificar se o Node está instalado, e npm -v para
+verificar se o NPM está instalado. Ambos os comandos retornam as versões dos
+seus respectivos pacotes.
+
+O pacote do NPM que usaremos para criar o projeto é o create-react-app. Ele é
+muito simples de usar, bastando rodarmos um comando. Na documentação, vemos que
+é necessário usar o comando npx create-react-app seguido do nome da aplicação,
+nesse caso alura-studies.
+
+O npx é utilizado para executar um pacote, e não para baixá-lo. Se usarmos um
+comando como npm install, iremos instalar na máquina o pacote. Com o npx,
+apenas executaremos esse pacote a partir da nuvem, e é isso que vamos fazer.
+
+Avançando na documentação, vemos que é possível selecionar um template para
+termos algumas funcionalidades a mais no projeto, nesse caso o Typescript.
+Também utilizamos o gerenciador de pacotes NPM, uma das alternativas
+disponíveis (como o Yarn, dentre outros).
+
+O create-react-app normalmente leva em consideração a presença ou não do Yarn.
+Se você tiver o Yarn na sua máquina, ele terá como preferência a presença do
+Yarn na aplicação. Para que isso não aconteça, basta usarmos o comando
+--use-npm.
+
+Tendo essas informações, vamos para o terminal. Executaremos o comando
+npx create-react-app alura-studies --template typescript --use-npm, onde:
+
+npx create-react-app é o pacote que vamos executar;
+alura-studies é o nome do nosso projeto;
+--template typescript é o template Typescript para nosso projeto;
+--use-npm informa explicitamente que queremos usar o NPM para gerenciar os
+pacotes.
+
+Teremos uma mensagem informando que a nova aplicação React está sendo criada.
+Esse processo demora algum tempo, então não se asssuste.
+
+Ao final da instalação, teremos algumas coisas curiosas em nosso prompt de
+comando. De início, somos informados que o react, o react-dom, os react-scripts
+e o template de Typescript do create-react-app foram instalados. Em seguida,
+somos apresentados a alguns comandos que veremos mais tarde.
+
+Foi criado um arquivo tsconfig.json, uma configuração de Typescript. Mais
+abaixo, podemos começar o projeto entrando na pasta (cd alura-studies) e
+executando o comando npm start. Ao fazer isso, o terminal rodará um comando
+react-scripts start e o projeto será executado na URL http://localhost:3000.
+
+Acessando essa página, teremos uma mensagem informando que devemos editar a
+pasta /src/App.tsx e salvar para atualizar e começarmos a fazer nosso código.
+No próximo vídeo vamos entender o conteúdo do projeto que acabamos de criar.

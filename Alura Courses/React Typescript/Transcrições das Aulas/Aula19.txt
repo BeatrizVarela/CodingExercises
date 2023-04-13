@@ -1,0 +1,140 @@
+Agora que já temos o código desse nosso aplicativo maravilhoso, vamos começar a 
+deixar ele dinâmico mexendo na lista para fazê-la funcionar.
+
+Vamos voltar no VS Code. Aqui, já temos nossa lista de tarefas mockada.
+
+function Lista () {
+    con tarefas = [{
+        tarefa: 'React',
+        tempo: '02:00:00'
+    }, {
+        tarefa: 'JavaScript',
+        tempo: '01:00:00'
+    }, { 
+        tarefa: 'Typescript',
+        tempo: '03:00:00'
+    }]
+}
+
+Por enquanto, ela está com uma constante, mas mudá-la para let, uma variável.
+
+function Lista() {
+    let tarefas = [{
+        tarefa: 'React',
+        tempo: '02:00:00'
+    ]}
+}
+
+E colocar no <h2> uma propriedade chamada onClick, que é similar a propriedade 
+do HTML, mas como ele precisa ser um camelcase, escrevemos com "C" maiúsculo. 
+Ele será igual a {} com uma função JavaScript dentro das chaves. Como não vamos 
+precisa criar uma função elaborada, vou colocar só uma arrow function. Dentro 
+colocamos a spread de tarefas. Isso quer dizer que ele é igual a ele mesmo, mas 
+também vamos adicionar outras tarefas aqui dentro, criando um objeto. Por 
+exemplo, a nova tarefa pode ser "Estudar estado" e o tempo será 05:00:00.
+
+<h2 onClick={() => {
+    tarefas = [...tarefas, { tarefas: "Estudar estado", tempo: "05:00:00"]]
+}}> 
+
+Criamos. Agora, vamos voltar ao nosso cronômetro e ver se isso vai funcionar. 
+Depois de dar um F5, clicamos em "Adicionar", mas ele não adicionou. Então vamos
+voltar ao VS Code.
+
+Vamos adicionar um console.log no <h2> recebendo "h2 clicado.
+
+<h2 onClick={() => {
+    console.log("h2 clicado")
+    tarefas = [...tarefas, { tarefas: "Estudar estado", tempo: "05:00:00"]]
+}}> 
+
+Voltamos ao Browser, abrimos o "Inspecionar > Console" e vamos clicar no 'h2". 
+Aparece oara nós "h2 clicado", então por que não está aparecendo na lista esse 
+elemento novo? Vamos fazer melhor ainda! Colocamos h2 clicado e vamos ver o 
+console do próprio tarefas.
+
+<h2 onClick={() => {
+    console.log("h2 clicado: ", tarefas)
+    tarefas = [...tarefas, { tarefas: "Estudar estado", tempo: "05:00:00"]]
+}}> COPIAR CÓDIGO
+Voltamos ao browser, clicamos em "Inspecionar > Console > h2" novamente e 
+apareceu 3, 4, 5, 6, etc. Ele está adicionando o item no array! Mas então por 
+que não aparece o item na lista?
+
+Lembram que eu disse logo no começo do curso que o React é reactivo? Ele reage 
+ao que acontece, logo, a forma como ele renderiza os componentes também é 
+reativa. Ele só reage e renderiza - atualiza o componente - quando avisamos para
+ele que algo mudou. E como fazemos isso? Ele não faz isso com todas as 
+variáveis.
+
+O que ele realmente usa, o que ele realmente precisa para renderizar normalmente
+é algo chamado "state". O state é uma variável em que você adiciona um valor 
+dentro, mas sempre que esse state e muda, o componente que tem ele, também muda.
+Por isso, normalmente quando temos uma lista, usamos o state.
+
+Vamos voltar no código e em vez de termos as tarefas soltas, vamos colocá-las 
+dentro de um state. Vamos dar um "Ctrl+X" no array e apagar o let tarefas. Em 
+seguida, criamos uma constante com tarefas igual a useState, que é a função 
+disponibilizada pelo React para trabalharmos dentro de um function components. 
+Nós também chamamos essa função de Hook, tudo que tiver um use vocês podem 
+associar a um Hook.
+
+const tarefas = useState();
+
+Ele já importou para mim! Dentro dessa função, podemos colocar um valor padrão 
+para ele. Como estávamos colocando aqueles três itens como padrão, vamos dar um 
+"Ctrl+V".
+
+const tarefas = useState();
+    tarefa: 'React',
+    tempo: '02:00:00'
+}, {
+    tarefa: 'JavaScript',
+    tempo: '01:00:00'
+}, { 
+    tarefa: 'Typescript',
+    tempo: '03:00:00'
+}
+
+Porém, o useState não funciona exatamente assim, precisamos do state e de uma 
+função para mudar esse estado, não podemos apenas mudar na mão como fizemos. Em 
+vez dele exportar esse useState, em vez do return dele ser simplesmente um 
+estado, ele retorna um array onde o primeiro item é o próprio estado, ou seja, é
+tarefas e o segundo item é um função para podermos alterar esse estado. Assim, 
+alterando com essa função, o React consegue entender que algo mudou e atualiza.
+
+Em vez de const tarefas vamos colocar const e abrir colchetes []. O index zero 
+do array é o tarefas e o index 1 será uma função que chamaremos de setTarefas. 
+Você pode chamar essa função como quiser, mas é uma convenção colocar set porque
+antigamente no class components utilizamos o setstate quando ela também era uma 
+função padrão.
+
+const [tarefas, setTarefas] = useState({[
+    tarefa: 'React',
+    tempo: '02:00:00'
+}, {
+    tarefa: 'JavaScript',
+    tempo: '01:00:00'
+}, { 
+    tarefa: 'Typescript',
+    tempo: '03:00:00'
+}]);
+
+Agora no onClick vamos colocar setTarefas() e vai receber um spread de tarefas e
+um novo objeto que será uma nova tarefa.
+
+<h2 onClick={() => {
+    setTarefas([...tarefas, {tarefas: "Estudar estado", tempo: "05:00:00"}])
+})>
+
+Apagamos o console.log(), voltamos no browser, damos F5 e clicamos no título. 
+Agora apareceu "Estudar estado"! Conseguimos falar para o React e atualizar o 
+componente porque colocamos um novo item nessa lista e avisamos para o React. 
+Isso nos poupa tempo, porque não precisamos falar que dentro da de Lista() ele 
+precisa criar um novo LI e tudo mais. Ele não é hiperativo, mas reativo, você 
+simplesmente coloca um novo objeto ali dentro e ele já sabe que precisa 
+atualizar.
+
+Muito maneiro, né? Agora que já tivemos uma breve introdução sobre o states, 
+vamos aprender a utilizá-lo para deixar toda nossa aplicação dinâmica. Vejo 
+vocês no próximo vídeo!

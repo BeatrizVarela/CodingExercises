@@ -1,0 +1,38 @@
+Muito legal o CSS Modules né? Mas tem várias outras curiosidades e vantagens que
+não mencionamos no vídeo!
+
+Você sabia que podemos importar o CSS Modules de várias formas diferentes? Ou
+que podemos utilizar vários módulos no mesmo componente?
+
+Pois é, o CSS Modules é bem mais complexo e interessante do que imaginamos e, se
+irmos bem a fundo nessa tecnologia, podemos deixar o nosso código bem mais
+interessante!
+
+Sobre Imports
+Para começar, o CSS Modules nos dá o CSS em formato object e os exporta como
+default, logo, podemos importar das seguintes formas:
+
+import style from './NomeDoComponente.module.scss';
+import * as style from './NomeDoComponente.module.scss';
+import { default as style } from './NomeDoComponente.module.scss';
+
+Ainda seguindo em como importar um CSS Module, como ele é um export default,
+podemos nomeá-lo da forma como bem entendermos, por exemplo:
+
+import Foo from './NomeDoComponente.module.scss';
+import Bar from './NomeDoComponente.module.scss';
+import Banana from './NomeDoComponente.module.scss'
+
+Todas as formas acima retornarão o objeto que o CSS Modules exporta!
+
+Como agora sabemos que podemos nomear o objeto de formas diferentes, podemos
+também importar vários CSS Modules em um só componente!
+
+import BotaoStyle from './Botao.module.scss';
+import ItemStyle from './Item.module.scss';
+
+OBS: Todas essas formas citadas acima não são específicas de como importar um
+CSS Modules, e sim de como importar um export default em JS.
+
+Legal né? Caso tenha alguma dúvida leia a documentação do Create React App sobre
+CSS Modules.
