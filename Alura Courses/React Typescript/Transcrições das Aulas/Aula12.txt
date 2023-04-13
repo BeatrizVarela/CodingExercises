@@ -1,0 +1,243 @@
+Nossa estrutura já está bem robusta e bem parecida do que será ao final, e só
+falta o cronômetro. Porém, a página ainda está com um aspecto feio, então iremos
+estilizá-la neste passo.
+
+Primeiramente, instalaremos o Sass, que é o pré-processador CSS que iremos
+utilizar no curso. No próprio site do NPM acessível neste link, encontraremos a
+parte "Usage", em que diz que podemos instalar com npm install --save-dev sass
+apenas.
+
+Portanto, copiaremos este comando e voltaremos ao VSCode, pois será desta forma
+que instalaremos no terminal, o qual abriremos apertando as teclas de "Ctrl"
+mais aspas simples, ou acessando "Ver > Terminal" na barra superior de opções.
+
+Colaremos o comando npm install --save-dev sass e executaremos com a tecla
+"Enter" para instalarmos.
+
+Feita a instalação, aparecerá uma "devDependencies" no package.json, que é uma
+dependência de desenvolvimento chamada "sass". Portanto, o pacote já está no
+nosso projeto.
+
+//código anterior omitido
+
+    "devDependencies": {
+        "sass": "^1.41.1"
+    }
+}COPIAR CÓDIGO
+Também o encontraremos no package-lock.json, que ficará em evidência na lista
+lateral de arquivos. Mas não precisaremos nos atentar tanto a essa questão
+agora.
+
+Feito isso, apertaremos "Ctrl + ' " novamente para fecharmos o terminal, pois só
+queríamos instalar o sass mesmo. Também fecharemos todas as abas dos arquivos
+abertos no VSCode.
+
+O primeiro elemento que iremos estilizar será o index.css. Iremos utilizar CSS
+mesmo, pois como será um arquivo global, não nos importaremos muito em usar
+sass, pois podemos estilizar o CSS direto.
+
+Copiaremos o arquivo de reset e colaremos no arquivo index.css, e depois
+apertaremos as teclas "Ctrl + S" para identar corretamente.
+
+Em seguida, voltaremos à nossa página no navegador. Notaremos que o fundo está
+cinza e o botão está sem bordas, então já temos algumas características
+interessantes.
+
+De volta ao VSCode, o segundo elemento que estilizaremos será o App.tsx. Dentro
+da pasta "src" acessaremos o diretório "components".
+
+Colocaremos o App como se fosse uma página, pois se tivermos múltiplas páginas,
+temos que criar uma pastas "pages" como é feito geralmente, mas como teremos
+apenas uma por enquanto, a criação será só por sintaxe e legibilidade.
+
+Depois, moveremos o arquivo App.tsx para dentro do novo diretório "pages". Em
+seguida, acessaremos index.tsx de "components" para importarmos App de
+'./pages/App' ao invés de apenas './App'.
+
+Assim já estará funcionando, mas o arquivo aparecerá com um alerta. Abrindo o
+App.tsx, mudaremos os imports de Formulario para '../components/Formulario', e
+de Lista para '../components/Formulario', apenas adicionando um ponto final à
+frente do trecho para indicar a pasta correta da importação.
+
+Feito isso, o alerta de erro desaparece. Voltaremos ao navegador para vermos se
+está funcionando.
+
+De volta ao VSCode, acessaremos a pasta "pages" e dentro criaremos um novo
+documento chamado style.scss, e esta extensão .scss significa que se trata de um
+arquivo sass.
+
+Na primeira linha, iremos pegar o estilo sass que iremos utilizar, a qual terá
+uma classe .AppStyle contendo um display: grid dentro.
+
+Voltaremos ao App.tsx e importaremos a string './style.scss'. Já no
+<div className="App"> mais adiante, escreveremos "AppStyle" ao invés de apenas
+"App".
+
+Apertaremos "Ctrl + S" e abriremos a página no navegador para verificarmos se
+está funcionando corretamente.
+
+import React from 'react';
+import Formulario from '../components/Formulario';
+import Lista from '../components/Lista';
+import './style.scss';
+
+function App() {
+    return (
+        <div className="AppStyle">
+            <Formulario />
+            <Lista />
+        </div>
+    );
+}
+
+export default App;
+
+No navegador, notaremos que há um background mais escuro com bordas arredondadas
+em um fundo cinza, então aparentemente tudo está funcionando.
+
+Porém, já notamos as diferenças, e ao invés de usarmos <class> que é a maneira
+que usamos no HTML, estamos usando className.
+
+Temos esta diferença no React porque, como lembramos, existe o class que
+utilizamos para criar tanto o Botao quanto o Formulario.
+
+Então, como a class já é uma palavra reservada do JavaScript para criar uma
+classe, preferiram estabelecer o className ao invés do class para não termos
+nenhum problema de sobreposição dos dois termos.
+
+Se quisermos colocar uma classe em uma tag HTML, temos que criar com className e
+não com class, que por sua vez até funciona, mas gerará alertas do sistema.
+
+Se substituirmos className por apenas class no arquivo App.tsx, e formos no
+"Inspect" do navegador da nossa página, poderemos acessar a aba "Console" e ver
+o warning perguntando se queríamos dizer className ao invés da propriedade DOM
+inválida class.
+
+Ou seja, o sistema deixará funcionar, mas nos diz que não é correto e indica o
+que fazer. Como já sabemos disso, voltaremos ao VSCode para mantermos o
+className.
+
+Portanto, já estilizamos o App(), e iremos à pasta "Formulario" dentro de
+"components" para criarmos um novo arquivo style.scss e colarmos o código com
+.novaTarefa contendo .inputContainer e etc.
+
+Depois, abriremos o index.tsx da mesma pasta "Formulario" e faremos a importação
+da string './style.scss'. Dentro do <form> de Formulario, colocaremos uma nova
+className chamada "novaTarefa".
+
+Em cada <div> deste arquivo, colocaremos um className igual a "inputContainer"
+também.
+
+Apertaremos "Ctrl + S" e voltaremos ao navegador para vermos a diferença. Porém
+o botão ainda está inadequado.
+
+Então iremos ao index.tsx da pasta "Botao" e retiraremos o inline style que
+colocamos em <button>. Por fim, importaremos o './style.scss' e finalizaremos
+com as teclas "Ctrl + S".
+
+import React from 'react';
+import './style.scss';
+
+class Botao extends React.Component {
+    render() {
+        return (
+            <button>
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Feito isso, voltaremos ao navegador e veremos o botão estilizado da maneira
+correta.
+
+Porém, o estilo do button está dentro de "Formulario". Então criaremos um novo
+arquivo style.scss dentro de "Botao" que receberá o estilo inteiro de button
+presente no style.scss de "Formulario".
+
+Em seguida, retiraremos os styles de .inputContainer que não pertencem ao botão,
+e colocaremos o button que estava abaixo dentro de
+@media screen and (min-width: 1280px).
+
+Depois, retiraremos o estilo de button que está no final do arquivo e antes do
+@media screen do style.scss de "Formulario" para deixarmos este style somente no
+botão.
+
+Já de volta ao arquivo de estilo do "Botao", alteraremos os dois button para
+chamarmos a classe .botao em ambos.
+
+Com isso, retornaremos à classe Botao e adicionaremos className igual a "botao"
+dentro da tag <button>.
+
+import React from 'react';
+import './style.scss';
+
+class Botao extends React.Component {
+    render() {
+        return (
+            <button className="botao">
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Feita as alterações corretas, voltaremos ao navegador para ver se tudo está
+funcionando como o esperado.
+
+Então já temos o estilo do nosso formulário e agora iremos estilizar a nossa
+lista.
+
+Para facilitar, fecharemos todas as abas de arquivo abertas no VSCode. Abrindo o
+diretório "Lista", criaremos um novo arquivo style.scss e seguiremos o mesmo
+procedimento que fizemos até agora.
+
+Pegaremos o código CSS utilizado para a lista e colaremos no arquivo. Depois
+abriremos o index.tsx de "Lista" e importaremos o './style.scss'.
+
+Em seguida, iremos até a tag <aside> e adicionaremos o className igual a
+"listaTarefas".
+
+De volta à página no navegador, aparentemente tudo está funcionando como o
+esperado.
+
+Agora criaremos um estilo para o .item, e o colocaremos no final do arquivo
+style.scss da lista. Já no index.tsx do mesmo componente, colocaremos uma nova
+classe chamada "item" na tag <li> do <aside> que acabamos de nomear.
+
+Apertando "Ctrl + S", voltaremos ao navegador e receberemos um alerta de falha
+na compilação, indicando que não foi possível resolver o clack-mark.svg, pois
+realmente ainda não temos.
+
+Então dentro de "src", criaremos uma nova pasta chamada "assets", a qual
+normalmente é usada quando queremos ter um arquivo estático, que são em geral
+imagens, ícones e outros elementos do gênero.
+
+Dentro do novo diretório, criaremos uma nova pasta chamada "img", e dentro desta
+colocaremos o check-mark.svg disponibilizado.
+
+Por fim, iremos ao .concluido dentro de style.scss da lista para alterarmos o
+conteúdo dos parênteses de url() do atributo background-image: para
+'../../assets/img/check-mark.svg'.
+
+Estando tudo correto, voltaremos ao navegador para vermos que o nosso item está
+aparecendo como clicável. Porém, ainda não aparecerá o check mark, pois se
+clicarmos ainda não fará nada, afinal não temos nenhuma função de onClick.
+
+Mas pelo menos a estilização já está mais agradável visualmente.
+
+A seguir, mostraremos o problema de, quando clicamos em "Inspecionar" no
+navegador, veremos na aba "Elements" a forma como colocamos nossos estilos, como
+em form class="novaTarefa" e <div class="inputContainer"> por exemplo.
+
+Porém, só está com o nome "novaTarefa" que é muito genérico. Então, caso
+tivermos um projeto gigante, e em outro lugar tivermos também uma nova
+novaTarefa com outra classe, o programa pode sobrepor um ao outro.
+
+Além disso, utilizaremos um pacote que resolverá este problema para nós,
+conhecido como CSS Modules. Na próxima aula, mostraremos como instalá-lo e
+configurá-lo.

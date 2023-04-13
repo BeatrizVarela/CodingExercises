@@ -1,0 +1,106 @@
+Toda a estrutura do nosso formulário está concluída. Agora, passaremos ao
+próximo componente que será o componente de lista. Começaremos abrindo o VSCode
+e, dentro de "components", criaremos uma nova pasta chamada "Lista". Dentro
+dela, criaremos um novo arquivo chamado "index.tsx". Na linha 1, importaremos o
+React: import React from 'react';.
+
+Na linha 3, ao invés de utilizar o class components, que era a forma mais
+antiga, optaremos pelo function component. Antes escrevíamos "class, o nome do
+componente, extends, React.Component", agora, escreveremos function, seguido do
+nome do nosso componente, que será Lista, function Lista e toda a sintaxe de uma
+função JavaScript, então, colocaremos parênteses, para os parâmetros da função,
+seguidos de chaves: function Lista() {.
+
+Como a função não tem nenhuma tarefa obrigatória, como na classe do
+React.Component, precisamos apenas retornar o "jsx" que escreveremos. Portanto,
+nós escreveremos um HTML, o <aside>. E exportaremos, mais abaixo, o
+export default Lista;. Então, essa é a sintaxe de um function component.
+
+import React from 'react';
+
+function Lista() {
+  return (
+    <aside>
+
+    </aside>
+  )
+}
+
+export default Lista;
+
+Neste ponto da aula, podemos nos questionar sobre o motivo de termos usado antes
+o class components. O motivo é criar uma certa dinâmica de conceitos e
+entendermos como o class components e o function component são escritos, assim,
+ao encontrar cada um deles, entenderemos o porque e como são usados. O class
+components era usado, porque, na época em que foi criado, achavam que aquela era
+a melhor forma de criar um componente com estado.
+
+Não quer dizer que não existia function component antes, mas, para termos um
+state dentro do componente, precisávamos criar uma classe, que chamávamos de
+Stateful Component. Quando não precisávamos desse estado, por exemplo, se só
+precisávamos renderizar algum dado, então, fazíamos um Stateless Component.
+Neste caso, criávamos const Item = () => (...)(igual a uma arrow function) e,
+por exemplo, retornávamos uma li, considerando a nossa lista com o Item.
+
+const Item = () => (
+  <li>
+    item...
+  </li>
+)
+
+Esse era um Stateless Component e não era possível ter um estado dentro dele.
+Depois da versão 16.8 do React, surgiu a ideia de hooks, funções externas que
+podemos importar no function component e, assim, ter estado dentro do
+componente. Esse momento representa o fim da obrigatoriedade de se ter um
+Stateful Component, um componente via classe.
+
+Por isso, hoje em dia, utilizamos mais function component do que class component
+e o React já anunciou que as próximas atualizações estarão relacionadas à
+function component. Significa que o class component está se tornando um
+Deprecated, algo em "desuso". Nós passaremos a usar o function component a
+partir de agora e, com o tempo, refatoraremos os class components que criamos,
+usando o function component.
+
+Dentro do nosso <aside> faremos um <h2>, que terá Estudos do dia. Embaixo dele,
+existirá uma <ul>e, nela, alguns itens. Primeiro, criaremos dois <li> e, cada um
+deles terá um <h3> e um <span>. No primeiro <h3> adicionaremos o nome da tarefa,
+por exemplo, a primeira tarefa que estudaremos é React e o tempo que
+precisaremos para estudar para a matéria será de duas horas, 02:00:00.
+
+Nossa segunda tarefa será Javascript e o tempo de estudo será de uma hora,
+01:00:00.
+
+function Lista() {
+  return (
+    <aside>
+      <h2> Estudos do dia </h2>
+      <ul>
+        <li>
+          <h3>
+            React
+          </h3>
+          <span>
+            02:00:00
+          </span>
+        </li>
+        <li>
+          <h3>
+            Javascript
+          </h3>
+          <span>
+            01:00:00
+          </span>
+        </li>
+      </ul>
+    </aside>
+  )
+}
+
+Apertaremos "Ctrl + S", voltaremos ao "App.tsx" e importaremos
+import Lista from './components/Lista';. Embaixo do formulário, vamos renderizar
+a lista, <Lista />. Retornaremos ao navegador e aparece "Estudos do dia" seguido
+de "React", "02:00:00" e "Javascript", "01:00:00".
+
+Já temos a nossa lista, mas, como estamos utilizando o React, não ficaremos
+criando vários li na mão, precisaremos renderizar essa lista de forma dinâmica.
+Nós aprenderemos a fazer isso no próximo vídeo.

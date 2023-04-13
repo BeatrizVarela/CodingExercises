@@ -1,0 +1,153 @@
+Como já conhecemos essa ferramenta poderosíssima que é o props. Vamos replicá-lo
+dentro de Lista, que é a segunda coisa que estava me incomodando.
+
+Vamos ver se você concorda comigo de novo. Na nossa aplicação, aparecem "Estudos
+do dia" e, em seguida, a lista. Até aí tudo certo. Mas concorda comigo que esse 
+é um container, uma informação, mas essa parte cinza do "React", "Javascript" e 
+"Typescript", claramente é outro componente, ele tem outra responsabilidade?
+
+Voltando para o VS Code, em "src > components > Lista> index.tsx", podemos ver 
+que o código tem o título, o map, a lista de tarefas, a renderização, mas o <li>
+ainda está aqui dentro, então ele tem muita responsabilidade aqui dentro. Tem a 
+responsabilidade de ter a lista, de renderizar a lista, ter o título e ter o 
+<li> dentro dele. Isso vai ficar muita responsabilidade para Lista e isso não é 
+uma boa prática.
+
+Se é tão fácil criar componentes, por que vamos manter o item aqui dentro 
+também? Por que não externalizá-lo? É isso que vamos fazer. Antes não 
+conseguíamos fazer isso porque não conhecíamos as props, então como iríamos 
+passar a informação do nome da tarefa e de quanto tempo tem para o item, se não 
+tínhamos como enviar informação para dentro dele? Agora que sabemos, é isso que 
+vamos fazer.
+
+Primeiro, vou voltar no formulário, corrigir onde eu escrevi "Banana" e deixar 
+"Adicionar". Agora, vou voltar no index de Lista, vou recortar, com o 
+"Ctrl + X", o trecho de código da <li>, e dentro da pasta "Lista" vou criar uma 
+pasta "Item".
+
+Mas por que criar dentro do "Lista", se podemos criar dentro de "components"? Já
+que o botão e o formulário estão dentro da pasta "components", por que não
+colocamos o item lá também?
+
+Porque se você tiver uma aplicação React muito grande e, por exemplo, tiver 
+sessenta componentes, se você colocar todos os componentes dentro de 
+"components", vai ficar difícil de ler e entender onde cada um está sendo 
+importado. Então, por padrão, se temos um componente que só é utilizado dentro 
+de outro, que não pretendemos deixá-lo genérico, é só para quebrar 
+responsabilidades, normalmente colocamos uma pasta dentro da outra mesmo.
+
+Fica mais fácil porque vemos que, por exemplo, a pasta "Item" está dentro de 
+"Lista"? Então significa que esse item está sendo usado só dentro dessa lista. 
+Entendeu? Vamos fazer dessa forma.
+
+Dentro da pasta "Item" vou criar um index.tsx. No código desse arquivo, 
+primeiramente, vou criar um function Item() e retornar aquele <li> que 
+recortamos.
+
+export default function Item() {
+  return (
+   <li key=(index) classname={style.item}>
+     <h3> {item.tarefa} </h3>
+     <span> {item.tempo} </span>
+   </li>
+    }
+}
+
+Mais uma coisa para aprendermos, nós conseguimos exportar a função assim que 
+criamos. Então, na linha 1 eu consigo dar um export default function Item(). 
+Essa já é uma facilidade, se você preferir pode exportar lá embaixo, não faz 
+diferença. Essa é a primeira facilidade.
+
+A segunda facilidade que vou mostrar, não sei se você percebeu, mas não 
+importamos o React aqui dentro. Porque na versão 17, que é a que estamos usando 
+agora, não tem necessidade de importar o React dentro dos nossos arquivos. Caso 
+você esteja usando uma versão anterior, ou caso ele peça para importar o React, 
+é só escrever import React from 'react' que vai funcionar tranquilamente. Como 
+estou utilizando essa versão 17, não preciso fazer isso.
+
+Por exemplo, em Lista, podemos ver aqui em cima o import do React, que o React é
+declarado mas seu valor nunca é lido. Então no function component ele não 
+precisa ser usado, isso é mais uma vantagem do function component sobre o class 
+component.
+
+Vou voltar no index de "Item", e aqui na <li> tem item.tarefa e item.tempo que 
+era cada item lá daquelemap do Lista. Precisamos refatorar isso. Ao invés de 
+item.tarefa e item.tempo, vamos pegar do props. Vou tirar o item. e deixar só 
+tarefa e só tempo. Agora, direto no parâmetro da função Item, já podemos 
+desestruturar direto, vou escrever Item(props) porque é a forma que pegamos 
+normalmente. E aqui dentro eu já posso tipar: 
+export default function Item(props: {tarefa: string, tempo: string}).
+
+A primeira forma como conseguimos desestruturar é escrever 
+const {tarefa, tempo} = props;, essa é a primeira forma, ele já parou de indicar
+erro. Estamos dizendo que tarefa e tempo vêm de props. E a segunda forma, com a 
+qual economizamos uma linha, é colocando direto lá no parâmetro da função, ao 
+invés de props coloca: Item(tarefa, tempo: {tarefa: string, tempo: string}).
+
+Na primeira linha do código, eu vou importar o style.
+
+import style from '../Lista.module.scss';
+
+E lá no index de "Lista", dentro de tarefa.map, vou colocar <Item>, e ele 
+importou automaticamente para mim. Se ele não importou automaticamente o import 
+é import item from './item'.E já está indicando erro , dizendo que ele precisa 
+do tarefa e do tempo. Isso é uma facilidade do Typescript também. Se tivesse um 
+desenvolvedor de fora e quisesse criar um item, ele saberia que esse item 
+precisa de tarefa e de tempo. Podemos fazer de duas formas. Aqui podemos 
+colocar:
+
+<Item
+  tarefa={item.tarefa}
+  tempo={item.tempo}
+/>
+
+Vou salvar e voltar para nossa aplicação no navegador, atualizar a página. Já 
+aparece normalmente para nós. Essa é a primeira forma, vou mostrar a segunda. 
+Você concorda que esse item que vem de map é um objeto que tem tarefa e tempo? 
+Se conseguimos desestruturar o pros lá no item para tarefa e tempo, conseguimos 
+desestruturar aqui também. O React possibilita isso. Para conseguir fazer isso 
+vamos abrir chaves dentro de <Item> e escrever ...item:
+
+<Item
+{...item}
+/>
+
+Dessa forma, conseguimos utilizar todos os atributos que existem dentro daquele 
+objeto como prop para esse componente. Isso é muito bom, porque se tiver muitas 
+propriedades dentro daquele objeto, não precisamos ficar escrevendo uma por uma.
+Basta desestruturar dentro do componente e ele já consegue nos mostrar tudo.
+
+Mas é preciso ficar atento, por exemplo, se você estiver utilizando esse item de
+uma API, e essa API tem um monte de informação, pode vir informação demais, o 
+Typescript pode apontar erro dizendo que tem alguma propriedade que você não 
+tipou. Então pode dar alguns problemas. Como aqui está sendo um escopo um pouco 
+mais fechado e sabemos que as tarefas só tem tarefa e tempo, conseguimos 
+utilizar dessa forma.
+
+Para terminar, tinha um key aqui dentro do <li>, que já vimos que é a forma que 
+o React tem de linkar esse <li> do React para onde ele renderiza o DOM. Então, 
+precisamos manter esse key lá no Lista, porque é aqui que colocamos o map.
+
+Essa é uma prop especial do React, que não necessariamente precisamos tipar, mas
+ele precisa ter isso para conseguir ter esse link. Vou colocar key={index} no 
+<Item>:
+
+<Item
+  key={index}
+  {...item}
+/>
+
+Nós não tipamos ele dentro de Item, mas, mesmo assim, ele deixa colocar isso 
+aqui, porque ele nem chega a ir para o nosso componente Item, ele é literalmente
+só uma forma de o React linkar.
+
+Então, aqui já conseguimos usar o DRY (Don't Repeat Yourself), que já estávamos 
+utilizando antes, pois não repetimos código. E agora, estamos utilizando o 
+segundo conceito que é o SRP (Single Responsability Principle), ou Princípio de 
+Responsabilidade Única, que é ter apenas uma responsabilidade por componente.
+
+A lista só tem a responsabilidade de fazer essa iteração, esse map, e enviar 
+cada tarefa para o componente Item. O Item em si, só tem responsabilidade de 
+renderizar esse item, só essa parte desse array de tarefas que ele precisa 
+renderizar. Então, já conseguimos desaclopar de forma correta. Nos vemos no 
+próximo vídeo.

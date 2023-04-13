@@ -1,0 +1,282 @@
+No vídeo passado, aprendemos a controlar o formulário. Agora, vamos aprender a 
+levar as tarefas que criamos para dentro da Lista.
+
+Antes de começarmos, gostaria de passar para vocês uma boa prática que não 
+estamos utilizando nos botões. Como o botão do formulário é diferente do botão 
+do cronômetro, porque aquele é um botão de submit e enquanto este é realmente um
+botão, precisamos passar esse type para dentro de <Botao>. Na linha 49 do 
+VS Code vamos adicioná-lo.
+
+<Botao>
+    Adicionar
+</Botao>
+
+Agora temos que especificar o tipo dele, que será submit.
+
+<Botao type="submit">
+    Adicionar
+</Botao>
+
+Ele dá um erro dizendo que o botão não espera nenhum tipo, então vamos abrir a 
+pasta "components > Botão > index.tsx" para vermos o class de Botao.
+
+class Botao extends React.Component {
+    render() {
+        return (
+            <button className={style.botao}>
+                {this.props.children}
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Agora, aqui dentro vamos dizer que esperamos um tipo. Para isso, colocaremos a 
+tipagem depois de React.Component(), e no objeto diremos que esperamos um 
+string.
+
+class Botao extends React.Component <{
+    type: string
+}> 
+
+Para ele não ficar obrigatório, vamos adicionar um ? antes de : para sinalizar 
+que é uma prop opcional. Ou seja, podemos passar um tipo ou não.
+
+class Botao extends React.Component <{
+    type?: string
+}> 
+
+No render() podemos colocar o const igual a this.props. e como só pegamos o 
+tipo, vamos colocar type. Também vamos sinalizar que se não vier um type o botão
+será do tipo button, que é o padrão.
+
+render() { 
+    const { type = "button" } = this.props;
+}
+
+Agora, na linha 10 em button vamos criar o type, pode ser antes ou depois do 
+className. Ele será passado via prop.
+
+<button type={type} className={syle.botao}>
+
+Porém, ele não pode ser do tipo string, por isso vamos mudar para button, 
+submit, reset e undefined, que são os tipos permitidos.
+
+class Botao extends React.Component <{
+    type?: "button" | "submit" | "reset" | undefined
+}> 
+
+Agora vamos voltar ao formulário para entendê-lo. Temos a função de adicionar 
+tarefa, mas não temos contato com a lista. Como ambos são filhos de App e estão 
+no mesmo nível, não é possível fazer uma comunicação direta uma vez que o React 
+é unidirecional e essa direção é de cima para baixo. Portanto, vamos mandar a 
+informação para o App. Vamos aprender a solucionar esse problema apenas com 
+props.
+
+Para começarmos, precisamos colocar a Lista em App. Vamos abrir 
+"components > Lista > index.tsx". “Com Ctrl+X” cortamos o useState - linha 6 a 
+15 - e em "pages > App.tsx" vamos colocar a Lista.
+
+function App() { 
+
+    return (
+        <div className=(style=.Appstyle)>
+            <Formulario />
+            <Lista />
+            <Cronometro />
+        </div>
+    );
+}
+
+Na linha 8, damos um "Ctrl+V" e colamos o useState.
+
+function App() { 
+    const [tarefas, setTarefas] = useState([{
+        tarefa: 'React',
+        tempo: '02:00:00'
+    }, {
+        tarefa: 'JavaScript',
+        tempo: '01:00:00'
+    }, { 
+        tarefa: 'Typescript',
+        tempo: '03:00:00'
+    }]);
+    return (
+        <div className=(style=.Appstyle)>
+            <Formulario />
+            <Lista />
+            <Cronometro />
+        </div>
+    );
+}
+
+Vamos importar o useState via chaves {},, porque ele não é um suporte default 
+dentro de React.
+
+import React, { useState } from 'react';
+
+Passamos o tarefas para o lista sendo igual a `tarefas´
+
+<Lista tarefas={tarefas}/>
+
+Vamos tipar na Lista dizendo que vamos pegar o tarefas e que esse props tem um 
+tarefas, que é um array de tarefa. Para não precisarmos ficar dizendo que é um 
+objeto dentro de outro objeto, criaremos um interface.
+
+Uma interface é literalmente uma forma de colocarmos essa tipagem fora dos dois 
+pontos : usando como nome. É como se fosse uma variável em que colocamos os 
+tipos de variável dentro da própria variável.
+
+A interface se chamará ITarefa.
+
+interface ITarefa {
+
+}
+
+Dentro dela vamos dizer qual o tipo daquela tarefa e o que é uma tarefa. Ele tem
+tarefa e tempo que são strings.
+
+interface ITarefa {
+    tarefa: string,
+    tempo: string
+}
+
+Voltando a funciton Lista() sinalizamos que ITarefas é um array de tarefa 
+com [].
+
+interface ITarefa {
+    tarefa: string,
+    tempo: string
+}
+
+function Lista({ tarefas }: { tarefas: ITarefas[]})
+
+Podemos fazer dessa forma ou também escrevendo Array e dentro dele colocar 
+o ITarefa.
+
+function Lista({ tarefas }: { tarefas: Array<ITarefa>})
+
+Essas são as duas formas de dizermos que é um array, porém essa última forma é 
+mais simples de escrevermos. Como conseguimos pegar o tarefas, não precisamos 
+mais do onClick do h2, vamos tirá-lo.
+
+function Lista({ tarefas }: { tarefas: ITarefa[]}) {
+    return (
+        <aside className={style.listaTarefas}>
+            <h2> Estudos do dia </h2>
+            <ul>
+                {tarefas.map((item, index) => (
+                    <Item
+                        key={index}
+                        {...item}
+                    />
+                ))}
+            </ul>
+        </aside>
+    }
+}
+
+Conseguimos pegar e tipar o ITarefa. Vamos excluir a linha 1, que é o import do 
+React do useState porque não o estamos utilizando. Voltando ao "App.tsx" já 
+estamos passando tarefas para Lista. Agora precisamos passar o setTarefas para o
+Formulario e faremos isso passando-o como prop.
+
+<Formulario setTarefas={setTarefas} />
+
+A seguir, vamos tipar ele no Formulario. Sabemos que é chato ficar tipando todo 
+hora, mas para a documentação e revisão do código faz muita diferença.
+
+Como sabemos, no class formulario precisamos abrir e fechar a tag e dizer que 
+pretendemos receber um setTarefas, que é um tipo de setState. Para saber como é 
+o tipo dele, podemos voltar no App.tsx e passa o mouse em cima desetTarefas e 
+ele nos mostra o tipo React.Dispatch que dentro é um React.SetStateAction . 
+Passaremos um setState como se fosse um array de tarefas.
+
+const setTarefas: React.Dispatch<React.SetStateAction<{
+    tarefa: string;
+    tempo: string;
+}[]>>
+
+Copiamos esse código e colamos em Formulario.
+
+class Formulario extends React.Component<{
+    setTarefas: React.Dispatch<React.SetStateAction<{
+        tarefa: string;
+        tempo: string;
+    }[]>>
+}>
+
+Esse tipo é o ITarefa igual ao de Lista, nós conseguimos reaproveitar essas 
+interfaces assim como fazemos com os componentes. Uma boa prática para 
+colocarmos títulos que são reaproveitados é criarmos dentro de src uma nova 
+pasta, nesse caso a pasta "types" e dentro dela podemos colocar, por exemplo, 
+"tarefa.ts".
+
+Agora, pegamos a interface ITarefa que criamos dentro de Lista, colamos e damos 
+um export .
+
+export interface ITarefa {
+    tarefa: string,
+    tempo: string
+}
+
+Assim, vamos conseguir pegar ele no Lista, e se o apagarmos de lá, ele importa 
+automaticamente. Dentro de Formulario, em vez de usarmos esse objeto de 
+React.SetStateAction com tarefa e tempo, nós só dizemos que é um array de 
+ITarefa e ela importa automaticamente.
+
+class Formulario extends React.Component<{
+    setTarefas: React.Dispatch<React.SetStateAction<ITarefa[]>>
+}>
+
+Agora, em vez de dar usar o console.log(), vamos utilizar o setTarefas(). Para 
+não precisarmos do spread de tarefas e colocarmos mais um tarefas, vamos colocar
+uma função. Dentro de uma arrow function ele recebe um parâmetro default que é o
+state antigo, então podemos colocar que recebemos tarefasAntigas. Estamos 
+pegando as tarefas antigas que estão dentro do state e conseguimos aqui dentro 
+colocar o spread de this.state.
+
+adicionarTarefas(React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    this.props.setTarefas(tarefasAntigas => [...tarefasAntigas, {... this.state }
+}
+
+Assim dizemos que vamos retomar todas as tarefas antigas e dar um spread de 
+this.state dentro do objeto, porque já sabemos que dentro dele temos tarefa e 
+tempo.
+
+Vamos voltar no Chrome para ver se funciona. Adicionamos "react" em "Adicione um
+novo estudo" e podemos escolher o tempo que quisermos, neste caso, "00:00:05" e 
+apertamos o botão "Adicionar" e ele funciona! Conseguimos fazer a comunicação 
+entre o Formulário e a Lista de Tarefas!
+
+Para finalizar, vamos voltar para o "App" e tirar o array padrão que colocamos, 
+porque não vamos ter alguns valores padrão.
+
+function App() { 
+    const [tarefas, setTarefas] = useState([]);
+    return (
+        <div className=(style=.Appstyle)>
+            <Formulario />
+            <Lista />
+            <Cronometro />
+        </div>
+    );
+}
+
+Ele aponta um erro porque diz que espera um array de ITarefa e estamos passando 
+um array vazio. Podemos tipar o useState dizendo que ele pode ser ou um array de
+ITarefa ou ele vai ser um array vazio.
+
+const [tarefas, setTarefas] = useState<ITarefa[] | []>([]);
+
+Especificamos que o tipo do useState e ele volta a funcionar. Para tiparmos 
+temos que colocar <> entre o useState e o () . Aqui, estamos dizemos que ou ele 
+vai ser um array de Itarefa ou um array vazio, mas se só deixarmos o array de 
+ITarefa ele já funcionará, porque ele sabe que pode ter nenhuma tarefa ou 
+várias. As duas formas são válidas!
+
+const [tarefas, setTarefas] = useState<ITarefa[]>([]);
+
+No próximo vídeo vamos aprender a como selecionar uma tarefa. Até lá!
