@@ -7,7 +7,7 @@ import style from './App.module.scss';
 
 function App() {
   const [tasks, setTasks] = useState<ITask[]>([]);
-  const [setected, setSelected] = useState<ITask>();
+  const [selected, setSelected] = useState<ITask>();
 
   function selectTask(selectedTask: ITask) {
     setSelected(selectedTask);
