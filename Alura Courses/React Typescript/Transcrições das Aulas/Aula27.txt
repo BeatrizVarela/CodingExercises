@@ -1,0 +1,140 @@
+Nossa aplicação já está quase toda concluída, a única coisa que falta fazer é, 
+ao selecionarmos uma tarefa, um item, ele ir para o cronômetro, começarmos o 
+item e depois completá-lo. Vamos começar a entender o que precisamos fazer para 
+continuar. A primeira coisa que notaremos é que o tempo no formulário está sendo
+construído com horas, minutos e segundos, e o nosso cronômetro só tem minutos e 
+segundos.
+
+Portanto, precisamos fazer uma conversão de hora, minuto e segundo para minuto e
+segundo. Uma maneira de fazer isso é tirar o “hora”, “minuto” e “segundo” e 
+transformá-lo em segundo, em seguida, transformar em minuto e segundo de novo. 
+Antes, vamos retornar ao VSCode, abrir o "src > components > Lista" em seguida, 
+"item > index.tsx".
+
+A primeira coisa que faremos é retirar o console.log() da linha 17, pois não 
+precisaremos mais dele, a função dele era nos informar se estávamos recebendo 
+tudo. Agora, é possível perceber que estamos utilizando o style, mas o de 
+Lista.module.scss, nós não o dividimos em duas coisas. É isso que faremos.
+
+Então, vamos criar um "Novo Arquivo" chamado "Item.module.scss" e, nele, teremos
+os estilos que estávamos usando anteriormente. Vamos acessar "Lista.module.scss"
+e da linha 31 até o final (linha 75), nós cortaremos e colocaremos o CSS que 
+estava da linha 31 a 75 no "Item.module.scss", assim, conseguiremos dividir. 
+Quando verificarmos a classe no "Item.module.scss", ela vai dizer ser do módulo 
+"item", não do módulo "Lista".
+
+O style, ao invés de ser ../Lista, será de ./Item, isto é, 
+'./Item.module.scss';. Antes de retornarmos ao navegador, gostaria de destacar 
+algo que está dando problema: a URL do assets, na linha 35, está dizendo que não
+existe esse asset, porque tivemos que colocar em uma pasta diferente, sendo 
+assim, teremos que procurar um ../ a mais.
+
+Então, ao invés de ser ../../, precisa ser, ../../../, ou seja, precisaremos 
+voltar três pastas para chegar no asset. Agora, apertaremos "Ctrl + S", voltar 
+ao nosso navegador e já está funcionando. O campo "Adicione um novo estudo" nós 
+preencheremos com "react". O campo "Tempo" nós preencheremos com um valor 
+aleatório, pode ser de cinco minutos, "00:05:00", em seguida, apertaremos o 
+botão "Adicionar" e analisaremos se vai funcionar.
+
+A classe já está correta, vamos selecionar. Está funcionando corretamente, o que
+quer dizer que o nosso CSS também está correto. Agora, faremos a conversão de 
+horas, minutos e segundos para segundos. Para isso, temos duas possibilidades. 
+Podemos criá-lo diretamente no "components > Formulario", 
+"Components > Cronometro", que é onde usaremos.
+
+Mas, é preciso pensar se as funções para conversão de minutos em segundos, para 
+tratar números monetários e coisas afins, são mais comuns. Se são funções 
+utilitárias que podemos utilizar em outros lados da nossa aplicação.
+
+Para demonstrar uma melhor forma de conseguirmos estruturar essas funções 
+utilitárias, criaremos uma pasta nova, que não necessariamente criaríamos, pois 
+só usaremos no cronômetro, mas vamos criá-la para que seja possível perceber 
+como estruturar de forma correta várias funções e vários componentes dentro do 
+React. Nós fecharemos o "components" e, dentro de "src", criaremos uma 
+"Nova Pasta" chamada "common".
+
+O motivo de criação da pasta "common" é que estamos tratando de coisas comuns. 
+Normalmente, em projetos grandes de React, percebemos que as pessoas mantêm um 
+padrão de colocar funções utilitárias em uma pasta útil, uma pasta comum, então,
+configurações de teste, constantes comuns que utilizamos durante a aplicação, 
+alguns colocam até estilos comuns, tipos comuns, algum interceptor de request e 
+afins.
+
+Sendo assim, nós criaremos esse "common" e, dentro dele, uma pasta "utils", de 
+funções utilitárias comuns na nossa aplicação. O nome das pastas já está se 
+referindo ao que queremos. Como desejamos ter um arquivo com funções utilitárias
+para tratarmos de date, tempo, horas, etc., nós criaremos um arquivo chamado 
+"date.ts".
+
+Assim, teremos funções utilitárias de tempo dentro de uma pasta "utils", então,
+funções utilitárias dentro de uma pasta "common", que são coisas comuns, isto é,
+funções utilitárias comuns de tempo. Desta forma, conseguimos, apenas com a 
+nomenclatura de pastas e arquivos, dizer exatamente o que.
+
+Na primeira linha do "date.ts", vamos exportar uma função chamada 
+export function tempoParaSegundos() {. Essa função tempoParaSegundos() 
+transformará o tempo, no caso, o "00:00:00" para segundos. Nós receberemos esse 
+tempo dentro da função, logo, export function tempoParaSegundos(tempo){, ele 
+será uma string, tempo: string e nós precisaremos tratá-lo.
+
+Tendo este cenário, surge a questão: como conseguiremos dividir hora, minutos e 
+segundos para tratá-los de forma diferente? Já sabemos que ele verá a string 
+"00:00:00", podemos utilizar uma função Javascript chamada split. Então, ele 
+pega uma string, um caracter, que colocaremos como um ponto de quebra e vai 
+quebrar essa string em um array de várias strings.
+
+No caso, se mandarmos que ele quebre por dois pontos, teremos "00", ele vai 
+quebrar dois pontos, "00", mais dois pontos, e "00". Então, teremos um array de 
+três itens formado por "00", "00" e "00". É exatamente o que queremos. Para 
+tanto, criaremos uma constante e como ele já vai quebrar em um array , 
+colocaremos colchetes, igual a tempo.split() e pediremos para que ele dê um 
+split no "dois pontos".
+
+Sendo assim, ele dividirá em três. O primeiro item desse array será "horas", o 
+segundo, "minutos", e o terceiro, 
+"segundos": const [horas, minutos, segundos] = tempo.split(":"). Mas, temos um 
+problema que é: se colocarmos só os minutos e não os segundos, as horas ficarão 
+com valor nulo, null, "00:00". Por isso, precisamos ter um valor padrão para o 
+caso dele ser nulo.
+
+Portanto, colocaremos as horas e o valor padrão zero, horas = '0', para o caso 
+de não vir nada. Colocaremos também em minutos, só por padrão, minutos = '0' e 
+nos segundos também, segundos = '0'. Como estamos colocando como um array de 
+string, vamos deixar tudo como string. Nós estabelecemos o zero como padrão e já
+estamos dando o split pegando esses três valores.
+
+Agora, precisamos converter as horas, minutos e segundos para um número que seja
+possível somar depois. Criaremos uma nova constante 
+const horasEmSegundos = Number(horas) * 3600;, significa que precisaremos, 
+primeiro, converter de string para número, por isso criamos o Number() de horas,
+e, uma hora, se pesquisarmos na internet, tem 3600 segundos, por isso, 
+multiplicamos essas horas por 3600 segundos.
+
+Então, uma hora equivale a 3600 segundos e duas horas equivalem a 7200 segundos 
+e assim sucessivamente. Depois, criaremos a 
+const minutosEmSegundos = Number(minutos) *60;, que representa a conversão de 
+minutos, e, um minuto tem 60 segundos. Assim, convertemos as horas e os minutos.
+Não há necessidade de converter os segundos, mas precisaremos transformá-los em 
+números.
+
+Para isso, podemos retornar direto horas em segundos, mais, minutos em segundos,
+mais, a conversão, que é o Number(), de 
+segundos: return horasEmSegundos + minutosEmSegundos + Number(segundos). 
+Portanto, estamos somando o horasEmSegundos que já convertemos, o 
+minutosEmSegundos que já convertemos e a conversão segundos em número.
+
+Para finalizar, vamos em "components > Cronometro > index.tsx" e colocaremos, 
+dentro dele, o console.log('conversao: ', tempoParaSegundos). Sendo assim, nós 
+colocamos a função tempoParaSegundos e ele já importou automaticamente de 
+'../../common/utils/date' e tem uma chave por não ser um export default.
+
+Vamos executá-lo, já que se trata de uma função e, dentro, passaremos uma hora, 
+um minuto e um segundo: console.log('conversao: ', 
+tempoParaSegundos('01:01:01')), assim conferimos se ele está convertendo 
+satisfatoriamente. Em seguida, apertaremos "Ctrl + S" e retornaremos ao 
+navegador, ele já colocou 3600 segundos da hora, mais, 60 segundos do minuto, 
+mais, um segundo do próprio segundo: "conversao: 3661".
+
+Já estamos conseguindo converter de horas por minutos e segundos para segundos. 
+No próximo vídeo, vamos começar a trabalhar a questão do tempo no cronômetro. 
+Até lá!!
