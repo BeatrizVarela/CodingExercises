@@ -1,0 +1,54 @@
+Voltaremos para o arquivo App.tsx em "src/Pages". Nele já estamos usando o 
+setSelecionado() para passar esse estado na memória com a tarefaSelecionada, mas
+ainda precisamos fazer a iteração no tarefas para passarmos ou não a propriedade
+selecionado.
+
+Em selecionaTarefa(), passaremos um setTarefas() para iterar sobre o tarefas. 
+Como mencionamos anteriormente, aqui poderíamos retornar alguma coisa ou ter uma
+arrow function para pegar o estado anterior, que é o que vamos fazer.
+
+Sendo assim, setTarefas() receberá tarefasAnteriores, o estado antigo dentro 
+dele, com uma arrow function que executa um map(). Pegaremos cada tarefa e 
+retornaremos um objeto que será um spread de tarefa. Depois disso, pegaremos o 
+selecionado e, por enquanto, o definiremos como true.
+
+Aqui estamos retornando cada tarefa com selecionado como true. Entretanto, 
+precisamos de uma condição que verifique qual tarefa está selecionada e atribua 
+o valor true somente a ela. Para isso, usaremos a seguinte operação ternária:
+
+Aqui estamos verificandose a tarefa que estamos iterando no momento, tarefa.id, 
+é igual a tarefaSelecionada.id. Em caso positivo, retornaremos true, valor 
+colocado após o ponto de interrogação; do contrário, retornaremos false, valor 
+colocado após os dois pontos.
+
+Teoricamente já estamos conseguindo iterar e retornar o valor correto. Vamos 
+salvar e acessar o arquivo Lista.module.scss. Nele, já teremos uma 
+classe .itemSelecionado. Sempre que o item for selecionado, atribuiremos essa 
+classe a ele. Dessa forma, teremos um feedback visual de que ele está 
+selecionado.
+
+Acessaremos "src/Components/Lista/Item" e o arquivo index.tsx dentro dela. Aqui 
+encontraremos um className={style.item}. Para termos essa condicional de classe,
+incluiremos um template string com esse {style.item}.
+
+Em seguida, teremos outra operação ternária:
+
+Ou seja, se estiver selecionado, retornamos um style.itemSelecionado; do 
+contrário, retornamos uma string vazia.
+
+Note que colocamos um espaço entre ${style.item} e a nossa condição ternária. 
+Isso porque, do contrário, teríamos a classe do item e a classe do selecionado 
+juntas, se tornando uma nova clase, algo que não queremos fazer. Vamos salvar e 
+retornar ao navegador para verificarmos se funcionou.
+
+Após atualizarmos, preencheremos os campos com "react" e 5 segundos. Em seguida,
+adicionaremos também "abc" com 6 segundos. Os dois serão listados normalmente 
+abaixo do cronômetro. Ao clicarmos em "react", ele será selecionado, e o mesmo 
+acontece com "abc". Já estamos conseguindo iterar e mudar entre os selecionados,
+incluindo um className caso o item seja selecionado.
+
+Essa é uma funcionalidade interessante do React. Ele já consegue reagir ao 
+estado de selecionado ou não, conferir no if se precisa adicionar a classe ou 
+não e renderiza automaticamente, bastando informarmos essa condicional.
+
+Nos próximos vídeos começaremos a tornar o nosso cronômetro funcional.
