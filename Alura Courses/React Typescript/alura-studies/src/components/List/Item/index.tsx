@@ -17,7 +17,7 @@ export default function Item(
   console.log('item actual: ', { task, time, selected, completed, id });
   return (
     <li
-      className={style.item}
+      className={`${style.item} ${selected ? style.selectedItem : ''}`}
       onClick={() => selectTask(
         {
           task,
