@@ -1,0 +1,104 @@
+Nós paramos no problema em que ele renderiza infinitamente sempre que 
+selecionamos uma tarefa. Está exibindo esse erro no console do navegador: "Too 
+many re-renders". Está renderizando demais.
+
+Por que isso está acontecendo? No VS Code, vamos para 
+"src > components > Cronometro > index.tsx". Na linha 14 do código podemos 
+perceber que tem um if no meio do componente, meio que jogado no meio da função,
+if(selecionado?.tempo). Por isso ele está tendo uma renderização infinita. Ele 
+está dizendo se selecionado.tempo, ele dá setTempo com tempoParaSegundos.
+
+Como estamos dando um setState, o cronômetro rerenderiza, aí ele volta no if. Se
+selecionado.tempo, true, setTempo. E fica fazendo isso infinitamente. Como 
+resolver isso?
+
+Vamos passar esse tempoParaSegundos para dentro do useState, como se fosse um 
+valor padrão do useState, então ele não vai ficar entrando no if o tempo todo. 
+Ele vai dar erro dizendo que selecionado.tempo é um número, então vou passar uma
+string de selecionado.tempo e colocar um ponto de interrogação antes do ponto 
+porque selecionado pode ser undefined.
+
+export default function Cronometro({ selecionado }: Props) {
+const [tempo, setTempo] = useState<number>(tempoParaSegundos(String(selecionado?.tempo)));
+\\código omitido
+}
+
+Tudo isso que eu tive que fazer, foi o TypeScript que pediu que eu fizesse. Isso
+está funcionando no código, mas vamos voltar para o navegador para ver se vai 
+funcionar. Vou atualizar a página, selecionar "React" e colocar um tempo, clicar
+em "Adicionar". E vou clicar no campo que apareceu em "Estudos do dia".
+
+Não deu o erro, isso já é um bom sinal. Mas o tempo acima do cronômetro está 
+como "Tempo: NaN", ele não atualizou para o tempo que selecionei. Por que isso 
+aconteceu?
+
+Se voltarmos no VS Code, veremos que a forma como tentamos solucionar foi 
+colocar a função tempoParaSegundos() de selecionado.tempo no valor default, no 
+valor padrão do useState. Primeiro, ele está como NaN (not a number) porque o 
+selecionado, na primeira renderização dele, é undefined. Por isso está NaN lá.
+
+Como eu sei que não rerenderizou? Porque ele não pegou o selecionado.tempo que 
+nós selecionamos. Isso está acontecendo porque o componente tem uma coisa 
+chamada "ciclo de vida". Não vou dar muitos detalhes, mas só para você conseguir
+entender, o componente é como se fosse um ser vivo, ele nasce, faz as coisas que
+tem que fazer, recebe props e tudo, e morre.
+
+Mas o cronômetro fica o tempo todo aparecendo na tela, então ele ainda não 
+morreu. Ele nasceu, está recebendo props infinitamente e só vai morrer quando 
+formos para outra tela, quando ele parar de aparecer na tela. Mas no caso em que
+estamos ele nunca morre.
+
+Então, ele nunca volta a receber esse valor padrão do useState, que só é 
+recebido quando ele nasce. Vamos precisar de outra função do React para 
+conseguir que sempre que a prop selecionado mudar, ele faça alguma coisa.
+
+O React tem uma função perfeita para isso, um hook chamado useEffect. Ele sabe 
+que existe esse ciclo de vida e sempre que alguma coisa mudar, ele vai fazer 
+alguma coisa que nós queremos que ele faça. Vamos ver isso na prática. Vou 
+excluir esse trecho (tempoParaSegundos(String(selecionado?.tempo)),e acima do 
+return vou colocar:
+
+useEffect(() => {
+
+},)
+
+Ele importou automaticamente o useEffect. O primeiro parâmetro é uma função, que
+é a função que será executada quando alguma coisa mudar. Esse é o primeiro 
+parâmetro que o useEffect aceita. Vou colocar uma vírgula, e o segundo parâmetro
+é uma array ([]) de dependências, são todas as variáveis que queremos que o 
+useEffect utilize como base para executar essa função.
+
+Lembra que eu falei que queremos que o cronômetro rerenderize sempre que o 
+selecionado mudar? Então já conseguimos perceber que a variável de dependência 
+que queremos que o useEffect leve como base é selecionado. Nessa função, 
+queremos que seja executado um setTempo, e nesse setTempo passar o 
+tempoParaSegundos com o selecionado.tempo. Não precisamos mais do "String".
+
+Vai indicar erro dizendo que selecionado pode ser undefined, mas aqui dentro 
+podemos colocar um if, se existir um selecionado.tempo, coloca um setTempo aqui.
+Se eu tirar o ponto de interrogação que está após selecionado, ele vai dizer 
+"Possivelmente o objeto é 'nulo'", ao colocar o ponto de interrogação o 
+TypeScript já diz que ele está validando no if se existe selecionado e se existe
+selecionado.tempo. Então dentro do if já é certeza que o selecionado e o 
+selecionado.tempo não são nulos. Por isso que em 
+tempoParaSegundos(selecionado.tempo) não preciso colocar o ponto de 
+interrogação.
+
+useEffect(() => {
+  if(selecionado?.tempo) {
+   setTempo(tempoParaSegundos(selecionado.tempo));
+  }
+}, [selecionado])
+
+O TypeScript nos ajuda muito em relação a isso. Não precisamos nos preocupar com
+isso em todos os momentos, só no início do bloco. Vou salvar. Teoricamente o 
+useEffect já está funcionando. Vamos ver se ele vai conseguir atualizar o tempo.
+Vamos voltar para a aplicação no navegador, vou escrever algo no primeiro campo 
+de texto indicando o que eu quero estudar, vou selecionar um tempo, clicar em 
+"Adicionar" e selecionar um item da lista "Estudos do dia". E o tempo acima do 
+cronômetro está aparecendo corretamente conforme eu selecionei, "Tempo:6".
+
+Ele está conseguindo, de forma reativa, sempre que o selecionado mudar, passar 
+para o nosso estado tempo aquele tempo do selecionado. Conseguimos resolver esse
+problema. No próximo vídeo, vou pegar esse estado do tempo e colocar dentro do 
+relógio para essa mudança aparecer de forma visual.
