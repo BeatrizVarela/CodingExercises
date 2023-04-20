@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 
 import { timeToSeconds } from '../../common/utils/time';
@@ -14,9 +14,13 @@ interface Props {
 
 export default function Stopwatch({ selected }: Props) {
   const [time, setTime] = useState<number>();
-  if(selected?.time) {
-    setTime(timeToSeconds(selected?.time));
-  }
+
+  useEffect(() => {
+    if(selected?.time) {
+      setTime(timeToSeconds(selected.time));
+    }
+  },[selected])
+  
   return (
     <>
       <div className={style.stopwatch}>
