@@ -23,7 +23,8 @@ nosso projeto.
     "devDependencies": {
         "sass": "^1.41.1"
     }
-}COPIAR CÓDIGO
+}
+
 Também o encontraremos no package-lock.json, que ficará em evidência na lista
 lateral de arquivos. Mas não precisaremos nos atentar tanto a essa questão
 agora.

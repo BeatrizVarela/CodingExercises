@@ -56,7 +56,8 @@ console do próprio tarefas.
 <h2 onClick={() => {
     console.log("h2 clicado: ", tarefas)
     tarefas = [...tarefas, { tarefas: "Estudar estado", tempo: "05:00:00"]]
-}}> COPIAR CÓDIGO
+}}>
+
 Voltamos ao browser, clicamos em "Inspecionar > Console > h2" novamente e 
 apareceu 3, 4, 5, 6, etc. Ele está adicionando o item no array! Mas então por 
 que não aparece o item na lista?

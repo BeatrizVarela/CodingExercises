@@ -182,7 +182,8 @@ estender outra interface, utilizando, nesse caso, a instrução extends ITarefa.
 
 interface Props extends ITarefa{
     selecionaTarefa: (tarefaSelecionada: ITarefa) => void    
-}COPIAR CÓDIGO
+}
+
 Isso significa que teremos todos os tipos do ITarefa(tarefa, tempo, selecionado 
 e assim por diante), agora incluindo a função selecionaTarefa, reaproveitando a 
 interface que criamos anteriormente. Agora passaremos a usar Props em nosso 

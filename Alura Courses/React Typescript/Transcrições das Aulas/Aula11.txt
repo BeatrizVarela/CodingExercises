@@ -55,7 +55,8 @@ antes, usando o <h3> e o <span>.
       <h3></h3>
       <span></span>
     </li>
-))}COPIAR CÓDIGO
+))}
+
 Mas, nós precisaremos colocar a {tarefa.tarefa}, isto é,
 <h3> {tarefa.tarefa} </h3> que é o nome da tarefa indicada mais acima. E,
 no <span>, escreveremos {tarefa.tempo}, ou seja, <span> {tarefa.tempo} </span>.

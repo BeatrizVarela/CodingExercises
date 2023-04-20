@@ -1,0 +1,186 @@
+Com a nossa função de converter funcionando, agora vamos efetivamente colocar o 
+selecionado para dentro do cronômetro. No VSCode, renomearemos o arquivo de 
+funções utilitárias como time.ts, de modo a evitarmos confusões. Além disso, 
+dentro do index.tsx do Cronometro, mudaremos o import de tempoParaSegundos para 
+"../../common/utils/time".
+
+import Botao from '../Botao';
+import Relogio from '../Relogio';
+import style from '../Cronometro.module.scss';
+import { tempoParaSegundos } from '../../common/utils/time';
+
+Na pasta "pages", abriremos o arquivo App.tx. Aqui veremos que o selecionado 
+está sendo exibido com a cor cinza, pois foi criado, mas nunca utilizado. Sendo 
+assim, vamos passá-lo para o Cronometro. Sabemos que quando clicamos para 
+selecionar uma tarefa, a função selecionaTarefa() é executada e passa o 
+tarefaSelecionada para o setSelecionado, alterando seu state.
+
+Vamos passar o selecionado para nosso Cronometro.
+
+return (
+    <div classNam={style.AppStyle}>
+        <Formulario setTarefas={setTarefas} />
+        <Lista
+            tarefas={tarefas}
+            selecionaTarefa={selecionaTarefa}
+        />
+        <Chronometro selecionado={selecionado} />
+    </div>
+);
+
+Teremos um erro pois o Typescript pede a tipagem do selecionado. Em 
+"Cronometro/Relogio", abriremos o arquivo index.tsx. Nele, passaremos 
+{ selecionado } para a função Cronometro.
+
+export default function Cronometro({ selecionado }) {
+    console.log('conversao: ', tempoParaSegundos('01:01:01'));
+    return (
+//...código omitido
+    )
+}
+
+Criaremos uma interface chamada Props e definiremos que selecionado será do tipo
+ITarefa e faremos a importação desse tipo (algo que deve ocorrer 
+automaticamente).
+
+import { ITarefa } from '../../types/tarefa';
+
+interface Props {
+    selecionado: ITarefa
+}
+
+export default function Cronometro({ selecionado }) {
+    console.log('conversao: ', tempoParaSegundos('01:01:01'));
+    return (
+//...código omitido
+    )
+}
+
+Na função Cronometro(), colocaremos dois pontos (:) depois das chaves e 
+adicionaremos o Props.
+
+interface Props {
+    selecionado: ITarefa
+}
+
+export default function Cronometro({ selecionado }: Props) {
+    console.log('conversao: ', tempoParaSegundos('01:01:01'));
+    return (
+//...código omitido
+    )
+}
+
+Repare que, mesmo após salvarmos, o App.tx continuará indicando um erro 
+informando que o tipo ITarefa | undefined não pode ser atribuído ao tipo 
+ITarefa. Logo, o Typescript consegue entender que o primeiro valor em nosso 
+estado selecionado é undefined, já que não passamos nada ainda. Para 
+solucionarmos isso, precisamos tipar no Cronometro para ITarefa ou undefined.
+
+No index.tsx do Cronometro, dentro da interface Props, adicionaremos o tipo 
+undefined.
+
+interface Props {
+    selecionado: ITarefa | undefined
+}
+
+Com isso solucionaremos o erro. Agora temos que criar um novo state para tempo, 
+pois precisaremos decrementar o tempo do cronômetro a cada um segundo até 
+chegarmos a zero, quando a tarefa será completada. Criaremos um estado tempo, 
+setTempo recebendo useState().
+
+export default function Cronometro({ selecionado }: Props) {
+    const [tempo, setTempo] = useState();
+    return (
+//...código omitido
+    )
+}
+
+Como já temos a função de tempoParaSegundos(), podemos passá-la no useState() 
+recebendo selecionado.tempo.
+
+export default function Cronometro({ selecionado }: Props) {
+    const [tempo, setTempo] = useState(tempoParaSegundos(selecionado.tempo));
+    return (
+//...código omitido
+    )
+}
+
+O Typescript informará que o objeto pode ser nulo, o que implica na necessidade 
+de incluirmos uma condição que verifica se existe o selecionado ou não. Faremos 
+isso com um ponto de interrogação em selecionado?.tempo.
+
+export default function Cronometro({ selecionado }: Props) {
+    const [tempo, setTempo] = useState(tempoParaSegundos(selecionado?.tempo));
+    return (
+//...código omitido
+    )
+}
+
+Na verdade não podemos fazer isso, pois o tempoParaSegundos() pede, 
+obrigatoriamente, um tempo, e não um undefined. Sendo assim, removeremos o 
+tempoParaSegundos() do useState(). Logo abaixo, iniciaremos uma condicional if 
+que verifica a presença de selecionado?.tempo e, em caso positivo, passaremos 
+tempoParaSegundos(seleciado.tempo) para dentro de setTempo().
+
+export default function Cronometro({ selecionado }: Props) {
+    const [tempo, setTempo] = useState();
+    if(selecionado?.tempo) {
+        setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+    return (
+//...código omitido
+    )
+}
+
+Além disso, precisaremos tipar o useState() como number, que é o tipo do nosso 
+tempo.
+
+export default function Cronometro({ selecionado }: Props) {
+    const [tempo, setTempo] = useState<number>();
+    if(selecionado?.tempo) {
+        setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+    return (
+//...código omitido
+    )
+}
+
+Se não fizéssemos essa tipagem, o Typescript informaria que o argumento do tipo 
+number não é atribuível para o tipo SetStateAction<undefined>, algo que já 
+aprendemos anteriormente. Se colocássemos um 0 como valor padrão (useState(0)), 
+por exemplo, ele entenderia o tipo como number. Porém, a forma correta de tipar 
+é colocando o number diretamente no state.
+
+Prosseguindo, depois do parágrafo, incluiremos Tempo: {tempo} para tentarmos 
+exibir o tempo na tela e verificarmos se ele está sendo alterado de acordo com a
+tarefa selecionada.
+
+export default function Cronometro({ selecionado }: Props) {
+    const [tempo, setTempo] = useState<tempo>();
+    if(selecionado?.tempo) {
+        setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+    return (
+    <div className={style.cronometro}>
+        <p className={style.titulo}> Escolha um card e inicie o cronômetro</p>
+        Tempo: {tempo}
+        <div className={style.relogioWrapper}>
+            <Relogio />
+        </div>
+        <Botao>
+            Começar!
+        </Botao>
+        </div>
+    )
+}
+
+Retornaremos ao navegador e atualizaremos a página. Preencheremos os campos com 
+as tarefas "react", de 5 segundos, e "abc", de 6 segundos. Ao clicarmos em 
+"react", teremos um erro informando que existiram muitas renderizações, o que 
+acabou quebrando nossa aplicação. Isso acontece pois fizemos a nossa condicional
+if de maneira "jogada" dentro do componente, fazendo com que ela seja executada 
+infinitamente.
+
+A ideia é só passarmos o tempoParaSegundos() para o nosso setTempo se o 
+selecionado mudar. O React tem uma função perfeita para isso, e aprenderemos 
+sobre ela no próximo vídeo.
