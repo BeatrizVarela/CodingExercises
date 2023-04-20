@@ -1,4 +1,7 @@
+import React from 'react';
+
 import { ITask } from '../../../types/task';
+
 import style from './Item.module.scss';
 
 interface Props extends ITask {

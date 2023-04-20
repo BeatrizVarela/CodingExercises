@@ -18,9 +18,28 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "import"
     ],
     "rules": {
+        "react/no-unescaped-entities": "off",
+        "@typescript-eslint/no-explicit-any": [
+            "error",
+            {
+                "fixToUnknown": true
+            }
+        ],
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+                "newlines-between": "always",
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
+            }
+        ]
     },
     "settings": {
         "react": {

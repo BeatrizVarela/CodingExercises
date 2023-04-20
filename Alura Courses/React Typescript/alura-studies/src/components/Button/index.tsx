@@ -1,9 +1,10 @@
 import React from 'react';
+
 import style from './Button.module.scss';
 
 class Button extends React.Component<{
   type?: "button" | "submit" | "reset" | undefined
-  children: any
+  children: unknown
 }> {
   render() {
     const { type = "button" } = this.props;

@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import React from 'react';
+
 import { timeToSeconds } from '../../common/utils/time';
 import { ITask } from '../../types/task';
 import Button from '../Button';
+
 import Clock from './Clock';
-import style from './Stopwatch.module.scss'
+import style from './Stopwatch.module.scss';
 
 interface Props {
   selected: ITask | undefined
