@@ -1,0 +1,63 @@
+Coloque no Cronômetro um useEffect que reaja ao estado selecionado e, sempre que
+ele mudar, atualize o estado tempo com o valor 
+tempoParaSegundos(selecionado.tempo), verificando se existe o selecionado e 
+selecionado.tempo.
+
+Opinião do instrutor
+
+Dentro de src/components/Cronometro/index.tsx
+
+…
+export default function Cronometro({ selecionado}: Props) {
+  …
+  useEffect(() => {
+    if(selecionado?.tempo) {
+      setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+  },[selecionado])
+  return (
+    …
+  )
+}
+
+Só nesse pedaço de código temos várias coisas interessantes para comentar, 
+primeiramente o useEffect se comporta como um observable, que é um conceito bem 
+usado por nós desenvolvedores javascript e mal nos damos conta, como por exemplo
+dentro de fetch ou dentro de eventListeners, todos eles "observam" alguma 
+mudança para fazer alguma coisa. No caso do fetch ele espera a resposta da 
+chamada e no caso do eventListener, o evento em si ocorrer.
+
+O useEffect consegue juntar a ideia de Observables com o ciclo de vida do 
+componente (que será explicado mais a fundo no para saber mais no próximo 
+tópico), que é executado uma vez, assim que o componente aparece na tela 
+(primeira renderização obrigatória) e depois sempre que alguma variável que 
+estiver dentro do array de dependências, no nosso caso, o selecionado.
+
+Outra coisa interessante também é esse if: if(selecionado?.tempo). Isso pode ser
+lido como "se selecionado existir e selecionado.tempo existir".
+
+Essa maravilha do Javascript moderno tem o nome de optional chaining, ou 
+encadeamento opcional, que te permite verificar um encadeamento para não haver 
+problemas de tempo of null, no caso de selecionado ser null.
+
+esse if é a mesma coisa que escrever isso aqui:
+
+if(selecionado && selecionado.tempo)
+
+Nesse caso não muda muito, mas imagina esse código aqui:
+
+if(selecionado?.chave1?.chave2?.chave3?.chave4?.chave5)
+
+Isso viraria:
+
+if(selecionado && selecionado.chave1 && selecionado.chave1.chave2 && 
+selecionado.chave1.chave2.chave3 && selecionado.chave1.chave2.chave3.chave4 && 
+selecionado.chave1.chave2.chave3.chave4.chave5)
+
+Olha a vantagem que o optional chaining nos dá nesse caso, né? Não que você 
+precise esse tanto de optional chaining em um objeto apenas, mas você talvez 
+precise isso em 2 ou 3 objetos na mesma validação, isso seria muito mais comum:
+
+if(objeto1?.chave1 && objeto2?.chave2 && objeto3?.chave3)
+
+Agora que já destrinchamos o useEffect, vamos entender sobre o ciclo de vida?
