@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import style from './Button.module.scss';
 
 class Button extends React.Component<{
   type?: "button" | "submit" | "reset" | undefined
-  children: unknown
+  children: ReactNode
 }> {
   render() {
     const { type = "button" } = this.props;
