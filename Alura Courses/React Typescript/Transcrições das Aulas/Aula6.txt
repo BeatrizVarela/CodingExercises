@@ -1,102 +1,21 @@
-Antes de criarmos o nosso primeiro componente, vamos entender essa última pasta,
-que eu não expliquei no vídeo anterior, a pasta "public". O único detalhe que 
-alteraremos nela é o "index.html". Ele é, literalmente, o HTML da página e 
-possui vários arquivos e alguns comentários que podemos até retirar, além do 
-<title> do nosso HTML, que é o React App. Se retornarmos ao Google Chrome, 
-aparecerá "React App", portanto, é exatamente esse <title>.
+Nessa aula, você aprendeu como:
 
-Ao alteramos React App para Alura Studies, isto é, <title>Alura Studies</title>,
-apertar "Ctrl + S" e voltar ao Google, aparecerá "Alura Studies", significa que 
-esse é o HTML da nossa página. Ele tem apenas um div id="root"></div> no 
-"index.html" e é exatamente o que desejamos que tenha. No "index.tsx", que é 
-parte da pasta "src", há um ReactDOM.render( e ele pega o 'root', isto é, uma 
-div por id 'root'.
+- Configurar o seu ambiente para rodar o projeto;
+  - Aprendemos como configurar o seu ambiente para poder criar e rodar um 
+    projeto React, instalando o Node/npm e o GIT para controlarmos as versões 
+    e/ou baixarmos a aplicação do Github.
 
-Ou seja, document.getElementById('root'). Dentro desse Id('root') que ele joga 
-todo o nosso React e essa é, basicamente, a função da pasta "public". Ainda na 
-pasta "public", temos o ícone que está sendo usado, "favicon.ico", as logos, 
-"logo192.png" e "logo512.png", para caso seja necessário renderizar outra coisa.
+- Diferenciar npx de npm;
+  - Utilizamos o npx na aplicação e aprendemos a diferenciar o comando npx do 
+    comando npm, mostrando quando é melhor usar cada um.
 
-Também temos o "manifest.json" que mostra: se o tamanho for "512x512", use 
-determinada logo. E o "robots.txt", com a função de mostrar aos robôs do Google 
-quais pastas desejamos que sejam indexadas nos arquivos de busca ou o que não 
-queremos que tenha. Se temos uma tela de "Admin", por exemplo, e não planejamos 
-que ela apareça no Google, então colocamos no "robots.txt".
+- Criar um projeto com create-react-app com template typescript usando npm;
+  - Criamos um projeto utilizando npx, entendemos que o CRA (Create React App) 
+    tem possibilidade de criar projetos com template (optamos pelo typescript), 
+    escolhendo o npm como o nosso gerenciador de pacotes padrão.
 
-Agora, vamos criar o nosso componente. Para isso, criaremos uma pasta chamada 
-"components" dentro de "src". Esse passo não é obrigatório, mas como o React nos
-libera tudo, de maneira que conseguimos colocar os nossos componentes em 
-qualquer pasta, o ideal é ter uma padronização de como criaremos os nossos 
-componentes para não termos problemas no futuro, quando o projeto ficar maior. 
-Por exemplo, não conseguir encontrar os nossos componentes ou eles estarem todos
-na mesma pasta.
-
-Sendo assim, nós criaremos a pasta "components" e, dentro dela, outra pasta 
-chamada "Botao" e, dentro dela, um "index.tsx" que será o nosso arquivo. Nele, 
-usaremos class components, a primeira maneira de criar um componente que, 
-geralmente, aprendemos. Então, importaremos o React na primeira linha: 
-import React from 'react';.
-
-Em seguida, daremos um espaço na linha 2, e, na linha 3, criaremos um class 
-Botao e essa classe estende um React.Component {.
-
-class Botao extends React.Component { 
-
-}
-
-Com isso, fica nítido que criaremos um botão que ele estende de um componente 
-React, logo, será um componente React. Ao escrevermos, fica tudo bem descritivo.
-Esse class componets tem uma função obrigatória que é a render() e retorna, 
-return (), HTML. Se trata de um HTML, mas nós conseguimos escrever JavaScript 
-dentro dele. Sendo assim, no return colocaremos um <button>, que é uma tag HTML,
-e, após ele, adicionaremos um nome Botão.
-
-Nós exportaremos essa classe embaixo, export default Botao;.
-
-import React from 'react'; 
-
-class Botao extends React.Component {
-  render() {
-     return (
-       <button>
-           Botão
-         </button>
-        )
-     }
-    }
-
-    export default Botao; 
-
-Criamos o nosso botão. Agora, copiaremos o nome dele, Botao, e vamos ao 
-"App.tsx". Ao invés de Hello World, importaremos o nosso botão, 
-import Botao from './components/Botao';. Para renderizar esse botão, se 
-colocarmos, por exemplo, uma chave, conseguiremos escrever JavaScript dentro 
-dela. Para tanto, colocaremos {Botao} e testar se será possível executá-lo 
-assim.
-
-Voltaremos à página e perceberemos que ele não renderizou nada. Vamos tentar 
-executá-lo como se fosse uma função. {Botao()}. Prontamente, ele nos apresenta 
-erro. Indo à página, poderemos conferir que, de fato, não funciona. A forma mais
-comum de renderizar um componente no React é renderizá-lo como se fosse uma tag 
-HTML.
-
-Precisamos tirar as chaves, abrir uma tag, colocar o botão e os sinais de barra 
-e maior: <Botao />, garantindo abrir e fechar o botão. Agora, retornando à 
-página, aparece o nosso "Botão". Após termos criado o componente, conseguiremos 
-partir para duas boas práticas muito conhecidas no React. Primeiro, o DRY, 
-"Don't Repeat Yourself", e, segundo, o SRP, "Single Responsibility Principle".
-
-O "Don't Repeat Yourself" é "Não se repita". Significa que, ao criar o 
-componente, não é necessário ficar reescrevendo o código. Podemos, simplesmente,
-criar um botão e reaproveitá-lo em qualquer parte da aplicação. Esse é um ótimo 
-benefício do React.
-
-O segundo, "Single Responsibility Principle", "Princípio da responsabilidade 
-única", significa que se queremos um botão e um formulário que tem apenas a 
-responsabilidade de gerenciar o próprio formulário, podemos criar um componente 
-só para formulário e o botão será outro componente com a responsabilidade única 
-de renderizar um botão.
-
-Assim, é possível deixar bem desacoplado, com a responsabilidade para cada 
-componente. Essa é outra facilidade que o React oferece. Já criamos um botão e, 
-no próximo vídeo, continuaremos a construir a nossa aplicação. Até lá!!
+- O Create React App estrutura o projeto.
+  - Entendemos como o Create React App estrutura a aplicação, vendo dos arquivos
+  de configuração (tsconfig, package.json, package-lock.json entre outros), até 
+  as pastas/arquivos que serão atualizados por nós (pasta src, arquivos app.tsx,
+  index.tsx, index.css entre outros).

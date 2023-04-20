@@ -1,282 +1,153 @@
-No vídeo passado, aprendemos a controlar o formulário. Agora, vamos aprender a 
-levar as tarefas que criamos para dentro da Lista.
+Como já conhecemos essa ferramenta poderosíssima que é o props. Vamos replicá-lo
+dentro de Lista, que é a segunda coisa que estava me incomodando.
 
-Antes de começarmos, gostaria de passar para vocês uma boa prática que não 
-estamos utilizando nos botões. Como o botão do formulário é diferente do botão 
-do cronômetro, porque aquele é um botão de submit e enquanto este é realmente um
-botão, precisamos passar esse type para dentro de <Botao>. Na linha 49 do 
-VS Code vamos adicioná-lo.
+Vamos ver se você concorda comigo de novo. Na nossa aplicação, aparecem "Estudos
+do dia" e, em seguida, a lista. Até aí tudo certo. Mas concorda comigo que esse 
+é um container, uma informação, mas essa parte cinza do "React", "Javascript" e 
+"Typescript", claramente é outro componente, ele tem outra responsabilidade?
 
-<Botao>
-    Adicionar
-</Botao>
+Voltando para o VS Code, em "src > components > Lista> index.tsx", podemos ver 
+que o código tem o título, o map, a lista de tarefas, a renderização, mas o <li>
+ainda está aqui dentro, então ele tem muita responsabilidade aqui dentro. Tem a 
+responsabilidade de ter a lista, de renderizar a lista, ter o título e ter o 
+<li> dentro dele. Isso vai ficar muita responsabilidade para Lista e isso não é 
+uma boa prática.
 
-Agora temos que especificar o tipo dele, que será submit.
+Se é tão fácil criar componentes, por que vamos manter o item aqui dentro 
+também? Por que não externalizá-lo? É isso que vamos fazer. Antes não 
+conseguíamos fazer isso porque não conhecíamos as props, então como iríamos 
+passar a informação do nome da tarefa e de quanto tempo tem para o item, se não 
+tínhamos como enviar informação para dentro dele? Agora que sabemos, é isso que 
+vamos fazer.
 
-<Botao type="submit">
-    Adicionar
-</Botao>
+Primeiro, vou voltar no formulário, corrigir onde eu escrevi "Banana" e deixar 
+"Adicionar". Agora, vou voltar no index de Lista, vou recortar, com o 
+"Ctrl + X", o trecho de código da <li>, e dentro da pasta "Lista" vou criar uma 
+pasta "Item".
 
-Ele dá um erro dizendo que o botão não espera nenhum tipo, então vamos abrir a 
-pasta "components > Botão > index.tsx" para vermos o class de Botao.
+Mas por que criar dentro do "Lista", se podemos criar dentro de "components"? Já
+que o botão e o formulário estão dentro da pasta "components", por que não
+colocamos o item lá também?
 
-class Botao extends React.Component {
-    render() {
-        return (
-            <button className={style.botao}>
-                {this.props.children}
-            </button>
-        )
+Porque se você tiver uma aplicação React muito grande e, por exemplo, tiver 
+sessenta componentes, se você colocar todos os componentes dentro de 
+"components", vai ficar difícil de ler e entender onde cada um está sendo 
+importado. Então, por padrão, se temos um componente que só é utilizado dentro 
+de outro, que não pretendemos deixá-lo genérico, é só para quebrar 
+responsabilidades, normalmente colocamos uma pasta dentro da outra mesmo.
+
+Fica mais fácil porque vemos que, por exemplo, a pasta "Item" está dentro de 
+"Lista"? Então significa que esse item está sendo usado só dentro dessa lista. 
+Entendeu? Vamos fazer dessa forma.
+
+Dentro da pasta "Item" vou criar um index.tsx. No código desse arquivo, 
+primeiramente, vou criar um function Item() e retornar aquele <li> que 
+recortamos.
+
+export default function Item() {
+  return (
+   <li key=(index) classname={style.item}>
+     <h3> {item.tarefa} </h3>
+     <span> {item.tempo} </span>
+   </li>
     }
 }
 
-export default Botao;
+Mais uma coisa para aprendermos, nós conseguimos exportar a função assim que 
+criamos. Então, na linha 1 eu consigo dar um export default function Item(). 
+Essa já é uma facilidade, se você preferir pode exportar lá embaixo, não faz 
+diferença. Essa é a primeira facilidade.
 
-Agora, aqui dentro vamos dizer que esperamos um tipo. Para isso, colocaremos a 
-tipagem depois de React.Component(), e no objeto diremos que esperamos um 
-string.
+A segunda facilidade que vou mostrar, não sei se você percebeu, mas não 
+importamos o React aqui dentro. Porque na versão 17, que é a que estamos usando 
+agora, não tem necessidade de importar o React dentro dos nossos arquivos. Caso 
+você esteja usando uma versão anterior, ou caso ele peça para importar o React, 
+é só escrever import React from 'react' que vai funcionar tranquilamente. Como 
+estou utilizando essa versão 17, não preciso fazer isso.
 
-class Botao extends React.Component <{
-    type: string
-}> 
+Por exemplo, em Lista, podemos ver aqui em cima o import do React, que o React é
+declarado mas seu valor nunca é lido. Então no function component ele não 
+precisa ser usado, isso é mais uma vantagem do function component sobre o class 
+component.
 
-Para ele não ficar obrigatório, vamos adicionar um ? antes de : para sinalizar 
-que é uma prop opcional. Ou seja, podemos passar um tipo ou não.
+Vou voltar no index de "Item", e aqui na <li> tem item.tarefa e item.tempo que 
+era cada item lá daquelemap do Lista. Precisamos refatorar isso. Ao invés de 
+item.tarefa e item.tempo, vamos pegar do props. Vou tirar o item. e deixar só 
+tarefa e só tempo. Agora, direto no parâmetro da função Item, já podemos 
+desestruturar direto, vou escrever Item(props) porque é a forma que pegamos 
+normalmente. E aqui dentro eu já posso tipar: 
+export default function Item(props: {tarefa: string, tempo: string}).
 
-class Botao extends React.Component <{
-    type?: string
-}> 
+A primeira forma como conseguimos desestruturar é escrever 
+const {tarefa, tempo} = props;, essa é a primeira forma, ele já parou de indicar
+erro. Estamos dizendo que tarefa e tempo vêm de props. E a segunda forma, com a 
+qual economizamos uma linha, é colocando direto lá no parâmetro da função, ao 
+invés de props coloca: Item(tarefa, tempo: {tarefa: string, tempo: string}).
 
-No render() podemos colocar o const igual a this.props. e como só pegamos o 
-tipo, vamos colocar type. Também vamos sinalizar que se não vier um type o botão
-será do tipo button, que é o padrão.
+Na primeira linha do código, eu vou importar o style.
 
-render() { 
-    const { type = "button" } = this.props;
-}
+import style from '../Lista.module.scss';
 
-Agora, na linha 10 em button vamos criar o type, pode ser antes ou depois do 
-className. Ele será passado via prop.
+E lá no index de "Lista", dentro de tarefa.map, vou colocar <Item>, e ele 
+importou automaticamente para mim. Se ele não importou automaticamente o import 
+é import item from './item'.E já está indicando erro , dizendo que ele precisa 
+do tarefa e do tempo. Isso é uma facilidade do Typescript também. Se tivesse um 
+desenvolvedor de fora e quisesse criar um item, ele saberia que esse item 
+precisa de tarefa e de tempo. Podemos fazer de duas formas. Aqui podemos 
+colocar:
 
-<button type={type} className={syle.botao}>
+<Item
+  tarefa={item.tarefa}
+  tempo={item.tempo}
+/>
 
-Porém, ele não pode ser do tipo string, por isso vamos mudar para button, 
-submit, reset e undefined, que são os tipos permitidos.
+Vou salvar e voltar para nossa aplicação no navegador, atualizar a página. Já 
+aparece normalmente para nós. Essa é a primeira forma, vou mostrar a segunda. 
+Você concorda que esse item que vem de map é um objeto que tem tarefa e tempo? 
+Se conseguimos desestruturar o pros lá no item para tarefa e tempo, conseguimos 
+desestruturar aqui também. O React possibilita isso. Para conseguir fazer isso 
+vamos abrir chaves dentro de <Item> e escrever ...item:
 
-class Botao extends React.Component <{
-    type?: "button" | "submit" | "reset" | undefined
-}> 
+<Item
+{...item}
+/>
 
-Agora vamos voltar ao formulário para entendê-lo. Temos a função de adicionar 
-tarefa, mas não temos contato com a lista. Como ambos são filhos de App e estão 
-no mesmo nível, não é possível fazer uma comunicação direta uma vez que o React 
-é unidirecional e essa direção é de cima para baixo. Portanto, vamos mandar a 
-informação para o App. Vamos aprender a solucionar esse problema apenas com 
-props.
+Dessa forma, conseguimos utilizar todos os atributos que existem dentro daquele 
+objeto como prop para esse componente. Isso é muito bom, porque se tiver muitas 
+propriedades dentro daquele objeto, não precisamos ficar escrevendo uma por uma.
+Basta desestruturar dentro do componente e ele já consegue nos mostrar tudo.
 
-Para começarmos, precisamos colocar a Lista em App. Vamos abrir 
-"components > Lista > index.tsx". “Com Ctrl+X” cortamos o useState - linha 6 a 
-15 - e em "pages > App.tsx" vamos colocar a Lista.
+Mas é preciso ficar atento, por exemplo, se você estiver utilizando esse item de
+uma API, e essa API tem um monte de informação, pode vir informação demais, o 
+Typescript pode apontar erro dizendo que tem alguma propriedade que você não 
+tipou. Então pode dar alguns problemas. Como aqui está sendo um escopo um pouco 
+mais fechado e sabemos que as tarefas só tem tarefa e tempo, conseguimos 
+utilizar dessa forma.
 
-function App() { 
+Para terminar, tinha um key aqui dentro do <li>, que já vimos que é a forma que 
+o React tem de linkar esse <li> do React para onde ele renderiza o DOM. Então, 
+precisamos manter esse key lá no Lista, porque é aqui que colocamos o map.
 
-    return (
-        <div className=(style=.Appstyle)>
-            <Formulario />
-            <Lista />
-            <Cronometro />
-        </div>
-    );
-}
+Essa é uma prop especial do React, que não necessariamente precisamos tipar, mas
+ele precisa ter isso para conseguir ter esse link. Vou colocar key={index} no 
+<Item>:
 
-Na linha 8, damos um "Ctrl+V" e colamos o useState.
+<Item
+  key={index}
+  {...item}
+/>
 
-function App() { 
-    const [tarefas, setTarefas] = useState([{
-        tarefa: 'React',
-        tempo: '02:00:00'
-    }, {
-        tarefa: 'JavaScript',
-        tempo: '01:00:00'
-    }, { 
-        tarefa: 'Typescript',
-        tempo: '03:00:00'
-    }]);
-    return (
-        <div className=(style=.Appstyle)>
-            <Formulario />
-            <Lista />
-            <Cronometro />
-        </div>
-    );
-}
+Nós não tipamos ele dentro de Item, mas, mesmo assim, ele deixa colocar isso 
+aqui, porque ele nem chega a ir para o nosso componente Item, ele é literalmente
+só uma forma de o React linkar.
 
-Vamos importar o useState via chaves {},, porque ele não é um suporte default 
-dentro de React.
+Então, aqui já conseguimos usar o DRY (Don't Repeat Yourself), que já estávamos 
+utilizando antes, pois não repetimos código. E agora, estamos utilizando o 
+segundo conceito que é o SRP (Single Responsability Principle), ou Princípio de 
+Responsabilidade Única, que é ter apenas uma responsabilidade por componente.
 
-import React, { useState } from 'react';
-
-Passamos o tarefas para o lista sendo igual a `tarefas´
-
-<Lista tarefas={tarefas}/>
-
-Vamos tipar na Lista dizendo que vamos pegar o tarefas e que esse props tem um 
-tarefas, que é um array de tarefa. Para não precisarmos ficar dizendo que é um 
-objeto dentro de outro objeto, criaremos um interface.
-
-Uma interface é literalmente uma forma de colocarmos essa tipagem fora dos dois 
-pontos : usando como nome. É como se fosse uma variável em que colocamos os 
-tipos de variável dentro da própria variável.
-
-A interface se chamará ITarefa.
-
-interface ITarefa {
-
-}
-
-Dentro dela vamos dizer qual o tipo daquela tarefa e o que é uma tarefa. Ele tem
-tarefa e tempo que são strings.
-
-interface ITarefa {
-    tarefa: string,
-    tempo: string
-}
-
-Voltando a funciton Lista() sinalizamos que ITarefas é um array de tarefa 
-com [].
-
-interface ITarefa {
-    tarefa: string,
-    tempo: string
-}
-
-function Lista({ tarefas }: { tarefas: ITarefas[]})
-
-Podemos fazer dessa forma ou também escrevendo Array e dentro dele colocar 
-o ITarefa.
-
-function Lista({ tarefas }: { tarefas: Array<ITarefa>})
-
-Essas são as duas formas de dizermos que é um array, porém essa última forma é 
-mais simples de escrevermos. Como conseguimos pegar o tarefas, não precisamos 
-mais do onClick do h2, vamos tirá-lo.
-
-function Lista({ tarefas }: { tarefas: ITarefa[]}) {
-    return (
-        <aside className={style.listaTarefas}>
-            <h2> Estudos do dia </h2>
-            <ul>
-                {tarefas.map((item, index) => (
-                    <Item
-                        key={index}
-                        {...item}
-                    />
-                ))}
-            </ul>
-        </aside>
-    }
-}
-
-Conseguimos pegar e tipar o ITarefa. Vamos excluir a linha 1, que é o import do 
-React do useState porque não o estamos utilizando. Voltando ao "App.tsx" já 
-estamos passando tarefas para Lista. Agora precisamos passar o setTarefas para o
-Formulario e faremos isso passando-o como prop.
-
-<Formulario setTarefas={setTarefas} />
-
-A seguir, vamos tipar ele no Formulario. Sabemos que é chato ficar tipando todo 
-hora, mas para a documentação e revisão do código faz muita diferença.
-
-Como sabemos, no class formulario precisamos abrir e fechar a tag e dizer que 
-pretendemos receber um setTarefas, que é um tipo de setState. Para saber como é 
-o tipo dele, podemos voltar no App.tsx e passa o mouse em cima desetTarefas e 
-ele nos mostra o tipo React.Dispatch que dentro é um React.SetStateAction . 
-Passaremos um setState como se fosse um array de tarefas.
-
-const setTarefas: React.Dispatch<React.SetStateAction<{
-    tarefa: string;
-    tempo: string;
-}[]>>
-
-Copiamos esse código e colamos em Formulario.
-
-class Formulario extends React.Component<{
-    setTarefas: React.Dispatch<React.SetStateAction<{
-        tarefa: string;
-        tempo: string;
-    }[]>>
-}>
-
-Esse tipo é o ITarefa igual ao de Lista, nós conseguimos reaproveitar essas 
-interfaces assim como fazemos com os componentes. Uma boa prática para 
-colocarmos títulos que são reaproveitados é criarmos dentro de src uma nova 
-pasta, nesse caso a pasta "types" e dentro dela podemos colocar, por exemplo, 
-"tarefa.ts".
-
-Agora, pegamos a interface ITarefa que criamos dentro de Lista, colamos e damos 
-um export .
-
-export interface ITarefa {
-    tarefa: string,
-    tempo: string
-}
-
-Assim, vamos conseguir pegar ele no Lista, e se o apagarmos de lá, ele importa 
-automaticamente. Dentro de Formulario, em vez de usarmos esse objeto de 
-React.SetStateAction com tarefa e tempo, nós só dizemos que é um array de 
-ITarefa e ela importa automaticamente.
-
-class Formulario extends React.Component<{
-    setTarefas: React.Dispatch<React.SetStateAction<ITarefa[]>>
-}>
-
-Agora, em vez de dar usar o console.log(), vamos utilizar o setTarefas(). Para 
-não precisarmos do spread de tarefas e colocarmos mais um tarefas, vamos colocar
-uma função. Dentro de uma arrow function ele recebe um parâmetro default que é o
-state antigo, então podemos colocar que recebemos tarefasAntigas. Estamos 
-pegando as tarefas antigas que estão dentro do state e conseguimos aqui dentro 
-colocar o spread de this.state.
-
-adicionarTarefas(React.FormEvent<HTMLFormElement>) {
-    evento.preventDefault();
-    this.props.setTarefas(tarefasAntigas => [...tarefasAntigas, {... this.state }
-}
-
-Assim dizemos que vamos retomar todas as tarefas antigas e dar um spread de 
-this.state dentro do objeto, porque já sabemos que dentro dele temos tarefa e 
-tempo.
-
-Vamos voltar no Chrome para ver se funciona. Adicionamos "react" em "Adicione um
-novo estudo" e podemos escolher o tempo que quisermos, neste caso, "00:00:05" e 
-apertamos o botão "Adicionar" e ele funciona! Conseguimos fazer a comunicação 
-entre o Formulário e a Lista de Tarefas!
-
-Para finalizar, vamos voltar para o "App" e tirar o array padrão que colocamos, 
-porque não vamos ter alguns valores padrão.
-
-function App() { 
-    const [tarefas, setTarefas] = useState([]);
-    return (
-        <div className=(style=.Appstyle)>
-            <Formulario />
-            <Lista />
-            <Cronometro />
-        </div>
-    );
-}
-
-Ele aponta um erro porque diz que espera um array de ITarefa e estamos passando 
-um array vazio. Podemos tipar o useState dizendo que ele pode ser ou um array de
-ITarefa ou ele vai ser um array vazio.
-
-const [tarefas, setTarefas] = useState<ITarefa[] | []>([]);
-
-Especificamos que o tipo do useState e ele volta a funcionar. Para tiparmos 
-temos que colocar <> entre o useState e o () . Aqui, estamos dizemos que ou ele 
-vai ser um array de Itarefa ou um array vazio, mas se só deixarmos o array de 
-ITarefa ele já funcionará, porque ele sabe que pode ter nenhuma tarefa ou 
-várias. As duas formas são válidas!
-
-const [tarefas, setTarefas] = useState<ITarefa[]>([]);
-
-No próximo vídeo vamos aprender a como selecionar uma tarefa. Até lá!
+A lista só tem a responsabilidade de fazer essa iteração, esse map, e enviar 
+cada tarefa para o componente Item. O Item em si, só tem responsabilidade de 
+renderizar esse item, só essa parte desse array de tarefas que ele precisa 
+renderizar. Então, já conseguimos desaclopar de forma correta. Nos vemos no 
+próximo vídeo.

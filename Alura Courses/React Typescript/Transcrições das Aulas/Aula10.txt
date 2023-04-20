@@ -1,112 +1,106 @@
-No último vídeo, criamos a Lista, mas escrevemos os <li> manualmente e o
-React — o próprio JavaScript — nos permite renderizar as listas de forma
-dinâmica. Aprenderemos a fazer isso agora. Vamos retornar ao VSCode e, nele,
-temos a nossa Lista. É possível notar que há sempre um <li>, um <h3>, um <span>,
-isto é, a estrutura HTML é toda igual e a única coisa que muda é o conteúdo
-dentro dela.
+Toda a estrutura do nosso formulário está concluída. Agora, passaremos ao
+próximo componente que será o componente de lista. Começaremos abrindo o VSCode
+e, dentro de "components", criaremos uma nova pasta chamada "Lista". Dentro
+dela, criaremos um novo arquivo chamado "index.tsx". Na linha 1, importaremos o
+React: import React from 'react';.
 
-No caso, a tarefa 1 é React e a 2, Javascript. O tempo da primeira é de duas
-horas e, da segunda, uma hora. A única coisa que precisamos ter do lado de fora
-são esses conteúdos, esses dados, e depois renderizamos uma só vez, passando de
-um por um. É o que faremos. Para isso, criaremos uma constante dentro da Lista,
-chamada tarefas, const tarefas = [], e ele será um array, já que teremos vários
-itens. Esse array é de objetos.
+Na linha 3, ao invés de utilizar o class components, que era a forma mais
+antiga, optaremos pelo function component. Antes escrevíamos "class, o nome do
+componente, extends, React.Component", agora, escreveremos function, seguido do
+nome do nosso componente, que será Lista, function Lista e toda a sintaxe de uma
+função JavaScript, então, colocaremos parênteses, para os parâmetros da função,
+seguidos de chaves: function Lista() {.
 
-Então, nós criaremos uma chave, const tarefas = [{, e esse objeto terá a
-tarefa: 'React',, que é a nossa primeira tarefa, e o tempo: '02:00:00'. O
-segundo objeto será a tarefa: 'Javascript', e o tempo: '01:00:00.
+Como a função não tem nenhuma tarefa obrigatória, como na classe do
+React.Component, precisamos apenas retornar o "jsx" que escreveremos. Portanto,
+nós escreveremos um HTML, o <aside>. E exportaremos, mais abaixo, o
+export default Lista;. Então, essa é a sintaxe de um function component.
+
+import React from 'react';
 
 function Lista() {
-  const tarefas = [{
-      tarefa: 'React',
-        tempo: '02:00:00'
-    }, {
-      tarefa: 'Javascript',
-        tempo: '01:00:00'
-    }]
+  return (
+    <aside>
 
-Assim, temos o nosso array de tarefas. Algo que já estudamos nas primeiras aulas
-é que, para executar o JavaScript dentro de um componente, podemos usar chaves
-dentro do HTML. Então, para renderizar o array, depois da <ul>, abriremos
-chaves {}. Essa é uma vantagem do "jsx", nos permitir escrever Javascript dentro
-da estrutura HTML nesse caso. Seguindo, podemos tentar renderizar as tarefas
-fazendo {tarefas()}, mas, o tarefas não é uma função e o JSX espera retornar
-outra estrutura JSX, então não executaremos desta maneira.
+    </aside>
+  )
+}
 
-Se colocarmos da maneira como aparece anteriormente, ele executará um array de
-objeto, o que não faz sentido algum. Temos que percorrer esse array e retornar
-cada item dele como um HTML. A função no JavaScript que nos permite fazer isso é
-a .map, que roda, faz o loop no array e retorna algo de cada iteração.
+export default Lista;
 
-Então, vamos colocar um {tarefas.map()}. O .map aceita dois parâmetros. O
-primeiro é o próprio item, a própria tarefa, logo, teremos
-{tarefas.map((tarefa, ))}. E o segundo é o index do array nessa tarefa,
-{tarefas.map((tarefa, index) => (. Atenção aos parênteses, porque significam que
-você já vai retornar.
+Neste ponto da aula, podemos nos questionar sobre o motivo de termos usado antes
+o class components. O motivo é criar uma certa dinâmica de conceitos e
+entendermos como o class components e o function component são escritos, assim,
+ao encontrar cada um deles, entenderemos o porque e como são usados. O class
+components era usado, porque, na época em que foi criado, achavam que aquela era
+a melhor forma de criar um componente com estado.
 
-Se substituirmos por chaves, {tarefas.map((tarefa, index) => {})}, teremos um
-escopo, algo que não queremos, desejamos apenas retornar, por isso, usaremos
-parênteses. E ele retorna um "jsx", no caso, o nosso <li>. Portanto, colocaremos
-<li> </li>, lembrando de abrir e fechar, e deixaremos exatamente como apareceu
-antes, usando o <h3> e o <span>.
+Não quer dizer que não existia function component antes, mas, para termos um
+state dentro do componente, precisávamos criar uma classe, que chamávamos de
+Stateful Component. Quando não precisávamos desse estado, por exemplo, se só
+precisávamos renderizar algum dado, então, fazíamos um Stateless Component.
+Neste caso, criávamos const Item = () => (...)(igual a uma arrow function) e,
+por exemplo, retornávamos uma li, considerando a nossa lista com o Item.
 
-{tarefas.map((tarefa, index) => (
+const Item = () => (
   <li>
-      <h3></h3>
-      <span></span>
-    </li>
-))}COPIAR CÓDIGO
-Mas, nós precisaremos colocar a {tarefa.tarefa}, isto é,
-<h3> {tarefa.tarefa} </h3> que é o nome da tarefa indicada mais acima. E,
-no <span>, escreveremos {tarefa.tempo}, ou seja, <span> {tarefa.tempo} </span>.
-Ao invés de colocar tarefa no .map, vamos deixar item, quer dizer,
-{tarefas.map((item, index) => (, porque tarefa.tarefa fica feio.
+    item...
+  </li>
+)
 
-Sendo assim, alteraremos o h3 para <h3> {item.tarefa} </h3> e o span para
-<span> {item.tempo} </span>. É possível notar uma vantagem do TypeScritpt, se
-colocarmos item. (item, ponto), ele já mostra que, dentro do objeto, temos
-"tarefa" e "tempo". Quem está fazendo isso é o TypeScript, mesmo sem "tiparmos"
-ainda.
+Esse era um Stateless Component e não era possível ter um estado dentro dele.
+Depois da versão 16.8 do React, surgiu a ideia de hooks, funções externas que
+podemos importar no function component e, assim, ter estado dentro do
+componente. Esse momento representa o fim da obrigatoriedade de se ter um
+Stateful Component, um componente via classe.
 
-Nós já renderizamos, agora apertaremos "Ctrl + S" e voltaremos ao navegador. No
-navegador, já temos "React", "Javascript", e "React" e "Javascript" abaixo, que
-é aquele outro código que não excluímos. Então, vamos retornar ao VSCode, tirar
-os dois li que estão mais abaixo, apertar "Ctrl + S", voltar para o Chrome e,
-agora, só aparece um "React" e um "Javascript".
+Por isso, hoje em dia, utilizamos mais function component do que class component
+e o React já anunciou que as próximas atualizações estarão relacionadas à
+function component. Significa que o class component está se tornando um
+Deprecated, algo em "desuso". Nós passaremos a usar o function component a
+partir de agora e, com o tempo, refatoraremos os class components que criamos,
+usando o function component.
 
-Para mockar, isto é, poder ter uma simulação de algo dinâmico, vamos adicionar
-tarefa: 'Typescript' e tempo: '03:00:00'. Apertaremos "Ctrl + S" e retornaremos
-ao navegador. De forma dinâmica, ele já mostrou o "Typescript", criou um li. Ao
-inspecionarmos, notaremos que ele criou um novo <li> com o <h3>Typescript</h3> e
-com o <span>03:00:00</span>.
+Dentro do nosso <aside> faremos um <h2>, que terá Estudos do dia. Embaixo dele,
+existirá uma <ul>e, nela, alguns itens. Primeiro, criaremos dois <li> e, cada um
+deles terá um <h3> e um <span>. No primeiro <h3> adicionaremos o nome da tarefa,
+por exemplo, a primeira tarefa que estudaremos é React e o tempo que
+precisaremos para estudar para a matéria será de duas horas, 02:00:00.
 
-De forma reativa, ele já consegue saber que existe um novo item no array e,
-dinamicamente, renderiza com o método .map. Isso resolve o nosso problema de
-duplicação de código. Ao invés de ficarmos criando várias li, apenas fazemos
-.map e, dentro dele, escrevemos uma li só e o React consegue fazer essa
-demonstração de forma dinâmica.
+Nossa segunda tarefa será Javascript e o tempo de estudo será de uma hora,
+01:00:00.
 
-Vamos voltar ao VSCode. Nós já colocamos a <li>, mas item e index, mas não
-usamos o index. O React fica um pouco perdido quando vamos utilizar .map, porque
-quando renderizamos o .map, ele precisa saber qual item desse array corresponde
-ao DOM real, pois, de forma dinâmica, ele vai renderizando o DOM. Sendo assim,
-ele precisa saber quais dos itens corresponde ao do DOM. Precisamos de uma chave
-para linkar um com o outro.
+function Lista() {
+  return (
+    <aside>
+      <h2> Estudos do dia </h2>
+      <ul>
+        <li>
+          <h3>
+            React
+          </h3>
+          <span>
+            02:00:00
+          </span>
+        </li>
+        <li>
+          <h3>
+            Javascript
+          </h3>
+          <span>
+            01:00:00
+          </span>
+        </li>
+      </ul>
+    </aside>
+  )
+}
 
-O nome disso é key. O React sempre pede que, o fazer uma renderização dinâmica,
-assim como o .map, uma Lista, tenhamos um key. Sendo assim, dentro do li nós
-criaremos uma chave key, <li key={}>, e o key, por enquanto, colocaremos como
-index, <li key={index}>, pois ainda não temos um item com id, mas, o ideal, é
-colocar o id, porque o index pode ser variável, então, não é uma boa prática.
+Apertaremos "Ctrl + S", voltaremos ao "App.tsx" e importaremos
+import Lista from './components/Lista';. Embaixo do formulário, vamos renderizar
+a lista, <Lista />. Retornaremos ao navegador e aparece "Estudos do dia" seguido
+de "React", "02:00:00" e "Javascript", "01:00:00".
 
-Ou seja, vamos colocar o index e, depois, quando estivermos fazendo de maneira
-realmente dinâmica, trocaremos pelo id. Para ter mais informações sobre isso,
-existe um Alura+ sobre performance em listas com React, o que permite ter uma
-ideia um pouco melhor sobre key. Seguindo, vamos salvar, voltar no Chrome e, por
-enquanto, não fez diferença, ele continua renderizando.
-
-Além disso, não mostra o atributo key, por ele ser um atributo específico do
-React, portanto, não chega ao DOM real, e estamos conseguindo renderizar as
-nossas listas com .map. No próximo vídeo, vamos aprender um pouco sobre CSS no
-React.
-Até lá!!
+Já temos a nossa lista, mas, como estamos utilizando o React, não ficaremos
+criando vários li na mão, precisaremos renderizar essa lista de forma dinâmica.
+Nós aprenderemos a fazer isso no próximo vídeo.

@@ -1,23 +1,38 @@
-Lembra que os componentes React são criados utilizando JSX não HTML? Então, 
-usando o mesmo processo, o React não cria um DOM, e sim um VDOM (Virtual DOM).
+Muito legal o CSS Modules né? Mas tem várias outras curiosidades e vantagens que
+não mencionamos no vídeo!
 
-Não entraremos em detalhes neste curso sobre Virtual DOM, porém saiba que o 
-React cria um DOM virtual em memória e só atualiza o DOM real quando algo dentro
-desse Virtual DOM realmente é atualizado.
+Você sabia que podemos importar o CSS Modules de várias formas diferentes? Ou
+que podemos utilizar vários módulos no mesmo componente?
 
-Levando isso em consideração, como o React saberia qual seria a cópia no Virtual
-DOM do item 45 em um array de 50 itens, por exemplo? Ou pior, se o item 47 for 
-removido, como ele vai saber que o item 48, 49 e 50 não foram atualizados? E os 
-outros?
+Pois é, o CSS Modules é bem mais complexo e interessante do que imaginamos e, se
+irmos bem a fundo nessa tecnologia, podemos deixar o nosso código bem mais
+interessante!
 
-Para isso o React utiliza a propriedade key, que nada mais é que uma chave(AHÁ!)
-para linkar o item no Virtual DOM no DOM real, por isso não vemos a prop sendo 
-passada para o componente Item, pois essa prop é algo interno no React que não 
-tem utilidade para nós.
+Sobre Imports
+Para começar, o CSS Modules nos dá o CSS em formato object e os exporta como
+default, logo, podemos importar das seguintes formas:
 
-Por isso também não é recomendado que se utilize o index do array como key, pois
-caso o array mude, a possibilidade de vários itens desse array serem atualizados
-sem necessidade é imensa!
+import style from './NomeDoComponente.module.scss';
+import * as style from './NomeDoComponente.module.scss';
+import { default as style } from './NomeDoComponente.module.scss';
 
-OBS: Caso você queira saber mais pode acessar à documentação do React ou o meu 
-Alura+ sobre performance em listas com React.
+Ainda seguindo em como importar um CSS Module, como ele é um export default,
+podemos nomeá-lo da forma como bem entendermos, por exemplo:
+
+import Foo from './NomeDoComponente.module.scss';
+import Bar from './NomeDoComponente.module.scss';
+import Banana from './NomeDoComponente.module.scss'
+
+Todas as formas acima retornarão o objeto que o CSS Modules exporta!
+
+Como agora sabemos que podemos nomear o objeto de formas diferentes, podemos
+também importar vários CSS Modules em um só componente!
+
+import BotaoStyle from './Botao.module.scss';
+import ItemStyle from './Item.module.scss';
+
+OBS: Todas essas formas citadas acima não são específicas de como importar um
+CSS Modules, e sim de como importar um export default em JS.
+
+Legal né? Caso tenha alguma dúvida leia a documentação do Create React App sobre
+CSS Modules.

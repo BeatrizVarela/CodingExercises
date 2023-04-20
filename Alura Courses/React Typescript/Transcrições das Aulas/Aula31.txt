@@ -1,0 +1,162 @@
+Antes de criarmos a funcionalidade de selecionar um item, vamos resolver algo 
+que tem me incomodado: quando adicionamos a tarefa “react” com o tempo 
+selecionamos o formulário não é resetado.
+
+Para resolver isso, vamo entrar no VS Code, em 
+"src > components > Formulario > index.tsx" e no adicionarTarefa() entre a linha
+16 e 17, vamos criar setState() que será responsavel por resetar o formulário.
+
+Vamos colocar this.setState() e dentro dele tarefa vai ser uma string vazia e 
+tempo será 00:00. Dessa forma, sempre resetamos o state depois que adicionarmos 
+uma tarefa.
+
+this.setState({
+    tarefa: "",
+    tempo: 00:00
+})
+
+Agora conseguimos resetar o formulário! A seguir, precisamos criar duas 
+variáveis novas dentro da nossa tarefa, ambas serão booleanas.
+
+Dentro de this.props.setTarefas(), na linha 16, vamos primeiro identar ele 
+colocando o array para baixo e colocando os objetos identados dentro dele para 
+melhorar a visualização.
+
+this.props.setTarefas(tarefasAntigas =>
+    [
+        ...tarefasAntigas,
+        {
+            ...this.state
+        }
+    ]
+);
+
+Ele está dando um spread de tarefasAntigas, criando um novo objeto que tem 
+this.state dentro dele. Aqui, colocaremos selecionado e completadocomo false.
+
+this.props.setTarefas(tarefasAntigas =>
+    [
+        ...tarefasAntigas,
+        {
+            ...this.state
+            selecionado: false,
+            completado: false
+        }
+    ]
+);
+
+Para definirmos qual terefa estrá selecionada, precisamos de ID que possa 
+identificá-la. Por isso, criaremos um ID aleatório com o pacote externo UUID. 
+Para abrir o terminal podemos usar o atalho “Ctrl+‘ “ ou ir na barra superior 
+selecionar "Ver > Terminal". Agora no Terminal, digitamos npm i uuid para 
+instalar a extensão. Não tem boa prática para isso, vocês podem chamar a função 
+da maneira que preferir, escolhi essa porque é igual ao que aparece na 
+documentação deles.
+
+Entre a linha 4 e 5 vamos dar um espaço e importá-lo.
+
+import {} from 'uuid';
+
+Vamos importar dentro dele um variável chamada v4, que é uma função que 
+nomearemos uuidv4.
+
+import { v4 as uuidv4 } from 'uuid';
+
+Aqui ele está dando um erro porque normalmente no TypeScript quando importamos 
+um pacote externo, ele pede para nós importarmos também seu tipo. Ele mesmo diz 
+aqui “Tente npm 1 --save-dev @types/uuid”, assim ele salva como um dependência 
+de desenvolvimento, sem ir para a produção, e ele vai baixar um pacote chamado 
+types/uuid, que é apenas um arquivo de tipos. Depois de baixar essa dependência,
+ele para de dar erro.
+
+Agora, em this.state vamos também adicionar o id que será uuidv4.
+
+this.props.setTarefas(tarefasAntigas =>
+    [
+        ...tarefasAntigas,
+        {
+            ...this.state
+            selecionado: false,
+            completado: false
+            id: uuidv4
+        }
+    ]
+);
+
+Ele fica verde porque é uma função, então vamos abrir parênteses para ele 
+executar essa função e retornar um id para nós.
+
+...this.state
+selecionado: false,
+completado: false
+id: uuidv4()
+
+Agora estamos criando id, selecionado e completado certinho, mas precisaremos 
+atualizar nossa interface de tarefas para adicionar o "completado", 
+"selecionado" e o "id". Como externalizamos o ITarefa para o arquivo de tipo, só
+precisamos fazer o update lá. Vamos em "types > tarefa.ts", aqui já temos o 
+tarefa e tempo e precisaremos adicionar os demais. seleciona e completado serão
+boolean e o id uma string.
+
+export interface ITarefa {
+    tarefa: string,
+    tempo: strin, 
+    selecionado: boolean,
+    completado: boolean, 
+    id: string
+}
+
+Para vermos isso funcionando, vamos abrir 
+" src > components > Lista > item > index.tsx".
+
+import style from '../lista.module.scss';
+
+export default function Item({ tarefa, tempo}: { tarefa: string, tempo: string }) { 
+    return (
+    <li className={style.item}>
+        <h3> {tarefa} </h3>
+        <span> {tempo} </span>
+    )
+}
+
+Ele pega tarefa e tempo, precisamos fazer ele pegar os demais.
+
+import style from '../lista.module.scss';
+
+export default function Item({ tarefa, tempo, selecionado, completado, id}: { tarefa: string, tempo: string }) { 
+    return (
+    <li className={style.item}>
+        <h3> {tarefa} </h3>
+        <span> {tempo} </span>
+    )
+}
+
+Aqui,em vez de passarmos tarefa: string, tempo: string e assim por diante, 
+substituímos por ITarefa que contém todas as informações. Agora, conseguimos dar
+um console.log() recebendo 'item atual: ' com o objeto que estamos pegando.
+
+import style from '../lista.module.scss';
+
+export default function Item({ tarefa, tempo, selecionado, completado, id}: ITarefa { 
+    console.log('item atual: ', {tarefa, tempo, selecionado, completado id});
+    return (
+    <li className={style.item}>
+        <h3> {tarefa} </h3>
+        <span> {tempo} </span>
+    )
+}
+
+Vamos voltar para o browser, inspecionar e entrar no console e já aparece 
+"item pessoal" como um objeto. Vamos dar um F5, colocar "react” em "Adicione uma
+tarefa" e 5 segundos para "Tempo", vamos adicionar e o id já está sendo criado 
+aleatoriamente, agora ele nunca se repetirá.
+
+completado : false
+id: "1383e399-74da-407b-bd36-fb60124e3e9"
+selecionado: false
+tarefa: "react"
+tempo: "00:00:05"
+
+Estamos com tudo pronto para conseguirmos selecionar ele! No próximo vídeo, 
+vamos criar o estado de selecionado de acordo com clique de selecionar e também 
+começaremos a dinamizar nosso cronômetro. Vejo vocês no próximo vídeo!

@@ -1,81 +1,19 @@
-Nossa aplicação já está ajustada para conseguirmos selecionar uma tarefa. Até o 
-momento, sempre que criamos um item, precisamos colocar um selecionado e um 
-completado. Sempre que clicarmos em um item, vamos executar uma função que irá 
-iterar sobre uma lista de tarefas e, encontrando a tarefa que selecionamos, 
-alterará a propriedade selecionado para true, mantendo todas as outras como 
-false.
+Nessa aula, você aprendeu como:
 
-Também precisaremos alocar na memória um estado de selecionado, pois teremos que
-passá-la para o cronômetro. Isso porque não queremos que o cronômetro também 
-tenha a responsabilidade de sempre iterar nas tarefas para saber qual está 
-selecionada, ele só precisa pegar a tarefa selecionada e mostrar o tempo para 
-que seja possível começar.
+- Adicionar informações externas ao componente com Props;
+  - Aprendemos a utilizar propriedades externas para reutilizar componentes de 
+    forma única.
 
-No VSCode, abriremos o explorador de pastas e o arquivo App.tsx. Usando o atalho
-"Ctrl + B", podemos fechar o explorador na lateral da tela. Anteriormente, 
-aprendemos que a troca de informações no React é unidirecional, sempre do pai 
-para o filho. Por isso, infelizmente, a função de selecionar o item precisará 
-ser alocada dentro de App().
+- Funciona o props.children;
+  - Vimos que o React disponibiliza uma props padrão chamada children, que ao 
+    contrário das outras props, é escrita dentro do componente, abrindo e 
+    fechando a tag como em uma tag HTML.
 
-Normalmente não vemos esse tipo de cenário, porque é costumeiro termos um 
-gerenciamento de estado global. Como não focaremos nisso agora, solucionaremos 
-com props. Caso você queira avançar um pouco mais no React e saber sobre 
-gerenciamento de estado global, temos um curso bem interessante aqui na Alura 
-sobre Context API que te ajudará a desacoplar um pouco mais essas 
-funcionalidades.
+- O key (chaves) é importante em arrays no React;
+  - Entendemos mais a fundo como o React trabalha com arrays, e como o key é 
+    importante para que ele não se perca entre os itens deste array.
 
-Primeiramente, criaremos o estado de selecionado para que o cronômetro não tenha
-essa responsabilidade. Na função App(), após o usetState de tarefas, criaremos 
-um const [selecionado, setSelecionado] recebendo useState() com a tipagem
-<ITarefa>, o tipo que definimos anteriormente para criação de tarefas.
-
-Criaremos então uma função selecionaTarefa() que irá iterar sobre ITarefa, 
-colocando o item selecionado dentro de selecionado. Essa função receberá como 
-parâmetro uma tarefaSelecionada do tipo ITarefa.
-
-Começaremos chamando setSelcionado() com o parâmetro tarefaSelecionada. Repare 
-que ainda nem passamos para baixo, mas o Typescript já concorda com a forma que 
-estamos fazendo, já que estamos indicando que o tipo do useState é ITarefa, o 
-parâmetro que pegamos na função, tarefaSelecionada, também é do tipo ITarefa, e 
-estamos passando para o useState essa tarefa. Se colocássemos como parâmetro uma
-string aleatória, como "banana", ele indicaria um erro, já que estamos pedindo 
-um tipo ITarefa.
-
-Agora precisamos passar esse selecionaTarefa para o item, que está dentro de 
-<Lista>. Sendo assim, passaremos selecionaTarefa={selecionaTarefa} como props.
-
-O VSCode indicará um erro, pois <Lista> não está esperando esse selecionaTarefa.
-Sendo assim, pelo explorador de arquivos, acessaremos a pasta 
-"src/components/Lista" e o arquivo index.tsx. Nele, criaremos uma interface 
-Props que terá o tarefas como ITarefa[], a forma como tipamos anteriormente, e 
-um selecionaTarefa.
-
-Aqui precisaremos tipar a função, algo que fazemos com uma arrow functoin. Essa 
-função espera uma tarefaSelecionada do tipo ITarefa e não retorna nada, ou seja,
-void.
-
-Então temos uma função que espera um parâmetro tarefaSelecionada e retorna um 
-void. Agora, na função Lista(), removeremos o objeto { } que havíamso tipado 
-anteriormente e o substituiremos por Props. Além disso, passaremos o 
-selecionaTarefa como parâmetro da função.
-
-Precisamos passar o selecionaTarefa para o Item.
-
-Tem outra coisa que podemos fazer para melhorar. Estamos passando o key desse 
-<Item/> como index, mas o nosso item já possui um id, excluindo a necessidade 
-desse index numérico. Sendo assim, o key passará a ser item.id.
-
-Acessaremos a pasta "src/components/Lista/Item" e o arquivo index.tsx dentro 
-dela. Na função Item(), receberemos, além de ITarefa, um Props contendo o 
-ITarefa e a funcionalidade que criamos.
-
-Assim como fizemos anteriormente, criaremos a interface Props com o 
-selecionaTarefa.
-
-Como já temos um ITarefa, a interface nos proporciona a possibilidade de 
-estender outra interface, utilizando, nesse caso, a instrução extends ITarefa.
-
-Isso significa que teremos todos os tipos do ITarefa(tarefa, tempo, selecionado 
-e assim por diante), agora incluindo a função selecionaTarefa, reaproveitando a 
-interface que criamos anteriormente. Agora passaremos a usar Props em nosso 
-Item(), e o VSCode deixará de apontar erros.
+- Usar spread operator de forma consciente para passar props para os componentes;
+  - Utilizamos o spread operator para poder passar todos os itens de um objeto 
+    como props para o componente, também pensamos como isso pode se tornar um 
+    problema.

@@ -1,179 +1,47 @@
-Agora que você já está craque em complementos, em props e tudo isso. Vamos 
-terminar a estrutura do nosso código. Faremos o cronômetro e o relógio.
+Transforme o arquivo src/components/Botao/style.scss em CSS Modules trocando o 
+nome do arquivo .scss para o nome do componente, instalando o plugin 
+typescript-plugin-css-modules como dependência de desenvolvimento e configurando
+o plugin dentro do arquivo tsconfig.json e importando a classe dentro do arquivo
+de forma correta dentro de src/components/Botao/index.tsx.
 
-Vou abrir o VS Code, entrar em "src > components" e criar aqui uma nova pasta 
-chamada "Cronometro", que vai ser o nosso último componente grande. Dentro dessa
-pasta criarei o arquivo index.tsx. Nesse arquivo já vou exportar uma function 
-chamada Cronometro. Vamos retornar o HTML, vai ter uma div com um <p> que terá 
-nosso título "Escolha um card e inicie o cronômetro".
+Opinião do instrutor
 
-export function Cronometro() {
-  return (
-      <div>
-         <p> Escolha um card e inicie o cronômetro </p>
-      </div>
-      
-Embaixo do <p> vai ter uma outra div na qual teremos o relógio, e embaixo dele 
-colocaremos o Botao. Ele já importou o botão, import Botao from '../Botao';. O 
-nome do botão será "Começar".
+Dentro do terminal:
 
-export function Cronometro() {
-  return (
-      <div>
-         <p> Escolha um card e inicie o cronômetro </p>
-      <div>
+npm install -D typescript-plugin-css-modules
 
-         </div>
-         <Botao>
-            Começar!
-         </Botao>
-     </div>
+Dentro de tsconfig.json:
+
+{
+  "compilerOptions": {
+     …
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+  }
+}
+
+Mudar o arquivo src/components/Botao/style.scss para 
+src/components/button/Botao.module.scss
+
+Dentro do arquivo src/components/Botao/index.tsx:
+
+import React from 'react';
+import style from './Botao.module.scss;
+
+class Botao extends React.Component {
+  render() {
+    return (
+      <button className={style.botao}>
+        Botão
+      </button>
     )
+  }
 }
 
-Está quase completo. Agora, vamos criar o nosso relógio. Vou criar uma nova 
-pasta dentro da pasta "Cronometro" chamada "Relogio". Eu já expliquei para vocês
-porque colocamos uma pasta dentro da outra. Só vamos usar Relogio no Cronometro,
-por isso colocaremos aqui. Se, no futuro, esse projeto ficar maior e o relógio 
-for utilizado em outro lugar, o ideal é refatorar esse relógio para ficar em 
-"components" pois ele será reutilizado. Mas nesse projeto aqui isso não vai 
-acontecer.
+export default Botao;
 
-Dentro da pasta "Relogio" vou criar um novo arquivo index.tsx. Dentro desse 
-arquivo, vou exportar a função Relogio() que será nosso componente e retornar um
-HTML, nele vou criar vários <span> e colocar os dígitos do relógio zerado.
-
-export function Relogio() {
- return (
-   <span>0</span>
-   <span>0</span>
-   <span>:</span>
-   <span>0</span>
-   <span>0</span>
-     )
-}
-
-Está indicando um erro no <span>, dizendo que "As expressões JSX devem ter um 
-elemento pai". O que significa isso? Como o JSX é baseado em XML, o XML 
-normalmente tem um elemento pai e se você coloca mais de um elemento, nesse caso
-tem vários spans no retorno do nosso componente, ele gera um erro, fala que 
-sempre precisa de um pai, uma div ou algo assim.
-
-Tem formas de resolver isso, eu vou mostrar duas formas nas quais não precisamos
-usar uma tag HTML. É só uma sintaxe que quando ele for renderizado para o DOM 
-não vai mostrar nada, é como se não tivesse nada. Que é exatamente o que 
-queremos.
-
-A primeira forma, vou recortar todos os spans com "Ctrl + X", vou criar um 
-<React.Fragment> e, dentro dele, colar os spans que eu recortei. Dessa forma, 
-meio que "burla" o XML e finge que tem um elemento pai. Mas isso nada mais é do 
-que uma forma que o React achou para não precisarmos colocar o elemento pai no 
-DOM real. Essa é a primeira forma para resolver esse problema.
-
-A segunda forma, na verdade, também é um fragment. Mas ao invés de escrevermos 
-<React.Fragment> basta deixar uma tag em branco (<>).
-
-export default function Relogio() {
- return (
-    <>
-      <span>0</span>
-      <span>0</span>
-      <span>:</span>
-      <span>0</span>
-      <span>0</span>
-   </>
-     )
-}
-
-Essas são as duas formas. Eu vou deixar a segunda forma, que eu acho mais limpa.
-Se você quiser deixar <React.Fragment>, a escolha é sua.
-
-Vou salvar. Voltando no index.tsx de Cronometro, vou importar o Relogio e 
-inseri-lo na div.
-
-export function Cronometro() {
-  return (
-      <div>
-         <p> Escolha um card e inicie o cronômetro </p>
-      <div>
-         <Relogio />
-         </div>
-         <Botao>
-            Começar!
-         </Botao>
-    </div>
-    }
-}
-
-Agora, vou dentro de "pages > app.tsx" e ogo abaixo da linha de código da 
-<Lista /> vou inserir o <Cronometro />. Lembrando que devemos dar export default
-no Cronometro também. E vou tirar as chaves do import de Cronometro.
-
-Vou salvar e voltar para nossa aplicação no navegador. Já está aparecendo o 
-texto "Escolha um card e inicie o cronômetro", os caracteres do relógio e o 
-botão "Começar!".
-
-Já estamos reaproveitando o CSS do botão, mas também devemos fazer o CSS do 
-cronômetro. É o que faremos agora.
-
-De volta no VS Code, dentro da pasta "Cronometro", vou criar um novo arquivo 
-chamado "Cronometro.module.scss". E dentro desse arquivo vou colar o código do 
-CSS do cronômetro que deixarei disponível na plataforma para vocês.
-
-No index.tsx de Cronometro vamos importar esse CSS, import style from 
-'./Cronometro.module.scss;'. E na div teremos que colocar os class names:
-
-export default function Cronometro() {
-  return (
-      <div className={style.cronometro}>
-         <p className={style.titulo}> Escolha um card e inicie o cronômetro </p>
-      <div className={style.relogioWrapper}>
-         <Relogio />
-         </div>
-         <Botao>
-            Começar!
-         </Botao>
-    </div>
-    }
-}
-
-Vamos salvar e ver no navegador. Ele já está mostrando corretamente. Agora vamos
-estilizar o relógio. Vamos criar um novo arquivo dentro da pasta "Relogio" 
-chamado Relogio.module.scss.
-
-Como já falamos sobre o CSS Modules, para não ficar repetitivo, já que não é o 
-foco do curso, só vamos copiar e colar o CSS no arquivo Relogio.module.scss. 
-Também vou deixar esse trecho de código disponível para vocês na plataforma da 
-Alura.
-
-No index de Relogio, vamos importar o style, import style from 
-'./Relogio.module.scss'. E dentro de cada <span> com o número 0 vou colocar esse
-className={style.relogioNumero} e no que tem os dois pontos vai ser 
-className={style.relogioDivisao}:
-
-export default function Relogio() {
- return (
-    <>
-      <span className={style.relogioNumero}>0</span>
-      <span className={style.relogioNumero}>0</span>
-      <span className={style.relogioDivisao}>:</span>
-      <span className={style.relogioNumero}>0</span>
-      <span className={style.relogioNumero}>0</span>
-    </>
-     )
-}
-
-Vamos salvar e voltar ao navegador. O nosso relógio já está estilizado. Já 
-fizemos todos os componentes, já temos uma ideia de props e podemos continuar. 
-Conseguimos também reaproveitar o botão e usar alguns princípios de boas 
-práticas.
-
-Mas se pararmos para pensar, o componente está bonito, reaproveitado, estamos 
-utilizando props, mas ele ainda não está dinâmico. Não conseguimos adicionar 
-nada do formulário para a lista, não conseguimos selecionar nada da lista, não 
-conseguimos começar o cronômetro.
-
-Ainda está estático, não tem nada funcionando. A partir da próxima aula 
-começaremos a deixar nossa aplicação mais dinâmica. Vamos adicionar coisas do 
-formulário para lista, selecionar itens da lista e iniciar o cronômetro. Te vejo
-no próximo vídeo.
+Com o CSS Modules, a classe que seria apenas botao, será 
+{nomeDoArquivoCSS}_{nomeDaClasseCSS}__{hashAleatoria}. É por isso que mudamos 
+nosso arquivo de style.scss para Botao.module.scss, pois isso faz ficar mais 
+evidente na hora da classe que essa classe vem do componente Botao, fazendo a 
+própria classe ser auto documentada, pois sabemos que é a classe botao vindo do 
+componente Botao.

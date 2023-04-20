@@ -1,202 +1,32 @@
-No vídeo anterior, aprendemos sobre os princípios do state e agora vamos começar
-a nos aprofundar nele para tornarmos nossa aplicação toda dinâmica.
+Troque o texto padrão do componenteBotão dentro de 
+src/components/Botao/index.tsx por um prop children que terá o texto a ser 
+exibido no componente.
 
-Antes de tudo, vamos entender como nossa aplicação funciona para sabermos por 
-onde vamos começar. Primeiro, adicionamos alguma tarefa e um determinado tempo 
-no formulário, clicamos em "Adicionar" e a tarefa vai para a lista. Depois, na 
-lista podemos selecionar a tarefa e o tempo vai aparecer no cronômetro. 
-Começamos a atividade e quando terminarmos, ela será marcada como concluída. 
-Esse é o fluxo da nossa aplicação. Como tudo começa pelo formulário é por ele 
-que vamos começar também.
+Opinião do instrutor
 
-No VS Code, vamos entrar em "src > components > Formulario > "index.tsx". No 
-vídeo passado aprendemos a colocar o state em um function component e agora 
-vamos aprender a utilizá-lo no class component. Ao contrário do function 
-components onde utilizamos Hooks, no class components já temos um state junto. 
-Por isso antigamente ele era chamado de stateFullComponent.
+Dentro de src/components/Botao/index.tsx:
 
-Para criarmos um state aqui dentro, devemos fazê-lo antes do render(). Vamos 
-escrever state= {, ele será sempre um objeto. Na verdade, podemos colocar outra 
-coisa, mas o ideal é deixar um objeto para assim vermos todo o state da sua 
-classe. Como temos dois inputs, de text e de time, vamos criar dois states. 
-Primeiro criamos tarefa, que será uma string vazia e depois o tempo, que será um
-string de valor default 00:00.
+import React from 'react';
+import style from './Botao.module.scss';
 
-state = { 
-    tarefa: -- ,
-    tempo: "00:00"
+class Botao extends React.Component {
+  render() {
+    return (
+      <button clasName={style.botao}>
+        {this.props.children}
+      </button>
+    )
+  }
 }
 
-Se voltarmos no Chorme, temos para preencher o campo do que desejamos estudar e 
-também o tempo. Porém, não estamos conseguindo pegar essa informação. Diferente 
-do JavaScript, em que geralmente pegamos via DOM, aqui no React armazenamos esse
-valor e controlamos ele em algum lugar. Podemos pegá-lo quando quisermos e, por 
-utilizar o state, sempre que mudarmos esse valor, o componente vai atualizar. 
-Para fazermos isso, deixaremos o componente com uma terminologia que chamamos de
-"controlado". Vamos colocar um state React dentro dele e sempre que essa 
-informação mudar, ela vai para dentro de um valor no state.
+export default Botao;
 
-Para começar, damos um F5 e vamos observar o Tempo. Ao clicarmos no relógio de 
-Tempo, conseguimos ver que ele está em uma valor aleatório, neste caso 
-"10:14:25". Voltando ao VS Code, em tempo vamos colocar um atributo que será o 
-valor atual do input chamado value. Dentro dele, colocamos o stateTime, que 
-colocamos acima. Como em props utilizamos this.props aqui vamos utilizar 
-this.state ponto tempo para acessá-lo.
+Dessa forma, podemos utilizar o componente Botao de forma bem parecida como 
+utilizamos uma tag nativa HTML:
 
-    Tempo
-</label>
-<input
-    type="time"
-    step="1"
-    name="tempo"
-    value={this.state.tempo}
-    id="tempo"
-    min="00:00:00"
-    max="01:30:00"
-    required
-/>
+<Botao>
+  Meu botão!
+</Botao>
 
-Damos um "Ctrl+S", voltamos ao navegador e agora se clicarmos no reloginho, 
-aparece "00:00:00". Mas se selecionarmos "4" segundos, por exemplo, ele não vai 
-fazer nada, ele não atualiza o nosso input porque estamos controlando o valor 
-dele. Agora, sempre que quisermos mudar esse valor, precisaremos dizer de forma 
-ativa que ele precisa ser mudado no state.
-
-Para isso, precisaremos de outra prop neste input chamado onChange. Abriremos 
-chaves {} e dentro delas criaremos uma função, com ela pegamos o evento do 
-onChange. Podemos deixar o nome evento, que é o parâmetro. Criaremos uma 
-arrow function e podemos fazer qualquer coisa com esse evento. Como queremos 
-colocar no state o valor do nosso input, vou colocar this.setState(). Porém, nós
-não colocamos esse setState em nenhuma lugar. Como ele é um class component ele 
-já tem tudo para nós, tanto o state quanto o setState. Lembram quando falei no 
-que function component colocamos setTarefa ou setTempo porque existia o 
-setState? É esse, ele já vem por default e por isso só existe um state e um 
-setState.
-
-Em seguida, vamos criar um objeto, dar um spread de this.state e colocamos o 
-tempo como se fosse evento como no JavaScript sempre que temos um evento podemos
-pegar o target dele que é a tag DOM em que aquele evento foi disparado, nesse 
-caso podemos pegar o valor desse DOM que é value então fica .evento.value.
-
-    Tempo
-</label>
-<input
-    type="time"
-    step="1"
-    name="tempo"
-    value={this.state.tempo}
-    onChange=(evento => this.setState({ ...this.state, tempo: evento.target.value}))
-    id="tempo"
-    min="00:00:00"
-    max="01:30:00"
-    required
-/>
-
-Voltamos no Chrome e vamos ver se agora ele muda, vou escolher o "3" para o 
-tempo. Apareceu para mim, então ele já está mudando. Agora, vamos voltar ao 
-código e fazer o mesmo com o input de tarefa. Adicionamos o value como 
-this.state.tarefa. Ele não vai atualizar, porque ainda não fizemos o onChange, 
-mas já está pegando o value. Vamos criar o onChange dentro desse input e será 
-mesmo processo, ele vai pegar o evento com a arrow function e vamos colocar 
-this.setState(). Como objeto, o spread de this.state e tarefa como 
-evento.target.value.
-
-    Adicionar um novo estudo
-</label>
-<input
-    type:"text"
-    name="tarefa"
-    id="tarefa"
-    value={this.state.tarefa}
-    onChange={evento => this.setState({ ...this.state, tarefa:evento.targe.value})}
-    placeHolder:"O que você quer estudar"
-    required
-/>
-
-Agora ele escreve, ou seja, estamos colocando dentro do state do class component
-esses dois inputs. Agora, quando clicamos em "Adicionar" vamos precisar 
-atualizar, vamos pegar esse estado e mandar para algum lugar. Como temos um 
-formulário, precisamos colocar com um submit.
-
-No form, vamos criar um classe chamada onSubmit. E criaremos uma função chamada 
-adicionarTarefa. Para isso, no onSubmit colocaremos this.adicionarTarefa.
-
-<form className={style.novaTarefa} onSubmit{this.adicionarTarefa}>
-
-Em seguida criamos adicionarTarefa. No class component não precisamos escrever 
-function e o nome da função, só escrever adicionarTarefa e abrir parênteses e 
-chaves.
-
-adicionarTarefa() {
-
-}
-
-Essa é a forma de criar uma função dentro de um class component e acessamos por 
-this. mais o nome da função. Aqui, vamos dar um console.log() pegando o state e 
-this.state para vermos o estado atual quando dermos o onSubmit.
-
-adicionarTarefa() {
-console.log('state: ', this.state);
-}
-
-Voltando para o Chrome, vou preencher com "react" porque já estava sugerido e 
-selecionar quatro segundos. Clicamos para inspecionar e abrir o console e em 
-seguida "Adicionar".
-
-[HMR] Wating for update from log.js:24 WDS...
-
-Quando clicamos em "Adicionar" no formulário, lá no JavaScript também acontece 
-isso, o formulário automaticamente atualiza a página, ele dá refresh nela. Se 
-formos ver, até na URL isso aparece. Esta era uma forma antiga de fazer isso e 
-não queremos que seja assim. Portanto, voltando para o adicionarTarefa() vamos 
-pegar o evento do onSubmit e precisamos do evento.preventDefault() antes do 
-console.log().
-
-adicionarTarefa(evento) {
-evento.preventDefault();
-console.log('state: ', this.state);
-}
-
-O preventDefault() também vem do JavaScript e ele previne que esse padrão de 
-refresh na página aconteça automaticamente. Mas ainda existe um erro que é o 
-evento sendo any,para resolver isso vamos tipá-lo. Colocamos o : depois de 
-evento e o tipo que devemos selecionar desse caso é o React.FormEvent.
-
-adicionarTarefa(evento: React.FormEvent) {
-evento.preventDefault();
-console.log('state: ', this.state);
-}
-
-Se vocês quiserem ser ainda mais específicos, podem colocar <> e dizer que ele 
-vem diretamente de uma HTMLFormElement, que é um evento de formulário vindo de 
-uma tag formaulário do HTML padrão.
-
-adicionarTarefa(evento: React.FormEvent<>HTMLFormElement) {
-evento.preventDefault();
-console.log('state: ', this.state);
-}
-
-Se só deixarmos o evento., ele já sugere todas as propriedades desse evento e o 
-primeiro que aparece é justamente o preventDefault. Essa é uma vantagem 
-TypeScript, nós conseguimos enxergar tudo que vem com esse evento, não 
-precisamos decorar nada.
-
-Vamos agora executar. Voltamos ao browser, colocamos novamente o "react" para o 
-estudo e "3" segundos no tempo e clicamos em "Adicionar". Ele deu um erro que 
-está dizendo que não consegue ler o state pois está indefinido. Lembrem que 
-colocamos this.state, então, se ele não está conseguindo ler o state por está 
-indefinido, o problema é o this.
-
-Nós não conseguimos ler o this porque diferente de um function component, o 
-escopo da função não consegue ler um escopo de fora, do class component. Esse é 
-um dos motivos de terem migrado para function component. Para solucionar, depois
-de executar o adicionarTarefa() precisamos dizer como vamos atrelar o escopo 
-dessa função. O nome dessa função é bind(). Nelam, associamos a função a outro 
-escopo e o escopo em questão será o this.
-
-<form className={style.novaTarefa} onSubmit{this.adicionarTarefa.bind(this)}> 
-
-Voltando ao Chrome e executando como anteriormente, aparece a tarefa React com o
-tempo correto para nós. Estamos conseguindo fazer o nosso formulário ser 
-controlado! No próximo vídeo vamos aprender a colocar essa tarefa dentro da 
-lista. Te vejo lá!
+O React disponibiliza essa prop especial children por padrão para que possamos 
+utilizar o componente dessa forma!

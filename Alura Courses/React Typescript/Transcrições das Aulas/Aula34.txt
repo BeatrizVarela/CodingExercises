@@ -1,0 +1,91 @@
+Crie uma função selecionaTarefa dentro de src/pages/App.tsx, que aceite um 
+parâmetro tarefaSelecionada do tipo ITarefa e passe a função via props para o 
+componente Lista, e de Lista para Item, tipando os props dentro de uma interface
+Props, dentro de cada arquivo correspondente.
+
+Opinião do instrutor
+
+Dentro de src/pages/App.tsx
+
+…
+function App(){
+  …
+
+  function selecionaTarefa() {
+
+  }
+  return (
+    …
+    <Lista
+      …
+      selecionaTarefa={selecionaTarefa}
+    />
+  )
+}
+
+Dentro de src/components/Lista/index.tsx
+
+…
+interface Props {
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+function Lista() {
+  return (
+    …
+    <Item
+      …
+      selecionaTarefa={selecionaTarefa}
+    />
+  )
+}
+
+Dentro de src/components/Lista/Item/index.tsx
+
+interface Props extends ITarefa {
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+export default function Item({ …, selecionaTarefa}: Props) {
+  …
+}
+
+Dessa vez podemos ver 2 coisas interessantes, a primeira é como tipar uma função
+e a segunda é como herdar tipos de interfaces.
+
+Como tipar uma função
+Coloque uma arrow function dentro dos parênteses, temos que dizer quais 
+parâmetros essa função pode receber e após o sinal de => temos que dizer que 
+tipo ele retorna, ou se não retornar nada é do tipo void, ficando assim:
+
+selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+
+Podemos ler essa linha de código como "selecionaTarefa é uma função que aceita o
+parâmetro tarefaSelecionada do tipo ITarefa e não retorna".
+
+Uma curiosidade sobre o nome do parâmetro é que o nome na tipagem não precisa 
+ser o mesmo nome da função original, posso chamar do que eu quiser aqui, mas 
+para ser legível mantivemos o mesmo nome.
+
+Herdar tipos de interfaces
+Utilizando o extends podemos herdar todos os tipos de uma interface em outra 
+interface, ou seja:
+
+interface ITarefa {
+  tarefa: string,
+  tempo: string
+}
+
+interface Props extends ITarefa {
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+Seria o mesmo de:
+
+interface Props {
+  tarefa: string,
+  tempo: string,
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+Muito maneiro né?

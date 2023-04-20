@@ -1,61 +1,112 @@
-Legal ver como o React lida com estados né?
+O nosso "Alura Studies" está ficando bem legal. Já temos o formulário e a lista.
+Mas tem duas coisas que estão me incomodando bastante. Veja se concorda comigo.
+A primeira delas, é que o botão está muito genérico, está escrito só "Botão"
+nele. Não conseguimos deixar a aplicação inteira com o texto "Botão" escrito
+nele.
 
-Agora que você já tem uma ideia sobre como o React utiliza os estados para 
-atualizar seus componentes, eu vou ter que te contar um segredo que vai explodir
-a sua mente… Está pronto??
+Nós queremos reaproveitar o CSS e a estrutura HTML dele, mas queremos algumas
+coisas customizadas. Por exemplo, no formulário nós queremos que tenha
+"Adicionar", no cronômetro tenha "Começar". Tem algumas coisas que mudarão. Ao
+clicarmos no botão queremos que aconteçam coisas diferentes, tanto no formulário
+quanto na lista.
 
-O REACT NÃO É REATIVO!!
+E vamos fazer isso. Vou abrir o VS Code. Dentro do VS Code, vou entrar em
+"src > components > Formulario > index.tsx", e no código desse index.tsx
+conseguimos ver que, por exemplo, o input tem algumas formas diferentes de
+demonstrar que ele quer algo diferente. Por exemplo, tem o
+type="time", step="1", name:"tempo". No HTML chamamos isso de "atributos".
 
-Ué Luiz, mas o nome da biblioteca é React, tu tá falando o tempo todo sobre 
-reatividade e a biblioteca não é reativa?? tu tá me enganando!!
+No React tem uma forma muito parecida para conseguirmos compartilhar e
+customizar os nosso componentes dessa forma, que é chamada de "props", ou
+propriedades.
 
-Na verdade é isso mesmo, no próprio site do React se apresenta como declarativo 
-e não reativo.
+O que são essas propriedades? Nada mais são do que uma forma externa, uma forma
+acima do componente, de mandarmos alguma informação para dentro do componente,
+para que ele realize alguma coisa. Vamos fazer isso agora.
 
-alt text: Página do site oficial do React com textos divididos em três colunas 
-com títulos declarativo, baseado em componentes e aprenda uma vez, use em 
-qualquer lugar
+Eu vou identar o Botao, e dentro da div desse botão eu vou fazer algo bem
+parecido com o que vimos acima. Vamos criar uma prop, podemos colocar o nome que
+quisermos eu vou colocar texto="Adicionar".
 
-Antes de tudo, isso vai afetar em algo o desenvolvimento? A resposta é Não! Por 
-isso não abordamos isso durante o vídeo, a ideia do vídeo é ser algo prático e 
-aqui é o lugar perfeito para falarmos sobre isso. Caso você queira entender um 
-pouco mais a fundo como/porque o React utiliza o paradigma declarativo, vem 
-comigo que é sucesso!
+Salvei, mas o VS Code está apontando algum erro nessa linha. Se dermos uma
+olhada no erro clicando em texto, está escrito "O tipo '(texto: string;)' não
+pode ser atribuído ao tipo..." O que isso significa?
 
-Você já teve contato com algum editor de planilhas, por exemplo o Excel? Quando 
-criamos uma planilha e fazemos uma soma entre 2 valores, sempre que um desses 
-valores é atualizado o outro é atualizado de forma reativa.
+Sempre que você ler "tipo", você já pode atribuir que não é React, é TypeScript.
+Se estamos trabalhando com TypeScript e está falando de "tipo", provavelmente é
+TypeScript. O TypeScript está dizendo: "Você quer usar o prop texto? Você
+consegue, mas você não está dizendo em nenhum lugar que esse botão espera uma
+prop chamada texto que seja do tipo string". E é isso que precisaremos mudar.
 
-Agora você lembra em como a gente tentou mudar as tarefas no vídeo anterior e 
-percebemos que, sem o uso do state, ele não atualiza a interface? Então, isso é 
-um dos motivos do React não ser reativo, ele precisa de forma manual criar um 
-estado que será "observado" por quem usa esse estado para que ele atualize a 
-interface, e para isso você tem que declarar/se inscrever neste estado para que 
-haja alguma mudança.
+Vou voltar no arquivo "components > Botao > index.tsx", e aqui temos que dizer
+que esperamos esse prop texto. Depois do React.Component vamos abrir e fechar
+uma tag, com os sinais de menor e maior (<>) e dentro dessa tag diremos qual é o
+tipo das props que esperamos.
 
-Poxa, mas por que ele não é reativo?
+A prop sempre é um objeto. Por exemplo, se quisermos colocar lá no botão um
+onClick, por exemplo, e colocar como se fosse uma função, ela sempre vai lá para
+o botão como se fosse um objeto, que chamamos de props, e dentro desse objeto
+vai ter o texto e vai texto o onClick. Vou tirar o onClick, pois não
+utilizaremos agora.
 
-Para início de conversa, Javascript não é uma linguagem reativa, logo, seus 
-pacotes também não deveriam ser, a não ser que tenhamos uma grande mudança. 
-Existe um pacote chamado RxJS que é uma referência em reatividade com 
-Javascript, mas a equipe do React não demonstrou até agora nenhum interesse de 
-deixar o pacote reativo, e eu posso explicar o porquê.
+Vou voltar no "components > Botao > index.tsx". E como prop é sempre um objeto,
+eu vou colocar uma chaves naquela tag que escrevi após React.Component, já parou
+de dar erro, e dentro desse objeto vamos colocar o nome da prop que colocamos
+lá, texto e dizer qual é o tipo dela, string.
 
-React aproveita muito bem o paradigma declarativo e ele cai como uma luva em 
-como ele gostaria que houvesse renderizações nos componentes. O React "te pede" 
-para colocar alguma variável que necessita de uma mudança visual dentro de um 
-estado, pois com isso, ele conseguirá ter um controle maior em quando o 
-componente será atualizado, e isso traz um ganho de performance imenso!
+class Botao extends React.Component<{texto: string}> {
+\\código omitido
+}
 
-Imagina se a nossa aplicação reagisse a literalmente tudo que muda no código, 
-seria MUITA renderização né? e isso com a atualização do DOM custa muito caro.
+Já parou de dar erro lá no formulário e aqui também. Mas ainda não estamos
+utilizando a prop. Como conseguir utilizar a prop aqui dentro? Dentro da função
+render(), que é a função obrigatória do class component, precisamos "pegar" essa
+prop. Para isso, eu vou apagar a palavra "Botão", vou abrir chaves e escrever
+{this.props}. É dessa forma que conseguimos pegar o prop.
 
-Essa necessidade de se criar um estado faz com que o React tenha liberdade de 
-criar muitas coisas por debaixo dos panos como batching e Suspense mas isso 
-vamos deixar para outro curso ;)
+Só que aqui estamos pegando o objeto prop, não é isso que queremos pegar e sim o
+texto que está dentro de props, então vou colocar {this.props.texto}. Vou salvar
+e voltar para o navegador.
 
-Caso queira saber mais sobre isso, veja:
+Já está aparecendo o texto"Adicionar" escrito no botão. Então já conseguimos
+utilizar essa prop texto. Mas você concorda comigo que não é assim que
+normalmente utilizamos em um botão normal? Geralmente nós abrimos o botão,
+fechamos o botão e escrevemos "Adicionar" dentro dele. Tem como fazer isso no
+React também.
 
-Caso você entenda inglês, tem essa palestra no ReactNYC sobre isso;
-Existe também o Manifesto Reativo, que te permite ver o que pode ser considerado
-Reativo.
+Voltando no VS Code, veja que se eu apagar o "texto" e deixar só {this.props.}
+quando o meu cursor fica após o ponto final e uso o atalho de autocompletar,
+"Ctrl + Espaço", ele já diz que espera texto e também um prop chamado children,
+que não estipulamos. Como colocamos class Botao extends React.Component, esse
+React.Component já espera que tenha esse tipo children.
+
+Esse tipo children nada mais é do que a permissão para conseguirmos utilizar
+alguma coisa dentro do componente, que é o que nós queremos. Por que ele tem
+esse nome? Lembra lá no DOM que tem os nós e sempre tem o parent (pai) e sempre
+tem o children ou o child, que é o filho daquele nó. É sempre essa relação de
+pai e filho. Por isso o nome dele é "children".
+
+Podemos colocar, por exemplo, {this.props.children}, apagamos esse trecho do
+texto que não utilizaremos mais: <{texto: string}>. No
+"src > components > Formulario > index.tsx", em vez de colocar
+texto="Adicionar", vamos abrir e fechar o <Botao> e dentro vou colocar só
+Adicionar.
+
+<Botao>
+    Adicionar
+</Botao>
+
+Não preciso abrir chaves aqui, porque não é uma variável, só precisamos colocar
+o texto mesmo. Vou salvar, vamos voltar no navegador. Se aparecer esse erro para
+você, é só cancelar o npm start e dar npm start de novo que vai funcionar
+corretamente.
+
+Estamos conseguindo utilizar o "Adicionar" como se fosse o children. Para provar
+para vocês, eu vou voltar no VS Code e em vez de "Adicionar" vou escrever
+"Banana". Vamos voltar para o navegador, e apareceu "Banana" escrito no botão.
+Então, estamos conseguindo utilizar como children, não estamos mais utilizando
+como uma prop convencional.
+
+Já conseguimos entender como funciona a prop como um atributo e a prop como
+children. No próximo vídeo, aprenderemos a reutilizar a lista. Tirar o item da
+lista e conseguir pegar mais uma propriedade legal.

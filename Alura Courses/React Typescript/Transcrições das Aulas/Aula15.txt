@@ -1,112 +1,243 @@
-O nosso "Alura Studies" está ficando bem legal. Já temos o formulário e a lista.
-Mas tem duas coisas que estão me incomodando bastante. Veja se concorda comigo.
-A primeira delas, é que o botão está muito genérico, está escrito só "Botão"
-nele. Não conseguimos deixar a aplicação inteira com o texto "Botão" escrito
-nele.
+Nossa estrutura já está bem robusta e bem parecida do que será ao final, e só
+falta o cronômetro. Porém, a página ainda está com um aspecto feio, então iremos
+estilizá-la neste passo.
 
-Nós queremos reaproveitar o CSS e a estrutura HTML dele, mas queremos algumas
-coisas customizadas. Por exemplo, no formulário nós queremos que tenha
-"Adicionar", no cronômetro tenha "Começar". Tem algumas coisas que mudarão. Ao
-clicarmos no botão queremos que aconteçam coisas diferentes, tanto no formulário
-quanto na lista.
+Primeiramente, instalaremos o Sass, que é o pré-processador CSS que iremos
+utilizar no curso. No próprio site do NPM acessível neste link, encontraremos a
+parte "Usage", em que diz que podemos instalar com npm install --save-dev sass
+apenas.
 
-E vamos fazer isso. Vou abrir o VS Code. Dentro do VS Code, vou entrar em
-"src > components > Formulario > index.tsx", e no código desse index.tsx
-conseguimos ver que, por exemplo, o input tem algumas formas diferentes de
-demonstrar que ele quer algo diferente. Por exemplo, tem o
-type="time", step="1", name:"tempo". No HTML chamamos isso de "atributos".
+Portanto, copiaremos este comando e voltaremos ao VSCode, pois será desta forma
+que instalaremos no terminal, o qual abriremos apertando as teclas de "Ctrl"
+mais aspas simples, ou acessando "Ver > Terminal" na barra superior de opções.
 
-No React tem uma forma muito parecida para conseguirmos compartilhar e
-customizar os nosso componentes dessa forma, que é chamada de "props", ou
-propriedades.
+Colaremos o comando npm install --save-dev sass e executaremos com a tecla
+"Enter" para instalarmos.
 
-O que são essas propriedades? Nada mais são do que uma forma externa, uma forma
-acima do componente, de mandarmos alguma informação para dentro do componente,
-para que ele realize alguma coisa. Vamos fazer isso agora.
+Feita a instalação, aparecerá uma "devDependencies" no package.json, que é uma
+dependência de desenvolvimento chamada "sass". Portanto, o pacote já está no
+nosso projeto.
 
-Eu vou identar o Botao, e dentro da div desse botão eu vou fazer algo bem
-parecido com o que vimos acima. Vamos criar uma prop, podemos colocar o nome que
-quisermos eu vou colocar texto="Adicionar".
+//código anterior omitido
 
-Salvei, mas o VS Code está apontando algum erro nessa linha. Se dermos uma
-olhada no erro clicando em texto, está escrito "O tipo '(texto: string;)' não
-pode ser atribuído ao tipo..." O que isso significa?
+    "devDependencies": {
+        "sass": "^1.41.1"
+    }
+}COPIAR CÓDIGO
+Também o encontraremos no package-lock.json, que ficará em evidência na lista
+lateral de arquivos. Mas não precisaremos nos atentar tanto a essa questão
+agora.
 
-Sempre que você ler "tipo", você já pode atribuir que não é React, é TypeScript.
-Se estamos trabalhando com TypeScript e está falando de "tipo", provavelmente é
-TypeScript. O TypeScript está dizendo: "Você quer usar o prop texto? Você
-consegue, mas você não está dizendo em nenhum lugar que esse botão espera uma
-prop chamada texto que seja do tipo string". E é isso que precisaremos mudar.
+Feito isso, apertaremos "Ctrl + ' " novamente para fecharmos o terminal, pois só
+queríamos instalar o sass mesmo. Também fecharemos todas as abas dos arquivos
+abertos no VSCode.
 
-Vou voltar no arquivo "components > Botao > index.tsx", e aqui temos que dizer
-que esperamos esse prop texto. Depois do React.Component vamos abrir e fechar
-uma tag, com os sinais de menor e maior (<>) e dentro dessa tag diremos qual é o
-tipo das props que esperamos.
+O primeiro elemento que iremos estilizar será o index.css. Iremos utilizar CSS
+mesmo, pois como será um arquivo global, não nos importaremos muito em usar
+sass, pois podemos estilizar o CSS direto.
 
-A prop sempre é um objeto. Por exemplo, se quisermos colocar lá no botão um
-onClick, por exemplo, e colocar como se fosse uma função, ela sempre vai lá para
-o botão como se fosse um objeto, que chamamos de props, e dentro desse objeto
-vai ter o texto e vai texto o onClick. Vou tirar o onClick, pois não
-utilizaremos agora.
+Copiaremos o arquivo de reset e colaremos no arquivo index.css, e depois
+apertaremos as teclas "Ctrl + S" para identar corretamente.
 
-Vou voltar no "components > Botao > index.tsx". E como prop é sempre um objeto,
-eu vou colocar uma chaves naquela tag que escrevi após React.Component, já parou
-de dar erro, e dentro desse objeto vamos colocar o nome da prop que colocamos
-lá, texto e dizer qual é o tipo dela, string.
+Em seguida, voltaremos à nossa página no navegador. Notaremos que o fundo está
+cinza e o botão está sem bordas, então já temos algumas características
+interessantes.
 
-class Botao extends React.Component<{texto: string}> {
-\\código omitido
+De volta ao VSCode, o segundo elemento que estilizaremos será o App.tsx. Dentro
+da pasta "src" acessaremos o diretório "components".
+
+Colocaremos o App como se fosse uma página, pois se tivermos múltiplas páginas,
+temos que criar uma pastas "pages" como é feito geralmente, mas como teremos
+apenas uma por enquanto, a criação será só por sintaxe e legibilidade.
+
+Depois, moveremos o arquivo App.tsx para dentro do novo diretório "pages". Em
+seguida, acessaremos index.tsx de "components" para importarmos App de
+'./pages/App' ao invés de apenas './App'.
+
+Assim já estará funcionando, mas o arquivo aparecerá com um alerta. Abrindo o
+App.tsx, mudaremos os imports de Formulario para '../components/Formulario', e
+de Lista para '../components/Formulario', apenas adicionando um ponto final à
+frente do trecho para indicar a pasta correta da importação.
+
+Feito isso, o alerta de erro desaparece. Voltaremos ao navegador para vermos se
+está funcionando.
+
+De volta ao VSCode, acessaremos a pasta "pages" e dentro criaremos um novo
+documento chamado style.scss, e esta extensão .scss significa que se trata de um
+arquivo sass.
+
+Na primeira linha, iremos pegar o estilo sass que iremos utilizar, a qual terá
+uma classe .AppStyle contendo um display: grid dentro.
+
+Voltaremos ao App.tsx e importaremos a string './style.scss'. Já no
+<div className="App"> mais adiante, escreveremos "AppStyle" ao invés de apenas
+"App".
+
+Apertaremos "Ctrl + S" e abriremos a página no navegador para verificarmos se
+está funcionando corretamente.
+
+import React from 'react';
+import Formulario from '../components/Formulario';
+import Lista from '../components/Lista';
+import './style.scss';
+
+function App() {
+    return (
+        <div className="AppStyle">
+            <Formulario />
+            <Lista />
+        </div>
+    );
 }
 
-Já parou de dar erro lá no formulário e aqui também. Mas ainda não estamos
-utilizando a prop. Como conseguir utilizar a prop aqui dentro? Dentro da função
-render(), que é a função obrigatória do class component, precisamos "pegar" essa
-prop. Para isso, eu vou apagar a palavra "Botão", vou abrir chaves e escrever
-{this.props}. É dessa forma que conseguimos pegar o prop.
+export default App;
 
-Só que aqui estamos pegando o objeto prop, não é isso que queremos pegar e sim o
-texto que está dentro de props, então vou colocar {this.props.texto}. Vou salvar
-e voltar para o navegador.
+No navegador, notaremos que há um background mais escuro com bordas arredondadas
+em um fundo cinza, então aparentemente tudo está funcionando.
 
-Já está aparecendo o texto"Adicionar" escrito no botão. Então já conseguimos
-utilizar essa prop texto. Mas você concorda comigo que não é assim que
-normalmente utilizamos em um botão normal? Geralmente nós abrimos o botão,
-fechamos o botão e escrevemos "Adicionar" dentro dele. Tem como fazer isso no
-React também.
+Porém, já notamos as diferenças, e ao invés de usarmos <class> que é a maneira
+que usamos no HTML, estamos usando className.
 
-Voltando no VS Code, veja que se eu apagar o "texto" e deixar só {this.props.}
-quando o meu cursor fica após o ponto final e uso o atalho de autocompletar,
-"Ctrl + Espaço", ele já diz que espera texto e também um prop chamado children,
-que não estipulamos. Como colocamos class Botao extends React.Component, esse
-React.Component já espera que tenha esse tipo children.
+Temos esta diferença no React porque, como lembramos, existe o class que
+utilizamos para criar tanto o Botao quanto o Formulario.
 
-Esse tipo children nada mais é do que a permissão para conseguirmos utilizar
-alguma coisa dentro do componente, que é o que nós queremos. Por que ele tem
-esse nome? Lembra lá no DOM que tem os nós e sempre tem o parent (pai) e sempre
-tem o children ou o child, que é o filho daquele nó. É sempre essa relação de
-pai e filho. Por isso o nome dele é "children".
+Então, como a class já é uma palavra reservada do JavaScript para criar uma
+classe, preferiram estabelecer o className ao invés do class para não termos
+nenhum problema de sobreposição dos dois termos.
 
-Podemos colocar, por exemplo, {this.props.children}, apagamos esse trecho do
-texto que não utilizaremos mais: <{texto: string}>. No
-"src > components > Formulario > index.tsx", em vez de colocar
-texto="Adicionar", vamos abrir e fechar o <Botao> e dentro vou colocar só
-Adicionar.
+Se quisermos colocar uma classe em uma tag HTML, temos que criar com className e
+não com class, que por sua vez até funciona, mas gerará alertas do sistema.
 
-<Botao>
-    Adicionar
-</Botao>
+Se substituirmos className por apenas class no arquivo App.tsx, e formos no
+"Inspect" do navegador da nossa página, poderemos acessar a aba "Console" e ver
+o warning perguntando se queríamos dizer className ao invés da propriedade DOM
+inválida class.
 
-Não preciso abrir chaves aqui, porque não é uma variável, só precisamos colocar
-o texto mesmo. Vou salvar, vamos voltar no navegador. Se aparecer esse erro para
-você, é só cancelar o npm start e dar npm start de novo que vai funcionar
-corretamente.
+Ou seja, o sistema deixará funcionar, mas nos diz que não é correto e indica o
+que fazer. Como já sabemos disso, voltaremos ao VSCode para mantermos o
+className.
 
-Estamos conseguindo utilizar o "Adicionar" como se fosse o children. Para provar
-para vocês, eu vou voltar no VS Code e em vez de "Adicionar" vou escrever
-"Banana". Vamos voltar para o navegador, e apareceu "Banana" escrito no botão.
-Então, estamos conseguindo utilizar como children, não estamos mais utilizando
-como uma prop convencional.
+Portanto, já estilizamos o App(), e iremos à pasta "Formulario" dentro de
+"components" para criarmos um novo arquivo style.scss e colarmos o código com
+.novaTarefa contendo .inputContainer e etc.
 
-Já conseguimos entender como funciona a prop como um atributo e a prop como
-children. No próximo vídeo, aprenderemos a reutilizar a lista. Tirar o item da
-lista e conseguir pegar mais uma propriedade legal.
+Depois, abriremos o index.tsx da mesma pasta "Formulario" e faremos a importação
+da string './style.scss'. Dentro do <form> de Formulario, colocaremos uma nova
+className chamada "novaTarefa".
+
+Em cada <div> deste arquivo, colocaremos um className igual a "inputContainer"
+também.
+
+Apertaremos "Ctrl + S" e voltaremos ao navegador para vermos a diferença. Porém
+o botão ainda está inadequado.
+
+Então iremos ao index.tsx da pasta "Botao" e retiraremos o inline style que
+colocamos em <button>. Por fim, importaremos o './style.scss' e finalizaremos
+com as teclas "Ctrl + S".
+
+import React from 'react';
+import './style.scss';
+
+class Botao extends React.Component {
+    render() {
+        return (
+            <button>
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Feito isso, voltaremos ao navegador e veremos o botão estilizado da maneira
+correta.
+
+Porém, o estilo do button está dentro de "Formulario". Então criaremos um novo
+arquivo style.scss dentro de "Botao" que receberá o estilo inteiro de button
+presente no style.scss de "Formulario".
+
+Em seguida, retiraremos os styles de .inputContainer que não pertencem ao botão,
+e colocaremos o button que estava abaixo dentro de
+@media screen and (min-width: 1280px).
+
+Depois, retiraremos o estilo de button que está no final do arquivo e antes do
+@media screen do style.scss de "Formulario" para deixarmos este style somente no
+botão.
+
+Já de volta ao arquivo de estilo do "Botao", alteraremos os dois button para
+chamarmos a classe .botao em ambos.
+
+Com isso, retornaremos à classe Botao e adicionaremos className igual a "botao"
+dentro da tag <button>.
+
+import React from 'react';
+import './style.scss';
+
+class Botao extends React.Component {
+    render() {
+        return (
+            <button className="botao">
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Feita as alterações corretas, voltaremos ao navegador para ver se tudo está
+funcionando como o esperado.
+
+Então já temos o estilo do nosso formulário e agora iremos estilizar a nossa
+lista.
+
+Para facilitar, fecharemos todas as abas de arquivo abertas no VSCode. Abrindo o
+diretório "Lista", criaremos um novo arquivo style.scss e seguiremos o mesmo
+procedimento que fizemos até agora.
+
+Pegaremos o código CSS utilizado para a lista e colaremos no arquivo. Depois
+abriremos o index.tsx de "Lista" e importaremos o './style.scss'.
+
+Em seguida, iremos até a tag <aside> e adicionaremos o className igual a
+"listaTarefas".
+
+De volta à página no navegador, aparentemente tudo está funcionando como o
+esperado.
+
+Agora criaremos um estilo para o .item, e o colocaremos no final do arquivo
+style.scss da lista. Já no index.tsx do mesmo componente, colocaremos uma nova
+classe chamada "item" na tag <li> do <aside> que acabamos de nomear.
+
+Apertando "Ctrl + S", voltaremos ao navegador e receberemos um alerta de falha
+na compilação, indicando que não foi possível resolver o clack-mark.svg, pois
+realmente ainda não temos.
+
+Então dentro de "src", criaremos uma nova pasta chamada "assets", a qual
+normalmente é usada quando queremos ter um arquivo estático, que são em geral
+imagens, ícones e outros elementos do gênero.
+
+Dentro do novo diretório, criaremos uma nova pasta chamada "img", e dentro desta
+colocaremos o check-mark.svg disponibilizado.
+
+Por fim, iremos ao .concluido dentro de style.scss da lista para alterarmos o
+conteúdo dos parênteses de url() do atributo background-image: para
+'../../assets/img/check-mark.svg'.
+
+Estando tudo correto, voltaremos ao navegador para vermos que o nosso item está
+aparecendo como clicável. Porém, ainda não aparecerá o check mark, pois se
+clicarmos ainda não fará nada, afinal não temos nenhuma função de onClick.
+
+Mas pelo menos a estilização já está mais agradável visualmente.
+
+A seguir, mostraremos o problema de, quando clicamos em "Inspecionar" no
+navegador, veremos na aba "Elements" a forma como colocamos nossos estilos, como
+em form class="novaTarefa" e <div class="inputContainer"> por exemplo.
+
+Porém, só está com o nome "novaTarefa" que é muito genérico. Então, caso
+tivermos um projeto gigante, e em outro lugar tivermos também uma nova
+novaTarefa com outra classe, o programa pode sobrepor um ao outro.
+
+Além disso, utilizaremos um pacote que resolverá este problema para nós,
+conhecido como CSS Modules. Na próxima aula, mostraremos como instalá-lo e
+configurá-lo.

@@ -1,72 +1,25 @@
-Antes de criarmos a funcionalidade de selecionar um item, vamos resolver algo 
-que tem me incomodado: quando adicionamos a tarefa “react” com o tempo 
-selecionamos o formulário não é resetado.
+Lembra que os componentes React são criados utilizando JSX não HTML? Então, 
+usando o mesmo processo, o React não cria um DOM, e sim um VDOM (Virtual DOM).
 
-Para resolver isso, vamo entrar no VS Code, em 
-"src > components > Formulario > index.tsx" e no adicionarTarefa() entre a 
-linha 16 e 17, vamos criar setState() que será responsavel por resetar o 
-formulário.
+Não entraremos em detalhes neste curso sobre Virtual DOM, porém saiba que o 
+React cria um DOM virtual em memória e só atualiza o DOM real quando algo dentro
+desse Virtual DOM realmente é atualizado.
 
-Vamos colocar this.setState() e dentro dele tarefa vai ser uma string vazia e 
-tempo será 00:00. Dessa forma, sempre resetamos o state depois que adicionarmos 
-uma tarefa.
+Levando isso em consideração, como o React saberia qual seria a cópia no Virtual
+DOM do item 45 em um array de 50 itens, por exemplo? Ou pior, se o item 47 for 
+removido, como ele vai saber que o item 48, 49 e 50 não foram atualizados? E os 
+outros?
 
-Agora conseguimos resetar o formulário! A seguir, precisamos criar duas 
-variáveis novas dentro da nossa tarefa, ambas serão booleanas.
+Para isso o React utiliza a propriedade key, que nada mais é que uma chave(AHÁ!)
+para linkar o item no Virtual DOM no DOM real, por isso não vemos a prop sendo 
+passada para o componente Item, pois essa prop é algo interno no React que não 
+tem utilidade para nós.
 
-Dentro de this.props.setTarefas(), na linha 16, vamos primeiro identar ele 
-colocando o array para baixo e colocando os objetos identados dentro dele para 
-melhorar a visualização.
+Por isso também não é recomendado que se utilize o index do array como key, pois
+caso o array mude, a possibilidade de vários itens desse array serem atualizados
+sem necessidade é imensa!
 
-Ele está dando um spread de tarefasAntigas, criando um novo objeto que tem 
-this.state dentro dele. Aqui, colocaremos selecionado e completadocomo false.
-
-Para definirmos qual terefa estrá selecionada, precisamos de ID que possa 
-identificá-la. Por isso, criaremos um ID aleatório com o pacote externo UUID. 
-Para abrir o terminal podemos usar o atalho “Ctrl+‘ “ ou ir na barra superior 
-selecionar "Ver > Terminal". Agora no Terminal, digitamos npm i uuid para 
-instalar a extensão. Não tem boa prática para isso, vocês podem chamar a função 
-da maneira que preferir, escolhi essa porque é igual ao que aparece na 
-documentação deles.
-
-Entre a linha 4 e 5 vamos dar um espaço e importá-lo.
-
-Vamos importar dentro dele um variável chamada v4, que é uma função que 
-nomearemos uuidv4.
-
-Aqui ele está dando um erro porque normalmente no TypeScript quando importamos 
-um pacote externo, ele pede para nós importarmos também seu tipo. Ele mesmo diz 
-aqui “Tente npm 1 --save-dev @types/uuid”, assim ele salva como um dependência 
-de desenvolvimento, sem ir para a produção, e ele vai baixar um pacote chamado 
-types/uuid, que é apenas um arquivo de tipos. Depois de baixar essa dependência,
-ele para de dar erro.
-
-Agora, em this.state vamos também adicionar o id que será uuidv4.
-
-Ele fica verde porque é uma função, então vamos abrir parênteses para ele 
-executar essa função e retornar um id para nós.
-
-Agora estamos criando id, selecionado e completado certinho, mas precisaremos 
-atualizar nossa interface de tarefas para adicionar o "completado", 
-"selecionado" e o "id". Como externalizamos o ITarefa para o arquivo de tipo, só
-precisamos fazer o update lá. Vamos em "types > tarefa.ts", aqui já temos o 
-tarefa e tempo e precisaremos adicionar os demais. seleciona e completado serão 
-boolean e o id uma string.
-
-Para vermos isso funcionando, vamos abrir 
-" src > components > Lista > item > index.tsx".
-
-Ele pega tarefa e tempo, precisamos fazer ele pegar os demais.
-
-Aqui,em vez de passarmos tarefa: string, tempo: string e assim por diante, 
-substituímos por ITarefa que contém todas as informações. Agora, conseguimos dar
-um console.log() recebendo 'item atual: ' com o objeto que estamos pegando.
-
-Vamos voltar para o browser, inspecionar e entrar no console e já aparece 
-"item pessoal" como um objeto. Vamos dar um F5, colocar "react” em "Adicione uma
-tarefa" e 5 segundos para "Tempo", vamos adicionar e o id já está sendo criado 
-aleatoriamente, agora ele nunca se repetirá.
-
-Estamos com tudo pronto para conseguirmos selecionar ele! No próximo vídeo, 
-vamos criar o estado de selecionado de acordo com clique de selecionar e também 
-começaremos a dinamizar nosso cronômetro. Vejo vocês no próximo vídeo!
+OBS: Caso você queira saber mais pode acessar à documentação do React 
+(https://legacy.reactjs.org/docs/lists-and-keys.html#keys) ou o meu 
+Alura+ sobre performance em listas com React 
+(https://cursos.alura.com.br/extra/alura-mais/melhore-a-performance-das-suas-listas-em-react-c1021).

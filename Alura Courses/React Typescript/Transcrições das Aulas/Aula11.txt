@@ -1,236 +1,112 @@
-Com a maioria dos nossos componentes já prontos na estrutura de HTML, agora
-precisaremos estilizá-los.
+No último vídeo, criamos a Lista, mas escrevemos os <li> manualmente e o
+React — o próprio JavaScript — nos permite renderizar as listas de forma
+dinâmica. Aprenderemos a fazer isso agora. Vamos retornar ao VSCode e, nele,
+temos a nossa Lista. É possível notar que há sempre um <li>, um <h3>, um <span>,
+isto é, a estrutura HTML é toda igual e a única coisa que muda é o conteúdo
+dentro dela.
 
-Começaremos entendendo um pouco sobre como funciona a estilização em React. De
-volta ao VSCode, acessaremos o arquivo index.tsx do componente de "Botao", que é
-o mais simples.
+No caso, a tarefa 1 é React e a 2, Javascript. O tempo da primeira é de duas
+horas e, da segunda, uma hora. A única coisa que precisamos ter do lado de fora
+são esses conteúdos, esses dados, e depois renderizamos uma só vez, passando de
+um por um. É o que faremos. Para isso, criaremos uma constante dentro da Lista,
+chamada tarefas, const tarefas = [], e ele será um array, já que teremos vários
+itens. Esse array é de objetos.
 
-Para entendermos como funciona o estilo dentro de Botao, o primeiro que
-mostraremos será o inline style, que normalmente é a forma mais simplificada
-porém não é a mais recomendada para estilização.
+Então, nós criaremos uma chave, const tarefas = [{, e esse objeto terá a
+tarefa: 'React',, que é a nossa primeira tarefa, e o tempo: '02:00:00'. O
+segundo objeto será a tarefa: 'Javascript', e o tempo: '01:00:00.
 
-Igual ao HTML, existe um atributo em qualquer tag chamada style em que
-conseguimos colocar o inline style dentro. Mas ao invés de colocarmos uma string
-como "background-color: black" por exemplo, faremos de outra forma.
+function Lista() {
+  const tarefas = [{
+      tarefa: 'React',
+        tempo: '02:00:00'
+    }, {
+      tarefa: 'Javascript',
+        tempo: '01:00:00'
+    }]
 
-Inclusive o próprio TypeScript indica um problema em que o atributo precisa ser
-um objeto, então já notamos uma diferença do HTML para o React. Portanto, no
-lugar da string, colocaremos o objeto tal como foi sugerido no VSCode.
+Assim, temos o nosso array de tarefas. Algo que já estudamos nas primeiras aulas
+é que, para executar o JavaScript dentro de um componente, podemos usar chaves
+dentro do HTML. Então, para renderizar o array, depois da <ul>, abriremos
+chaves {}. Essa é uma vantagem do "jsx", nos permitir escrever Javascript dentro
+da estrutura HTML nesse caso. Seguindo, podemos tentar renderizar as tarefas
+fazendo {tarefas()}, mas, o tarefas não é uma função e o JSX espera retornar
+outra estrutura JSX, então não executaremos desta maneira.
 
-Como vimos no JSX que conseguimos renderizar JavaScript dentro do HTML com
-chave, no atributo não é diferente; então abriremos as chaves e colocaremos mais
-um par de chaves dentro, e dentro destas inseriremos as nossas estilizações como
-um objeto escrevendo JavaScript.
+Se colocarmos da maneira como aparece anteriormente, ele executará um array de
+objeto, o que não faz sentido algum. Temos que percorrer esse array e retornar
+cada item dele como um HTML. A função no JavaScript que nos permite fazer isso é
+a .map, que roda, faz o loop no array e retorna algo de cada iteração.
 
-Quando vamos criar um objeto JavaScript, não poderemos colocar background-color
-por exemplo, pois a key do objeto não pode ter hífen. Portanto, a solução é
-colocar em camel case, e quando começamos a digitar background, o próprio
-TypeScript já mostra a sugestão de backgroundColor ao invés do uso de traço
-entre as palavras.
+Então, vamos colocar um {tarefas.map()}. O .map aceita dois parâmetros. O
+primeiro é o próprio item, a própria tarefa, logo, teremos
+{tarefas.map((tarefa, ))}. E o segundo é o index do array nessa tarefa,
+{tarefas.map((tarefa, index) => (. Atenção aos parênteses, porque significam que
+você já vai retornar.
 
-Portanto, é assim que escrevemos CSS no React com inline style. Após o objeto,
-colocaremos dois pontos e abriremos aspas simples para adicionar a string, que
-neste caso será 'blue'. Depois, apertaremos as teclas "Ctrl + S" para vermos o
-resultado no navegador.
+Se substituirmos por chaves, {tarefas.map((tarefa, index) => {})}, teremos um
+escopo, algo que não queremos, desejamos apenas retornar, por isso, usaremos
+parênteses. E ele retorna um "jsx", no caso, o nosso <li>. Portanto, colocaremos
+<li> </li>, lembrando de abrir e fechar, e deixaremos exatamente como apareceu
+antes, usando o <h3> e o <span>.
 
-import React from 'react';
+{tarefas.map((tarefa, index) => (
+  <li>
+      <h3></h3>
+      <span></span>
+    </li>
+))}COPIAR CÓDIGO
+Mas, nós precisaremos colocar a {tarefa.tarefa}, isto é,
+<h3> {tarefa.tarefa} </h3> que é o nome da tarefa indicada mais acima. E,
+no <span>, escreveremos {tarefa.tempo}, ou seja, <span> {tarefa.tempo} </span>.
+Ao invés de colocar tarefa no .map, vamos deixar item, quer dizer,
+{tarefas.map((item, index) => (, porque tarefa.tarefa fica feio.
 
-class Botao extends React.Component {
-    render() {
-        return (
-            <button style={{
-                backgroundColor: 'blue'
-            }}>
-                Botão
-            </button>
-        )
-    }
-}
+Sendo assim, alteraremos o h3 para <h3> {item.tarefa} </h3> e o span para
+<span> {item.tempo} </span>. É possível notar uma vantagem do TypeScritpt, se
+colocarmos item. (item, ponto), ele já mostra que, dentro do objeto, temos
+"tarefa" e "tempo". Quem está fazendo isso é o TypeScript, mesmo sem "tiparmos"
+ainda.
 
-export default Botao;
+Nós já renderizamos, agora apertaremos "Ctrl + S" e voltaremos ao navegador. No
+navegador, já temos "React", "Javascript", e "React" e "Javascript" abaixo, que
+é aquele outro código que não excluímos. Então, vamos retornar ao VSCode, tirar
+os dois li que estão mais abaixo, apertar "Ctrl + S", voltar para o Chrome e,
+agora, só aparece um "React" e um "Javascript".
 
-No navegador, notaremos que a cor de fundo do botão ficou azul, ficando claro
-como devemos escrever o atributo.
+Para mockar, isto é, poder ter uma simulação de algo dinâmico, vamos adicionar
+tarefa: 'Typescript' e tempo: '03:00:00'. Apertaremos "Ctrl + S" e retornaremos
+ao navegador. De forma dinâmica, ele já mostrou o "Typescript", criou um li. Ao
+inspecionarmos, notaremos que ele criou um novo <li> com o <h3>Typescript</h3> e
+com o <span>03:00:00</span>.
 
-Por conta de ser JavaScript, conseguimos também colocar uma variável const color
-dentro das chaves de render(), a qual será igual a 'red' por exemplo. Com isso,
-poderemos alterar a cor do backgroundColor para a variável color apenas.
+De forma reativa, ele já consegue saber que existe um novo item no array e,
+dinamicamente, renderiza com o método .map. Isso resolve o nosso problema de
+duplicação de código. Ao invés de ficarmos criando várias li, apenas fazemos
+.map e, dentro dele, escrevemos uma li só e o React consegue fazer essa
+demonstração de forma dinâmica.
 
-import React from 'react';
+Vamos voltar ao VSCode. Nós já colocamos a <li>, mas item e index, mas não
+usamos o index. O React fica um pouco perdido quando vamos utilizar .map, porque
+quando renderizamos o .map, ele precisa saber qual item desse array corresponde
+ao DOM real, pois, de forma dinâmica, ele vai renderizando o DOM. Sendo assim,
+ele precisa saber quais dos itens corresponde ao do DOM. Precisamos de uma chave
+para linkar um com o outro.
 
-class Botao extends React.Component {
-    render() {
-        const color = 'red';
-        return (
-            <button style={{
-                backgroundColor: color
-            }}>
-                Botão
-            </button>
-        )
-    }
-}
+O nome disso é key. O React sempre pede que, o fazer uma renderização dinâmica,
+assim como o .map, uma Lista, tenhamos um key. Sendo assim, dentro do li nós
+criaremos uma chave key, <li key={}>, e o key, por enquanto, colocaremos como
+index, <li key={index}>, pois ainda não temos um item com id, mas, o ideal, é
+colocar o id, porque o index pode ser variável, então, não é uma boa prática.
 
-export default Botao;
+Ou seja, vamos colocar o index e, depois, quando estivermos fazendo de maneira
+realmente dinâmica, trocaremos pelo id. Para ter mais informações sobre isso,
+existe um Alura+ sobre performance em listas com React, o que permite ter uma
+ideia um pouco melhor sobre key. Seguindo, vamos salvar, voltar no Chrome e, por
+enquanto, não fez diferença, ele continua renderizando.
 
-Se salvarmos assim e voltarmos ao navegador, veremos que a cor de fundo do botão
-fica vermelho.
-
-Portanto, é uma facilidade conseguir trabalhar com variáveis também. Outro
-benefício é que, ao invés de colocarmos a color, podemos escrever
-const backgroundColor no lugar da variável para não precisarmos mais usar os
-dois pontos seguido da variável no estilo backgroundColor.
-
-import React from 'react';
-
-class Botao extends React.Component {
-    render() {
-        const backgroundColor = 'red';
-        return (
-            <button style={{
-                backgroundColor
-            }}>
-                Botão
-            </button>
-        )
-    }
-}
-
-export default Botao;
-
-Se voltarmos ao navegador, a estilização do botão continua funcionando. Afinal,
-no objeto do JavaScript, se colocarmos uma key como backgroundColor sem os dois
-pontos, o sistema sempre procurará a variável dentro do escopo que possui o
-mesmo nome. Caso tenha, colocará este atributo como a key e o valor dentro deste
-objeto, o que é uma boa facilidade.
-
-Outra forma que podemos usar é inline style também, mas esternalizaremos o
-objeto para outro lugar. Então, ao invés de colocarmos o backgroundColor,
-podemos criar uma constante chamada styles que será um objeto usando chaves.
-
-Dentro deste, colocaremos o backgroundColor e depois apenas renderizaremos o
-styles dentro das chaves do atributo style do <button>.
-
-Trocaremos 'red' por 'green' por exemplo, e voltaremos ao navegador para vermos
-o resultado.
-
-import React from 'react';
-
-class Botao extends React.Component {
-    render() {
-        const backgroundColor = 'green';
-        const styles = {
-            backgroundColor
-        }
-        return (
-            <button style={styles}>
-                Botão
-            </button>
-        )
-    }
-}
-
-export default Botao;
-
-No navegador, o botão estará com fundo verde.
-
-Portanto, podemos ter uma variável com um objeto, o qual ainda pode receber
-outra variável. Então o React é bastante dinâmico neste sentido.
-
-Outro caminho seria, por exemplo, colocar estaAtivo sendo um booleano igual a
-true ao invés do nome da variável backgroundColor.
-
-Já o backgroundColor da variável styles pode receber os dois pontos seguidos de
-estaAtivo. Neste momento, não conseguimos usar o if() pois está dentro do
-objeto.
-
-Então, ao invés de usarmos o if(), usaremos um ternário com o ponto de
-interrogação ?. Se estiver ativo, colocaremos o backgroundColor como "green"
-entre aspas duplas, e caso contrário, usaremos os dois pontos : e colocaremos
-"red" em seguida.
-
-import React from 'react';
-
-class Botao extends React.Component {
-    render() {
-        const estaAtivo = true;
-        const styles = {
-            backgroundColor: estaAtivo ? "green" : "red"
-        }
-        return (
-            <button style={styles}>
-                Botão
-            </button>
-        )
-    }
-}
-
-export default Botao;
-
-Como o estaAtivo está como true, poderemos voltar ao navegador e verificar que o
-botão está verde. Já se alterarmos para false, notaremos que o botão passa a ter
-o fundo vermelho.
-
-Portanto, há esta reatividade do React nos ajudando a mudar a cor do background.
-Se precisássemos encontrar a tag de botão dentro de uma outra certa tag <button>
-para mudar a cor do backgroundColor por exemplo, podemos apenas dizer que, se
-estiver ativo, queremos uma certa color, e em caso contrário, queremos outra
-cor.
-
-Porém, já sabemos que o inline style não é uma boa prática; assim como no HTML,
-conseguimos externalizar o CSS para fora.
-
-Já existe um exemplo disso no index.tsx do diretório ./src/, o qual também tem
-um index.css com alguns resets. Dentro deste primeiro no root, temos o import
-direto com uma string './index.css' chamando este segundo arquivo, e esta é a
-forma de utilizarmos o CSS externalizado.
-
-Mas se colocarmos desta forma, o CSS impacta todos os componentes, então podem
-surgir alguns problemas quando ficamos sobrescrevendo várias coisas.
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-
-ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-    document.getElementById('root')
-);
-
-Para isso, temos três soluções em média. O Sass, que é para nós podermos colocar
-os caminhos CSS, como por exemplo, uma classe componente que está dentro de uma
-<div> que está dentro de outra coisa.
-
-Se precisássemos colocar .component div p span dentro do index.css por exemplo,
-pegaremos o span dentro de p, que está dentro de div que por sua vez está dentro
-de uma classe chamada component. Portanto, conseguimos fazer desta forma.
-
-Já com o Sass que podemos colocar no React também, ao invés de fazermos da
-maneira anterior, podemos escrever div { seguido de p { na linha seguinte e
-span { na próxima linha dentro de .component { apenas.
-
-Podemos colocar um estilo que só irá aparecer em component, dentro da
-div { poderemos colocar um estilo que estará dentro de component, em p { colocar
-um estilo de um parágrafo dentro de uma <div> que está dentro de uma classe de
-componente. Assim, conseguiremos trabalhar mais facilmente.
-
-Utilizaremos o Sass, mas o instalaremos em outro vídeo. Outra forma é chamada
-CSS modules, a qual também usaremos e aprenderemos mais a fundo. Isso já
-resolverá nosso problema de ficarmos sobrescrevendo CSS, então é outra maneira
-interessante.
-
-Por fim, a última forma, a qual não iremos utilizar mas mostraremos no
-navegador, é chamada CSS-in-JS, em que escrevemos o CSS no JavaScript como
-fizemos com o inline styles, mas só manteremos apenas no JavaScript mesmo, que é
-a maneira padrão.
-
-O pacote styled-components do React é bem conhecido, e nos permite criar um
-componente que já possui alguns estilos, e há alguns outros pacotes que fazem
-isso para escrevermos CSS.
-
-Iremos escrever com o CSS modules, o qual utiliza CSS, pois não há CSS em JS.
-Portanto, instalaremos os Sass a seguir, e começaremos algumas estilizações.
-Até lá!
+Além disso, não mostra o atributo key, por ele ser um atributo específico do
+React, portanto, não chega ao DOM real, e estamos conseguindo renderizar as
+nossas listas com .map. No próximo vídeo, vamos aprender um pouco sobre CSS no
+React.
+Até lá!!

@@ -1,152 +1,75 @@
-Nós já sabemos criar um componente de botão e agora faremos o nosso formulário.
-Para isso, voltaremos ao VSCode e, dentro de "components", criaremos uma nova
-pasta chamada "Formulario". Dentro de "Formulario", vamos criar um novo arquivo
-chamado "index.tsx". Em seguida, nós importaremos o import React from 'react';
-e, na linha 3, criaremos uma nova classe chamada "Formulario" e ele nos dará uma
-extends em React.Component {.
+Dentre todas as vantagens que o React nos proporciona, a componentização é uma 
+das mais conhecidas, além de ser uma das marcas do React.
 
-import React from 'react';
+Vamos ver a criação de um class componente:
 
-class Formulario extends React.Component {
-
-}
-
-Como bem sabemos, a função obrigatória para esse class components é a render().
-Dentro do render() há um return e, em seguida, um formulário <form>. Dentro
-dele, duas divs dos dois inputs e um botão abaixo. Mas, como já temos um botão
-criado, nós o utilizaremos e entenderemos como usar um componente dentro do
-outro.
-
-import React from 'react';
-
-class Formulario extends React.Component {
+class Botao extends React.Component {
   render() {
-      return (
-          <form>
-            <div>
-
-            </div>
-            <div>
-
-            </div>
-          </form>
-      )
-    }
-}
-
-Nós já aprendemos a utilizá-lo no "App.tsx" e precisaremos, literalmente,
-replicar. Então, vamos importar o botão import Botao from '../Botao'; e
-colocá-lo após as duas divs, </div>, dentro do form, </form>. Dentro das divs
-teremos uma <label> e um <input />. Após isso, copiaremos essa label, colaremos
-na segunda div, que está vazia e identaremos.
-
-import React from 'react';
-import Botao from '../Botao';
-
-class Formulario extends React.Component {
-  render() {
-      return (
-          <form>
-            <div>
-              <label>
-
-              </label>
-              <input />
-            </div>
-            <div>
-              <label>
-
-              </label>
-              <input />
-            </div>
-          <Botao />
-        </form>
-      )
-    }
-}
-
-O type do primeiro input será type="text" e do segundo, type="time", o tempo da
-nossa tarefa. No primeiro, o name será name="tarefa", o id, id="tarefa", o
-placeholder que é o que aparece antes de escrevermos será placeholder="O que
-você quer estudar" e ele é required. Mais acima, o <label> será Adicione um novo
-estudo e o htmlFor="tarefa", ou seja, <label htmlFor="tarefa">.
-
-Significa que se selecionarmos o label, queremos que o input seja focado, o
-htmlFor serve para isso.
-
-import React from 'react';
-import Botao from '../Botao';
-
-class Formulario extends React.Component {
-  render() {
-      return (
-          <form>
-            <div>
-              <label htmlFor="tarefa">
-                 Adicione um novo estudo
-               </label>
-               <input
-                  type="text"
-                  name="tarefa"
-                  id="tarefa"
-                  placeholder="O que você quer estudar"
-                  required
-                />
-
-O segundo label será Tempo. O input terá type="time", o step será de valor 1,
-step="1", que é um atributo do tipo time. O name é name="tempo", o id é
-id="tempo", o mínimo de tempo que pode ter é min="00:00:00" e o máximo de tempo
-é uma hora e meia, max="01:30:00", o motivo é que aparecerá "99:99".
-
-Ele também é required. No label, o hmlFor é tempo, <label htmlFor="tempo">. Se
-selecionarmos o label, queremos que apareça o input do tempo focado.
-
-            </div>
-            <div>
-              <label htmlFor="tempo">`
-                Tempo
-              </label>
-              <input
-                type="time"
-                step="1"
-                name="tempo"
-                id="tempo"
-                min="00:00:00"
-                max="01:30:00"
-                required
-              />
-            </div>
-          <Botao />
-        </form>
-      )
-    }
-  }
-
-Então, criamos o nosso formulário, vamos exportá-lo embaixo, export default
-Formulario;. E, no "App.tsx", ao invés de renderizarmos o botão, vamos
-renderizar o formulário, pois ele renderizará o botão. Sendo assim, em
-import Botao from './components/Botao'; substituiremos "Botao" por Formulario e
-o importaremos de './components/Formulario';. Além disso, ao invés de
-renderizarmos o "Botao", renderizaremos <Formulario />.
-
-import React from 'react';
-import Formulario from './components/Formulario';
-
-function App() {
-  return (
-     <div className="App">
-       <Formulario />
-     </div>
-  );
+   return (
+      <button>
+        Botão
+      </button>
+    )
  }
+}
 
- export default App;
+Só com esse pequeno componente, podemos ter várias informações interessantes, 
+vamos separá-las em informações sobre componentização (em geral, tanto class 
+components quanto function components) tanto sobre class components 
+especificamente.
 
-Agora, voltaremos para o Chrome e ele mostrará "Adicione um novo estudo" e o
-input "O que você quer estudar". Se selecionarmos o label, o input é focado, por
-causa do htmlFor. Já é possível selecionar várias horas em "Tempo" e quando
-clica no "Botão", o campo mostra que é required, " ! Preencha este campo",
-significa que está minimamente funcional.
+Sobre Componentização
+Nome do Componente
+O nome do componente deverá começar com letra maiúscula, mas por que?
 
-Nós criamos o nosso formulário e no próximo vídeo criaremos a nossa lista.
-Até lá!!
+Existe uma possibilidade no html de criar web-components, que nos permite criar 
+tags html totalmente customizadas. Entre essas customizações, podemos customizar
+o nome da tag!
+
+Para o React diferenciar um componente de um web-component, ele pede para que 
+criemos um componente com a primeira letra maiúscula, assim ele consegue 
+diferenciar por exemplo que <meuBotao /> é um web-component e <MeuBotao /> é um 
+componente!
+
+return e JSX
+Para podermos criar um componente, fora a regra que citamos acima, precisamos 
+retornar JSX, e o que seria isso exatamente?
+
+O JSX é uma forma de "escrever HTML no JS", que é a forma que explicamos, mas 
+não é exatamente isso.
+
+O JSX não transforma o componente <Botao /> em HTML diretamente, antes disso, 
+ele é transformado em uma elemento React, e aquele código é transformado em algo
+assim:
+
+const Botao = React.createElement('button', {}, 'Botão');
+
+Sem se atentar ao que isso faz agora, mas por debaixo dos panos o React 
+transforma aquela sintaxe """HTML""" nesse palavrão que, na hora do 
+ReactDOM.render, é transformado em DOM e, aí sim, transformado em HTML.
+
+Você percebeu que a tag html é usada como primeiro parâmetro da função 
+createElement como uma string?
+
+Isso mostra que, para criarmos um componente, precisamos de uma tag "pai", logo,
+o código a seguir não funcionará:
+
+class Botao extends React.Component {
+  render() {
+   return (
+      <p> Título do Botão </p>
+      <button>
+        Botão
+      </button>
+    )
+ }
+}
+
+Caso você precise fazer isso, leia sobre React.Fragment.
+
+Sobre class Components
+React.Component e render
+Para criarmos um componente com class components, precisamos estender à classe 
+React.Component. Nesta classe, existe apenas uma função obrigatória chamada 
+render e, dentro dela, nós retornamos o JSX que precisamos para criar o 
+componente!

@@ -1,38 +1,236 @@
-Muito legal o CSS Modules né? Mas tem várias outras curiosidades e vantagens que
-não mencionamos no vídeo!
+Com a maioria dos nossos componentes já prontos na estrutura de HTML, agora
+precisaremos estilizá-los.
 
-Você sabia que podemos importar o CSS Modules de várias formas diferentes? Ou
-que podemos utilizar vários módulos no mesmo componente?
+Começaremos entendendo um pouco sobre como funciona a estilização em React. De
+volta ao VSCode, acessaremos o arquivo index.tsx do componente de "Botao", que é
+o mais simples.
 
-Pois é, o CSS Modules é bem mais complexo e interessante do que imaginamos e, se
-irmos bem a fundo nessa tecnologia, podemos deixar o nosso código bem mais
-interessante!
+Para entendermos como funciona o estilo dentro de Botao, o primeiro que
+mostraremos será o inline style, que normalmente é a forma mais simplificada
+porém não é a mais recomendada para estilização.
 
-Sobre Imports
-Para começar, o CSS Modules nos dá o CSS em formato object e os exporta como
-default, logo, podemos importar das seguintes formas:
+Igual ao HTML, existe um atributo em qualquer tag chamada style em que
+conseguimos colocar o inline style dentro. Mas ao invés de colocarmos uma string
+como "background-color: black" por exemplo, faremos de outra forma.
 
-import style from './NomeDoComponente.module.scss';
-import * as style from './NomeDoComponente.module.scss';
-import { default as style } from './NomeDoComponente.module.scss';
+Inclusive o próprio TypeScript indica um problema em que o atributo precisa ser
+um objeto, então já notamos uma diferença do HTML para o React. Portanto, no
+lugar da string, colocaremos o objeto tal como foi sugerido no VSCode.
 
-Ainda seguindo em como importar um CSS Module, como ele é um export default,
-podemos nomeá-lo da forma como bem entendermos, por exemplo:
+Como vimos no JSX que conseguimos renderizar JavaScript dentro do HTML com
+chave, no atributo não é diferente; então abriremos as chaves e colocaremos mais
+um par de chaves dentro, e dentro destas inseriremos as nossas estilizações como
+um objeto escrevendo JavaScript.
 
-import Foo from './NomeDoComponente.module.scss';
-import Bar from './NomeDoComponente.module.scss';
-import Banana from './NomeDoComponente.module.scss'
+Quando vamos criar um objeto JavaScript, não poderemos colocar background-color
+por exemplo, pois a key do objeto não pode ter hífen. Portanto, a solução é
+colocar em camel case, e quando começamos a digitar background, o próprio
+TypeScript já mostra a sugestão de backgroundColor ao invés do uso de traço
+entre as palavras.
 
-Todas as formas acima retornarão o objeto que o CSS Modules exporta!
+Portanto, é assim que escrevemos CSS no React com inline style. Após o objeto,
+colocaremos dois pontos e abriremos aspas simples para adicionar a string, que
+neste caso será 'blue'. Depois, apertaremos as teclas "Ctrl + S" para vermos o
+resultado no navegador.
 
-Como agora sabemos que podemos nomear o objeto de formas diferentes, podemos
-também importar vários CSS Modules em um só componente!
+import React from 'react';
 
-import BotaoStyle from './Botao.module.scss';
-import ItemStyle from './Item.module.scss';
+class Botao extends React.Component {
+    render() {
+        return (
+            <button style={{
+                backgroundColor: 'blue'
+            }}>
+                Botão
+            </button>
+        )
+    }
+}
 
-OBS: Todas essas formas citadas acima não são específicas de como importar um
-CSS Modules, e sim de como importar um export default em JS.
+export default Botao;
 
-Legal né? Caso tenha alguma dúvida leia a documentação do Create React App sobre
-CSS Modules.
+No navegador, notaremos que a cor de fundo do botão ficou azul, ficando claro
+como devemos escrever o atributo.
+
+Por conta de ser JavaScript, conseguimos também colocar uma variável const color
+dentro das chaves de render(), a qual será igual a 'red' por exemplo. Com isso,
+poderemos alterar a cor do backgroundColor para a variável color apenas.
+
+import React from 'react';
+
+class Botao extends React.Component {
+    render() {
+        const color = 'red';
+        return (
+            <button style={{
+                backgroundColor: color
+            }}>
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Se salvarmos assim e voltarmos ao navegador, veremos que a cor de fundo do botão
+fica vermelho.
+
+Portanto, é uma facilidade conseguir trabalhar com variáveis também. Outro
+benefício é que, ao invés de colocarmos a color, podemos escrever
+const backgroundColor no lugar da variável para não precisarmos mais usar os
+dois pontos seguido da variável no estilo backgroundColor.
+
+import React from 'react';
+
+class Botao extends React.Component {
+    render() {
+        const backgroundColor = 'red';
+        return (
+            <button style={{
+                backgroundColor
+            }}>
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Se voltarmos ao navegador, a estilização do botão continua funcionando. Afinal,
+no objeto do JavaScript, se colocarmos uma key como backgroundColor sem os dois
+pontos, o sistema sempre procurará a variável dentro do escopo que possui o
+mesmo nome. Caso tenha, colocará este atributo como a key e o valor dentro deste
+objeto, o que é uma boa facilidade.
+
+Outra forma que podemos usar é inline style também, mas esternalizaremos o
+objeto para outro lugar. Então, ao invés de colocarmos o backgroundColor,
+podemos criar uma constante chamada styles que será um objeto usando chaves.
+
+Dentro deste, colocaremos o backgroundColor e depois apenas renderizaremos o
+styles dentro das chaves do atributo style do <button>.
+
+Trocaremos 'red' por 'green' por exemplo, e voltaremos ao navegador para vermos
+o resultado.
+
+import React from 'react';
+
+class Botao extends React.Component {
+    render() {
+        const backgroundColor = 'green';
+        const styles = {
+            backgroundColor
+        }
+        return (
+            <button style={styles}>
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+No navegador, o botão estará com fundo verde.
+
+Portanto, podemos ter uma variável com um objeto, o qual ainda pode receber
+outra variável. Então o React é bastante dinâmico neste sentido.
+
+Outro caminho seria, por exemplo, colocar estaAtivo sendo um booleano igual a
+true ao invés do nome da variável backgroundColor.
+
+Já o backgroundColor da variável styles pode receber os dois pontos seguidos de
+estaAtivo. Neste momento, não conseguimos usar o if() pois está dentro do
+objeto.
+
+Então, ao invés de usarmos o if(), usaremos um ternário com o ponto de
+interrogação ?. Se estiver ativo, colocaremos o backgroundColor como "green"
+entre aspas duplas, e caso contrário, usaremos os dois pontos : e colocaremos
+"red" em seguida.
+
+import React from 'react';
+
+class Botao extends React.Component {
+    render() {
+        const estaAtivo = true;
+        const styles = {
+            backgroundColor: estaAtivo ? "green" : "red"
+        }
+        return (
+            <button style={styles}>
+                Botão
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Como o estaAtivo está como true, poderemos voltar ao navegador e verificar que o
+botão está verde. Já se alterarmos para false, notaremos que o botão passa a ter
+o fundo vermelho.
+
+Portanto, há esta reatividade do React nos ajudando a mudar a cor do background.
+Se precisássemos encontrar a tag de botão dentro de uma outra certa tag <button>
+para mudar a cor do backgroundColor por exemplo, podemos apenas dizer que, se
+estiver ativo, queremos uma certa color, e em caso contrário, queremos outra
+cor.
+
+Porém, já sabemos que o inline style não é uma boa prática; assim como no HTML,
+conseguimos externalizar o CSS para fora.
+
+Já existe um exemplo disso no index.tsx do diretório ./src/, o qual também tem
+um index.css com alguns resets. Dentro deste primeiro no root, temos o import
+direto com uma string './index.css' chamando este segundo arquivo, e esta é a
+forma de utilizarmos o CSS externalizado.
+
+Mas se colocarmos desta forma, o CSS impacta todos os componentes, então podem
+surgir alguns problemas quando ficamos sobrescrevendo várias coisas.
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+    document.getElementById('root')
+);
+
+Para isso, temos três soluções em média. O Sass, que é para nós podermos colocar
+os caminhos CSS, como por exemplo, uma classe componente que está dentro de uma
+<div> que está dentro de outra coisa.
+
+Se precisássemos colocar .component div p span dentro do index.css por exemplo,
+pegaremos o span dentro de p, que está dentro de div que por sua vez está dentro
+de uma classe chamada component. Portanto, conseguimos fazer desta forma.
+
+Já com o Sass que podemos colocar no React também, ao invés de fazermos da
+maneira anterior, podemos escrever div { seguido de p { na linha seguinte e
+span { na próxima linha dentro de .component { apenas.
+
+Podemos colocar um estilo que só irá aparecer em component, dentro da
+div { poderemos colocar um estilo que estará dentro de component, em p { colocar
+um estilo de um parágrafo dentro de uma <div> que está dentro de uma classe de
+componente. Assim, conseguiremos trabalhar mais facilmente.
+
+Utilizaremos o Sass, mas o instalaremos em outro vídeo. Outra forma é chamada
+CSS modules, a qual também usaremos e aprenderemos mais a fundo. Isso já
+resolverá nosso problema de ficarmos sobrescrevendo CSS, então é outra maneira
+interessante.
+
+Por fim, a última forma, a qual não iremos utilizar mas mostraremos no
+navegador, é chamada CSS-in-JS, em que escrevemos o CSS no JavaScript como
+fizemos com o inline styles, mas só manteremos apenas no JavaScript mesmo, que é
+a maneira padrão.
+
+O pacote styled-components do React é bem conhecido, e nos permite criar um
+componente que já possui alguns estilos, e há alguns outros pacotes que fazem
+isso para escrevermos CSS.
+
+Iremos escrever com o CSS modules, o qual utiliza CSS, pois não há CSS em JS.
+Portanto, instalaremos os Sass a seguir, e começaremos algumas estilizações.
+Até lá!
