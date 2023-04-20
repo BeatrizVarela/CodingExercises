@@ -1,0 +1,17 @@
+Nessa aula, você aprendeu como:
+
+- Compartilhar valores comuns entre componentes;
+  - Aprendemos como criar um estado que será compartilhado entre vários 
+    componentes.
+
+- Extender interfaces;
+  - Usamos a facilidade de estender uma interface dentro de outra interface para
+    reaproveitar código.
+
+- Adicionar classes CSS de forma condicional;
+  - Aprendemos a utilizar um ternário para mudar classes CSS de uma tag baseada 
+  em alguma prop com template string.
+
+- Criar pastas utilitárias;
+  - Debatemos sobre formas de criar pastas com funções utilitárias 
+  compartilhadas na aplicação.
