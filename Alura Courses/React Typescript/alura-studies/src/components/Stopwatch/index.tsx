@@ -10,9 +10,10 @@ import style from "./Stopwatch.module.scss";
 
 interface Props {
   selected: ITask | undefined;
+  endingTask: () => void;
 }
 
-export default function Stopwatch({ selected }: Props) {
+export default function Stopwatch({ selected, endingTask }: Props) {
   const [time, setTime] = useState<number>();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function Stopwatch({ selected }: Props) {
         setTime(counter - 1);
         return countdown(counter - 1);
       }
+      endingTask();
     }, 1000);
   }
 

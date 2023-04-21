@@ -26,13 +26,13 @@
   box-shadow: 2px 4px 4px #0000009F inset;
 }
 
-.completeItem {
+.completedItem {
   background-color: #566F42;
   cursor: auto;
 
-  .complete {
+  .completed {
     display: block;
-    background-image: url('../../../assets/img/check-mark.svg');
+    background-image: url("../../../assets/img/check-mark.svg");
     background-repeat: no-repeat;
     background-size: 38px 38px;
     position: absolute;

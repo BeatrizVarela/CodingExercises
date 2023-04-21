@@ -1,37 +1,40 @@
-import React from 'react';
+import React from "react";
 
-import { ITask } from '../../../types/task';
+import { ITask } from "../../../types/task";
 
-import style from './Item.module.scss';
+import style from "./Item.module.scss";
 
 interface Props extends ITask {
-  selectTask: (selectedTask: ITask) => void
+  selectTask: (selectedTask: ITask) => void;
 }
 
-export default function Item(
-  {
-    task,
-    time,
-    selected,
-    completed,
-    id,
-    selectTask
-  }: Props) {
+export default function Item({
+  task,
+  time,
+  selected,
+  completed,
+  id,
+  selectTask,
+}: Props) {
   return (
     <li
-      className={`${style.item} ${selected ? style.selectedItem : ''}`}
-      onClick={() => selectTask(
-        {
+      className={`${style.item} ${selected ? style.selectedItem : ""} 
+        ${completed ? style.completedItem : ""}`}
+      onClick={() => !completed && selectTask({
           task,
           time,
           selected,
           completed,
-          id
-        }
-      )}
+          id,
+        })
+      }
     >
       <h3> {task} </h3>
       <span> {time} </span>
+      {/* conditional rendering */}
+      {completed && (
+        <span className={style.completed} aria-label="completed task"></span>
+      )}
     </li>
-  )
+  );
 }
