@@ -21,6 +21,16 @@ export default function Stopwatch({ selected }: Props) {
     }
   }, [selected]);
 
+  //stopwatch's countdown
+  function countdown(counter = 0) {
+    setTimeout(() => {
+      if (counter > 0) {
+        setTime(counter - 1);
+        return countdown(counter - 1);
+      }
+    }, 1000);
+  }
+
   return (
     <>
       <div className={style.stopwatch}>
@@ -28,7 +38,7 @@ export default function Stopwatch({ selected }: Props) {
         <div className={style.clockWrapper}>
           <Clock time={time} />
         </div>
-        <Button>Start!</Button>
+        <Button onClick={() => countdown(time)}>Start!</Button>
       </div>
     </>
   );
