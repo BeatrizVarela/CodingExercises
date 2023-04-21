@@ -1,0 +1,214 @@
+Nossa aplicação já está 95% pronta, e o que falta é começar o contador 
+regressivo, e depois, quando completar, executaremos outra função para fazermos 
+esta tarefa selecionada passar a ser completada.
+
+Primeiro, abriremos o VSCode e entraremos no index.js dentro de "Cronometro" em 
+"components". Não colocaremos esta função no relógio, pois deixaremos essa 
+responsabilidade somente de fazer a conta e mostrar o tempo no cronômetro.
+
+Para isso, iniciaremos essa contagem regressiva quando clicarmos no botão. Na 
+tag <Botao> do arquivo, e adicionaremos o onClick sendo igual a uma arrow 
+function entre chaves, colocando console.log() recebendo 'começando'.
+
+//código anterior omitido
+
+            <div className={style.relogioWrapper}>
+                <Relogio tempo={tempo} />
+            </div>
+            <Botao onClick{() => console.log('começando')}>
+                    Começar!
+            </Botao>
+        </div>
+    )
+}
+
+Quando fizermos isso, receberemos uma mensagem de erro indicando que o botão não
+espera este tipo onClick, porém o colocamos no <button> normalmente porque é 
+padrão do React.
+
+Quando criamos um componente customizado como nosso botão, não espera 
+necessariamente esses defaults, e sim somente o key que não irá para dentro do 
+componente, da forma como fizemos anteriormente com o .map() fora do item.
+
+Já o key não obedece essa regra, mas no caso do onClick e outros vão para dentro
+do componente, então deveremos tipar, que é justamente do que TypeScript 
+reclama.
+
+Portanto, entraremos dentro da pasta "Botao" e abriremos o index.tsx. Neste, 
+fora o type?: que estamos passando como prop, também criaremos o OnClick?: com 
+um ponto de interrogação porque pode ser opcional.
+
+Depois, o colocaremos como se fosse uma função que retorna void.
+
+import React from 'react';
+import style from './Botao.module.scss';
+
+class Botao extends react.Component<{
+    type?: "button" | "submit" | "reset" | undefined,
+    onClick?: () => void
+}> {
+
+//código posterior omitido
+
+Teoricamente, o cronômetro e o botão estão funcionando.
+
+Voltaremos ao navegador e abriremos o Console do inspetor de código na nossa 
+página. Em seguida, clicaremos em "Começar!" para vermos se o console.log() 
+aparece.
+
+Ainda não está aparecendo porque o tipamos, mas o onClick do botão customizado 
+não consegue entender em qual parte queremos que seja clicado.
+
+Então não apenas pegamos o onClick, como também temos que passá-lo para onde 
+queremos o click.
+
+No código do index.tsx, onde há const { type = "button" } igual a this.props, 
+adicionaremos uma vírgula e passaremos o onClick via props também.
+
+No retorno <button>, colocaremos onClick dentro que é o padrão da tag, e caso 
+haja um clique no botão, executaremos a função.
+
+Portanto, temos que realmente fazer uma associação do onClick padrão da tag com 
+o que estamos passando via props, assim irá linkar e executar.
+
+import React from 'react';
+import style from './Botao.module.scss';
+
+class Botao extends react.Component<{
+    type?: "button" | "submit" | "reset" | undefined,
+    onClick?: () => void
+}> {
+    render() {
+        const { type = "button", onClick } = this.props;
+        return (
+            <button onClick={onClick} type={type} className=
+            {style.botao}>
+                {this.props.children}
+            </button>
+        )
+    }
+}
+
+export default Botao;
+
+Salvaremos com "Ctrl + S" e voltaremos ao navegador para atualizar a nossa 
+página e clicar em "Começar!". No Console do Inspect, veremos a mensagem 
+"começando". Então nosso botão está funcionando.
+
+De volta ao VSCode, poderemos fechar o arquivo do botão pois não faremos nada 
+neste por enquanto.
+
+Já no index.tsx da pasta "Cronometro", começaremos nossa regressiva ao invés da 
+mensagem 'começando' no console.log(). Em seu lugar, criaremos a regressiva() 
+recebendo o tempo.
+
+Criaremos a função regressiva() que pegará o nome contador, pois já temos o nome
+tempo, e não podemos nos confundir. Este será um number e teremos criado.
+
+Receberemos um erro dizendo que o tipo do tempo pode ser number ou undefined, 
+mas como não queremos trabalhar com este último, colocaremos como se o contador 
+padrão fosse zero, da mesma forma que já fizemos.
+
+Com isso, o TypeScript já percebe que, caso seja undefined, colocaríamos zero, 
+então o contador será number de qualquer forma, então já fica satisfatório 
+assim.
+
+//código anterior omitido
+
+export default function Cronometro({ selecionado }:
+Props) {
+    const [tempo, setTempo] = useState<number>();
+
+  useEffect(() => {
+    if(selecionado?.tempo) {
+      setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+  },[selecionado]);
+
+  function regressiva(contador: number = 0) {
+
+    }
+
+//código posterior omitido
+
+Portanto, já temos a função regressiva, e agora teremos que solucionar o 
+problema do contador.
+
+Há uma forma de resolver com promise, em que podemos começar uma com await para 
+a aguardarmos ser terminada, e depois de um segundo, a terminaremos para 
+retornar.
+
+É uma boa solução, mas veremos outra maneira através de uma função chamada de 
+recursiva, que não é a melhor opção, mas é uma forma de linguagem de programação
+que nos permite executar a mesma função várias vezes, para podermos diminuir o 
+contador por exemplo.
+
+Usando esta metodologia, queremos decrementar este contador sempre depois de um 
+segundo.
+
+Em function regressiva(), criaremos um setTimeOut() do próprio JavaScript, e 
+passaremos como primeiro parâmetro a função que queremos executar, e após a 
+vírgula, o segundo parâmetro será a quantidade de milissegundos que queremos 
+para executá-la, que neste caso será mil que equivale a um segundo.
+
+Dentro das chaves do setTimeOut(), adicionaremos o que queremos fazer de fato. 
+Usando o if(), e se o contador for maior do que zero, queremos primeiro que o 
+setTempo() seja o contador menos um.
+
+Na linha abaixo, iremos diminuir o 1 no tempo, então já conseguiremos fazer o 
+que queremos.
+
+Porém, como o computador já foi para menos um segundo, teremos que iniciá-lo 
+novamente, e aí usaremos a função recursiva.
+
+Podemos executar o próprio regressiva() no return do setTimeOut(), recebendo o 
+contador - 1. Assim, executará a função e, ao invés do contador ser o tempo 
+total, será o tempo menos um.
+
+Se ainda não for zero, executará o regressiva() como o tempo menos dois, pois 
+foi decrementado um, e será decrementado mais um.
+
+Então irá fazer este loop até chegar em if(contador > 0), quando estiver acabado
+em zero até não cair mais nesse if().
+
+Depois disso, como não pegou no return, podemos finalizar a tarefa ou o que mais
+temos que fazer.
+
+Deixaremos assim por enquanto, salvaremos e voltaremos ao navegador para ver o 
+resultado.
+
+//código anterior omitido
+
+export default function Cronometro({ selecionado }:
+Props) {
+    const [tempo, setTempo] = useState<number>();
+
+  useEffect(() => {
+    if(selecionado?.tempo) {
+      setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+  },[selecionado]);
+
+  function regressiva(contador: number = 0) {
+    setTimeout(() => {
+        if(contador > 0) {
+            setTempo(contador - 1);
+            return regressiva(contador - 1);
+        }
+    }, 1000);
+}
+
+
+//código posterior omitido
+
+Em nossa página, clicaremos no "react" em "estudos do dia" para iniciarmos em 
+cinco segundos, e acionaremos o botão "Começar".
+
+Feito isso, já estará decrementando cada segundo, e finalmente irá parar em 
+zero.
+
+Portanto, conseguimos fazer a contagem regressiva com uma função recursiva para 
+solucioná-la.
+
+A seguir, quando chegarmos a zero, iremos finalizar a tarefa. Então precisaremos
+fazer uma iteração na lista de tarefas.
