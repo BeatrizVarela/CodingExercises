@@ -1,0 +1,296 @@
+Nosso temporizador já está funcionando, e para finalizarmos a aplicação de 
+verdade, quando o temporizador acabar, finalizaremos a tarefa e não permitiremos
+que seja clicada novamente.
+
+Entraremos no App.tsx de "pages", pois é este arquivo que possui a lista de 
+tarefas e é onde criaremos a função de finalizar a tarefa.
+
+Depois da função de selecionaTarefa() e antes do return, criaremos uma nova 
+função chamada finalizarTarefa().
+
+Primeiro, temos que validar se tem o selecionado em if(). Caso sim, executaremos
+o setTarefas() com as tarefasAnteriores.
+
+Ainda dentro dos parênteses, pegaremos as tarefasAnteriores com .map() recebendo
+cada tarefa, validando se o tarefa.id é igual ao selecionado.id.
+
+Em caso positivo, retornaremos um objeto que terá um spread de tarefa, e 
+colocaremos o selecionado: como false pois não estará mais selecionado.
+
+Depois, colocaremos o completado: como true. Caso não seja igual, apenas 
+retornaremos a tarefa normalmente. Assim, não teremos mais o alerta de erro pois
+estamos retornando o ITarefa em qualquer um dos casos.
+
+Fora isso, teremos que colocar o setSelecionado() como undefined pois não iremos
+selecionar mais nada, e também teremos que passar o finalizarTarefa() para 
+baixo, colando-o no <Cronometro>.
+
+É interessantes o identarmos pois terá mais de uma prop agora. Então o 
+executaremos quando o cronômetro chegar a zero.
+
+//imports omitidos
+
+function App() {
+  const [tarefas, setTarefas] = useState<ITarefa[]>([]);
+  const [selecionado, setSelecionado] = useState<ITarefa>();
+
+  function selecionaTarefa(tarefaSelecionada: ITarefa) {
+    setSelecionado(tarefaSelecionada);
+    setTarefas(tarefasAnteriores => tarefasAnteriores.map(tarefa => ({
+      ...tarefa,
+      selecionado: tarefa.id === tarefaSelecionada.id ? true : false
+    })))
+  }
+
+    function finalizarTarefa() {
+        if(selecionado) {
+            setTarefas(tarefasAnteriores =>
+            tarefasAnteriores.map(tarefa => {
+                if(tarefa.id === selecionado.id) {
+                    return {
+                        ...tarefa,
+                        selecionado: false,
+                        completado: true
+                    }
+                }
+                return tarefa;
+            }))
+        }
+    }
+
+return (
+    <div className={style.AppStyle}>
+      <Formulario setTarefas={setTarefas} />
+      <Lista
+        tarefas={tarefas}
+        selecionaTarefa={selecionaTarefa}
+      />
+      <Cronometro
+        selecionado={selecionado}
+        finalizarTarefa={finalizarTarefa}
+      />
+    </div>
+  );
+}
+
+export default App;
+
+Em seguida, Copiaremos finalizarTarefa e colaremos no arquivo index.tsx do 
+"Cronometro" e a esperaremos em Props também, sendo uma função que retornará 
+void.
+
+Depois, pegaremos este finalizarTarefa como prop no Cronometro() e, se o 
+contador for maior do que zero, fará a função recursiva, e em caso contrário 
+fora do if(), irá executar a finalizarTarefa().
+
+Salvaremos o arquivo para depois vermos o resultado no navegador.
+
+import Botao from "../Botao";
+import Relogio from "./Relogio";
+import style from './Cronometro.module.scss';
+import { tempoParaSegundos } from "../../common/utils/time";
+import { ITarefa } from "../../types/tarefa";
+import { useEffect, useState } from "react";
+
+interface Props {
+  selecionado: ITarefa | undefined,
+  finalizarTarefa: () => void
+}
+
+export default function Cronometro({ selecionado, finalizarTarefa }: Props) {
+  const [tempo, setTempo] = useState<number>();
+
+  useEffect(() => {
+    if(selecionado?.tempo) {
+      setTempo(tempoParaSegundos(selecionado.tempo));
+    }
+  },[selecionado]);
+
+  function regressiva(contador: number = 0) {
+    setTimeout(() => {
+      if(contador > 0) {
+        setTempo(contador - 1);
+        return regressiva(contador - 1);
+      }
+      finalizarTarefa();
+    }, 1000);
+  }
+
+//código omitido
+
+Ainda não aparecerá visualmente pois ainda não fizemos nada.
+
+Então fecharemos o index.tsx do "Cronometro" e entraremos em index.tsx de "Item"
+dentro da pasta "Lista", onde faremos um ternário para completado.
+
+Colocaremos mais um template string para colocarmos JavaScript, e veremos que, 
+se for completado, teremos um estilo próprio com style.itemCompletado.
+
+Caso contrário, será apenas uma string vazia, resolvendo nosso problema.
+
+import { ITarefa } from '../../../types/tarefa';
+import style from './Item.module.scss';
+
+interface Props extends ITarefa {
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+export default function Item(
+  {
+    tarefa,
+    tempo,
+    selecionado,
+    completado,
+    id,
+    selecionaTarefa
+  }: Props) {
+  return (
+    <li
+      className={`${style.item} ${selecionado ? style.itemSelecionado : ''} ${completado ? style.itemCompletado : ''}`}
+      onClick={() => selecionaTarefa(
+        {
+          tarefa,
+          tempo,
+          selecionado,
+          completado,
+          id
+        }
+        )}
+      >
+      <h3>{tarefa}</h3>
+      <span>{tempo}</span>
+    </li>
+  )
+  
+Salvaremos com "Ctrl + S" e veremos se o item está sendo completado de verdade. 
+Voltaremos ao navegador e acionaremos a contagem regressiva.
+
+Quando chegar em zero, veremos o estilo próprio alterando a cor do item. Em 
+seguida, colocaremos o ícone de check.
+
+Para isso, iremos ao index.tsx do "Item" de "Lista" e, abaixo de <span>, 
+colocaremos entre chaves completado.
+
+Porém, diferente do className, não precisaremos colocar o ternário de ponto de 
+interrogação seguido de dois pontos, pois se ele não tiver completado, não 
+queremos retornar nada.
+
+Afinal, no className, se não colocarmos o ternário daquele jeito, aparecerá uma 
+class undefined e nos trará problemas.
+
+Mas neste caso, o React entende que se colocarmos undefined nesta parte, não 
+mostraremos nada, pois é uma função JavaScript undefined, e não mostra uma 
+string undefined.
+
+Ao invés de colocarmos completado?:, escreveremos completado && em que && 
+representa a palavra and, pois se tiver completado, mostraremos algo, e em caso 
+contrário, o React apenas irá ignorar.
+
+Isso se chama renderização condicional, e assim conseguiremos mostrar o que 
+queremos quando algo é true ou false. Após os &&, abriremos o <span> cujo 
+className será style.concluido.
+
+Ainda dentro, colocaremos um aria-label igual a "tarefa completada". Por fim, 
+salvaremos e retornaremos à página no navegador.
+
+import { ITarefa } from '../../../types/tarefa';
+import style from './Item.module.scss';
+
+interface Props extends ITarefa {
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+export default function Item(
+  {
+    tarefa,
+    tempo,
+    selecionado,
+    completado,
+    id,
+    selecionaTarefa
+  }: Props) {
+  return (
+    <li
+      className={`${style.item} ${selecionado ? style.itemSelecionado : ''} ${completado ? style.itemCompletado : ''}`}
+      onClick={() => selecionaTarefa(
+        {
+          tarefa,
+          tempo,
+          selecionado,
+          completado,
+          id
+        }
+        )}
+      >
+      <h3>{tarefa}</h3>
+      <span>{tempo}</span>
+      {completado && <span className={style.concluido} aria-label="tarefa completada"></span>}
+    </li>
+  )
+  
+Na página do navegador, veremos o ícone de check à direita do item de "Estudos 
+do dia".
+
+Ainda iremos resolver a questão de ainda conseguirmos selecionar a opção "react"
+na página, mas já conseguimos ter a regressiva. Quando chega em zero, pega os 
+segundos de zero e completa a nossa tarefa.
+
+Para finalizarmos, iremos ao onClick de <li> do index.tsx de "Item", o qual só 
+poderá executar se não tivermos completado.
+
+Então colocaremos !completado && selecionaTarefa(), pois também podemos executar
+uma função de forma condicional.
+
+Portanto, se não tiver completado, irá executar o selecionaTarefa(), e caso 
+contrário, irá ignorar.
+
+import { ITarefa } from '../../../types/tarefa';
+import style from './Item.module.scss';
+
+interface Props extends ITarefa {
+  selecionaTarefa: (tarefaSelecionada: ITarefa) => void
+}
+
+export default function Item(
+  {
+    tarefa,
+    tempo,
+    selecionado,
+    completado,
+    id,
+    selecionaTarefa
+  }: Props) {
+  return (
+    <li
+      className={`${style.item} ${selecionado ? style.itemSelecionado : ''} ${completado ? style.itemCompletado : ''}`}
+      onClick={() => !completado && selecionaTarefa(
+        {
+          tarefa,
+          tempo,
+          selecionado,
+          completado,
+          id
+        }
+        )}
+      >
+      <h3>{tarefa}</h3>
+      <span>{tempo}</span>
+      {completado && <span className={style.concluido} aria-label="tarefa completada"></span>}
+    </li>
+  )
+  
+Salvaremos o arquivo com "Ctrl + S" e voltaremos à página no navegador para 
+atualizá-la com "F5".
+
+No campo de texto "Adicione um novo estudo", escreveremos "react" e colocaremos 
+um tempo de dois segundos apenas. Clicaremos em "adicionar" e depois no item em 
+"Estudos do dia", e por fim em "Começar!".
+
+Também poderemos criar um outro estudo chamado "abc" de três segundos para ficar
+em segunda posição na lista de "Estudos do dia".
+
+Agora tentaremos selecionar o estudo "react", mas não conseguiremos. Porém 
+podemos selecionar o "abc", mas o anterior não é mais selecionável, afinal 
+evitamos que isso seja possível caso não tenha sido completado.
+
+Portanto, conseguimos finalizar a nossa aplicação!
