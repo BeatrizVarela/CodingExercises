@@ -1,0 +1,145 @@
+Com o useEffect conseguimos fazer com que sempre que selecionarmos uma nova
+tarefa ele atualize o cronômetro e mostre o tempo correto. Agora, por exemplo,
+está "Tempo: 6", porque o "abc" está selecionado. Se eu clicar no "react", ele
+exibe "Tempo: 5". Então já resolvemos esse problema.
+
+Agora, vou abrir o VS Code. Entrar em 
+"src > components > Cronometro > index.tsx". A primeira coisa que faremos, agora
+que já resolvemos esse problema, é apagar essa linha Tempo: {tempo}, porque isso
+era só um debugger, só para verificarmos se estava funcionando.
+
+Agora, vamos passar esse tempo para dentro do relógio, pois ainda não está 
+mostrando visualmente essa mudança. Vou pegar o tempo aqui na linha 13 e passar 
+via props para o Relogio na linha 25 <Relogio tempo={tempo} />. Mas ele está 
+indicando erro, dizendo que ainda não tipamos. Ainda não existe esse tempo no 
+Relogio. Vamos fazer isso.
+
+Vou abrir a pasta "Relogio" e dentro do arquivo index.tsx vou inserir tempo na 
+linha export default function Relogio({ tempo }: Props). Ele está pedindo para 
+tipar, então vou criar uma interface Props que vai receber tempo como number.
+
+interface Props {
+tempo: number
+}
+
+Já deveria resolver, mas tempo ainda está sublinhado em vermelho porque ele pode
+ser undefined. Quando não tem nada selecionado, o tempo é undefined, então 
+precisamos colocar tempo: number | undefined.
+
+Para não dar nenhum tipo de erro, se o tempo não for passado, se ele realmente 
+for undefined ou nulo, passaremos um valor padrão para ele. O JavaScript permite
+isso, sempre que passarmos um parâmetro para uma função podemos colocar um valor
+padrão para esse parâmetro. Vamos colocar que se o tempo for undefined ele será 
+igual a 0: export default function Relogio({ tempo = 0 }: Props).
+
+Lembra que lá na função utilitária nós precisamos transformar todas as horas e 
+minutos em segundos? Agora teremos que fazer o trabalho inverso para transformar
+os segundos em minutos e segundos porque o nosso relógio mostra minutos e 
+segundos, certo?
+
+Agora que o tempo está todo em segundos temos que fazer um cálculo matemático 
+para podermos dividir o minuto do segundo. Não vai ser tão complexo, mas é 
+preciso prestar atenção. Logo acima do return vou criar uma const minutos =. Se 
+antes tínhamos multiplicado por 60, agora teremos que dividir por 60. Pois 60 
+segundos equivalem a 1 minuto.
+
+Mas se dividirmos por 60, o resultado será um número quebrado, por exemplo, se 
+for 61 segundo vai ficar "60,1". Isto é, 1 minuto e 1 segundo. Teremos que tirar
+esse ",1" e ficar só com o 60. No JavaScript o que permite que façamos isso é o 
+Math.floor(), uma função do JavaScript que permite que fiquemos só com um número
+arredondado para baixo, sem os números que vêm depois da vírgula.
+
+E para pegar os segundos, temos que pegar só a parte que sobra, para isso 
+usaremos o símbolo de porcentagem, o resto.
+
+const minutos = Math.floor(tempo / 60);
+const segundos = tempo % 60;
+
+Abaixo do return, vemos que existem cinco tags span, dois deles são os minutos, 
+um deles é o sinal de dois pontos e os dois últimos são os segundos. Nós temos 
+que pegar a dezena e a unidade do minuto e do segundo de forma independente.
+
+O JavaScript nos permite fazer isso de forma um pouco mais fácil se 
+transformarmos esse número em string. Primeiro, vou criar uma constante chamada 
+minutosString, que vai ser igual a String(minutos). A string nada mais é do que 
+um array de caracteres, então ao invés de trabalhar a string como se fosse uma 
+coisa só, podemos trabalhar como se fosse um array de caracteres. A primeira 
+posição do array é a dezena e a segunda posição do array é a unidade.
+
+Para conseguirmos desestruturar um array, colocamos colchetes ([]) e dentro 
+deles pegaremos essas posições do array. Como a primeira posição é a dezena, vou
+colocar minutoDezena, e o segundo será minutoUnidade. Assim conseguiremos 
+pegá-las de forma independente.
+
+const [minutoDezena, minutoUnidade] = String(minutos);
+
+Agora o TypeScript está indicando um erro dizendo que "o tipo string não é um 
+tipo de matriz nem um tipo de cadeia de caracteres". O TypeScript não reconhece 
+muito bem essa forma. Porque é uma forma um pouco mais abaixo de conseguirmos 
+iterar alguma coisa. Como é o tipo string ele não entende como se fosse um tipo 
+array.
+
+O próprio TypeScript está me dando a solução aqui: "Use a opção do compilador 
+'--downleveliteration' para permitir a iteração dos iteradores". Porque ele 
+precisa de um nível abaixo para conseguir iterar também sobre string. Vamos 
+colocar essa configuração.
+
+Mas não precisamos colocar dessa forma como o TypeScript está sugerindo. Porque 
+nós temos um arquivo chamado tsconfig.json, que é o nosso arquivo de 
+configuração de TypeScript. Vamos colocar lá essa configuração.
+
+Lá no root da aplicação vamos abrir o arquivo tsconfig.json e dentro do 
+compilerOptions, logo abaixo da linha de código de "jsx": "react-jsx" vou 
+escrever "downleveliteration": true,. Teoricamente, isso já vai resolver esse 
+problema.
+
+Vamos voltar no código de minutoDezena e minutoUnidade, não está mais sublinhado
+em vermelho, então já foi resolvido. Agora vamos fazer com os segundos:
+
+const [segundoDezena, segundoUnidade] = String(segundos);
+
+Assim já conseguimos resolver esse problema de pegar a dezena e a unidade. Mas 
+concorda comigo que se colocarmos, por exemplo, 1 minuto e 1 segundo, o valor 
+será "1", não será "01"? Desse jeito não conseguimos mostrar "01" nas tags span.
+
+Como estamos trabalhando com string, o JavaScript me permite fazer mais uma 
+coisa que vai resolver esse problema. Uma função chamada padStart(), que permite
+que tenhamos uma cadeia de caracteres padrão e se não tiver o número mínimo de 
+cadeia de caracteres, ele pega esses valores e transforma em padrão. Por 
+exemplo, se queremos que a cadeia de caracteres mínima de um minuto seja de 2 
+caracteres e que o valor padrão que esteja no início seja zero, ele vai fazer 
+isso para nós. Por exemplo, se for 1 ele transforma em "01" e se for 25 ele vai 
+manter "25".
+
+O padStart() aceita dois parâmetros, o primeiro é qual o tamanho (length) padrão
+dessa cadeia de caracteres, que no caso vai ser 2, para dois caracteres. O 
+segundo parâmetro é qual o caractere default que queremos que tenha lá, aqui o 
+padrão será 0.
+
+const [minutoDezena, minutoUnidade] = String(minutos).padStart(2, '0');
+const [segundoDezena, segundoUnidade] = String(segundos).padStart(2, '0');
+
+Agora, vou colocar minutoDezena no nosso primeiro <span>, minutoUnidade no nosso
+segundo <span>, segundoDezena no quarto <span> e minutoUnidade no quinto e 
+último <span>.
+
+const [minutoDezena, minutoUnidade] = String(minutos).padStart(2, '0');
+const [segundoDezena, segundoUnidade] = String(segundos).padStart(2, '0');
+return (
+<>
+<span className={style.relogioNumero}>{minutoDezena}</span>
+<span className={style.relogioNumero}>{minutoUnidade}</span>
+<span className={style.relogioDivisao}>:</span>
+<span className={style.relogioNumero}>{segundoDezena}</span>
+<span className={style.relogioNumero}>{segundoUnidade}</span>
+</>
+)
+}
+
+Vamos ver se vai funcionar. Vamos salvar e ir para o navegador. Está exibindo 
+corretamente no relógio do cronômetro conforme selecionamos os itens em "Estudos
+do Dia".
+
+Estamos conseguindo mostrar os minutos e segundos no relógio. No próximo vídeo, 
+vamos conseguir clicar no botão "Começar!" e começar a iterar para diminuir o 
+tempo no cronômetro.
