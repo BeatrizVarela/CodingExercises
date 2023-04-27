@@ -6,9 +6,13 @@ This project is a React app written in Typescript. The app was created from scra
 ## Getting Started
 
 To get started, make sure you have Node.js and npm installed on your machine. Then, clone this repository and run the following commands:
+<br />
 
 `npm install`
+<br />
+
 `npm start`
+<br />
 This will install all the necessary dependencies and start the development server.
 
 ## Concepts Covered
