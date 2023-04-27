@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import Form from "../components/Form";
-import List from "../components/List";
-import Stopwatch from "../components/Stopwatch";
+import Form from "../components/Form/Form";
+import List from "../components/List/List";
+import Stopwatch from "../components/Stopwatch/Stopwatch";
 import { ITask } from "../types/task";
 
 import style from "./App.module.scss";
 
-function App() {
+export default function App() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [selected, setSelected] = useState<ITask>();
 
@@ -47,5 +47,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

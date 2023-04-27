@@ -2,11 +2,11 @@ import React from "react";
 
 import style from "./Clock.module.scss";
 
-interface Props {
+interface ClockProps {
   time: number | undefined;
 }
 
-export default function Clock({ time = 0 }: Props) {
+export default function Clock({ time = 0 }: ClockProps) {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   const [dozenMinute, unitMinute] = String(minutes).padStart(2, "0");

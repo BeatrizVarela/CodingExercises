@@ -1,0 +1,294 @@
+Nossa aplicação está completa, funcional e dinâmica! Agora, temos o caminho 
+livre para refatorar algo específico: passar nossas funções de class component 
+para function component, que é a forma mais atual de escrever componentes e 
+também a forma que o React continua atualizando.
+
+No VS Code, vamos refatorar Botao e o Formulario que estão como class component.
+Para começar, entramos em "crs > components > Botao > index.tsx". Vamos trocar o
+class Botao para Botao1 e criar um function Botao para essa transição. Ele vai 
+retornar o jsx que temos abaixo.
+
+function Botao() {
+    return (
+        <button onClick={onClick} type={type} className= {style.botao}>
+            {this.props.children}
+        </button>
+    )
+}
+
+Vamos pegar o onClick e o type com o function Botao e criar uma interface Props 
+onde vamos tipar os dois.
+
+interface Props {
+    type?: "button" | "submit" | "reset" | undefined, 
+    onClick?: () => void
+} 
+
+function Botao({ onClick, type }: Props) {
+    return (
+        <button onClick={onClick} type={type} className= {style.botao}>
+            {this.props.children}
+        </button>
+    )
+}
+
+Ele diz que não tem o this.props.children então precisamos tirar o this.props e 
+esperar apenas children . Além disso, na interface temos que adicioná-lo com o 
+tipo React.ReactNode. Vamos deixá-lo opcional com ?.
+
+interface Props {
+    type?: "button" | "submit" | "reset" | undefined, 
+    onClick?: () => void
+    children?: React.ReactNode
+} 
+
+function Botao({ onClick, type }: Props) {
+    return (
+        <button onClick={onClick} type={type} className= {style.botao}>
+            {children}
+        </button>
+    )
+}
+
+Resolvemos o problema! Vamos só indentar para ficar mais fácil de visualizarmos.
+
+<button 
+    onClick={onClick} 
+    type={type} 
+    className= {style.botao}
+    >
+            {children}
+        </button>
+        
+Para finalizar, excluímos o class Botao1. Com class compenent nós utilizamos 12 
+linhas enquanto o function component está utilizando 10. Levando em consideração
+que nós quebramos o Botao em várias linhas, nosso código agora está muito mais 
+enxuto.
+
+A seguir, vamos refatorar o Formulario. Em 
+"crs > component > Formulario > index.rsx". vamos trocar o class Formulario para
+class Formulario1 e criar o nosso function Formulario() que retornará o nosso 
+jsx.
+
+function Formulario() { 
+    return (
+        <form className={style.novaTarefa} onSubmit={this.adicionarTarefa.bind} (this)}>
+            <div className={style.inputContainer}>
+                <label htmlFor="tarefa">
+                    Adicione um novo estudo
+                </label>
+                <input
+                    type="time"
+                    step="1"
+                    name="tempo"
+                    value="{this.state.tempo}
+                    onChange={evento => this.setState({ ...this.state, tempo: evento, target.value })}
+                    id:"tempo"
+                    min:"00:00:00"
+                    max="01:30:00"
+                    required
+                />
+            </div>
+            <Botao type="submit">
+                Adicionar
+            </Botao>
+        </form>
+    )
+}
+
+Aqui temos que fazer algumas modificações. Primeiro, o 
+this.adicionarTarefa.bind() será trocada por adicionarTarefa.
+
+<form className={style.novaTarefa} onSubmit={adicionarTarefa}>
+
+Copiaremos a função adicionarTarefa() do class Botao1 e colaremos em 
+Function Formulario(), passando a ser function adicionarTarefa().
+
+function adicionarTarefa(evento: React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    this.props.setTarefas(tarefasAntigas => 
+        [
+            ...tarefasAntigas,
+            {
+                ...this.state,
+                selecionado: false,
+                completado: false,
+                id: uuidv4()
+            }
+        ]
+    );
+    this.setState({
+        tarefa: "",
+        tempo: "00:00"
+    })
+}
+
+Não vamos mais pegar o this.props.setTarefas() como this.props, mas como um Prop
+normal, então damos o destructure no parâmetro de Formulario() e pegamos o 
+setTarefas. Agora, precisamos fazer a tipagem deles, então vamos copiar 
+setTarefas como fizemos anteriormente.
+
+setTarefas: React.Dispatche<React.SetStateAction<ITarefa[]>>} 
+
+Criaremos uma nova interface chamada Props e colaremos esse objeto.
+
+interface Props { 
+    setTarefas: React.Dispatche<React.SetStateAction<ITarefa[]>>} 
+}
+
+Por fim, adicionamos Props em Formulario() e assim tipamos o setTarefas.
+
+function Formulario({ setTarefas }: Props) 
+
+Por fim, tiramos o this.props.setTarefas e deixamos apenas o setTarefas.
+
+    setTarefas(tarefasAntigas => 
+        [
+            ...tarefasAntigas,
+            {
+                ...this.state,
+                selecionado: false,
+                completado: false,
+                id: uuidv4()
+            }
+        ]
+    )
+    
+Não vamos mais deixar o this.state, mas precisaremos criar o state para tarefa e
+para tempo. Para isso, criamos uma const[] de tarefa e setTarefas que será igual
+a useState() sendo uma string vazia. Vamos criar uma nova constante de const[] 
+de tempo e setTempo também igual a useState() com o valor padrão 00:00.
+
+function Formulario({ setTarefas }: Props) {
+    const [tarefa, setTarefa] = useState(""); 
+    const [tempo, setTempo] = useState("00:00")
+}
+
+E, finalmente, em vez de uma spread de this.state vamos colocar tarefa e tempo.
+
+setTarefas(tarefasAntigas => 
+    [
+        ...tarefasAntigas,
+        {
+            tarefa,
+            tempo
+            selecionado: false,
+            completado: false,
+            id: uuidv4()
+        }
+    ]
+    
+Conseguimos fazer a refatoração do this.state!. Em vez de this.setState() vamos 
+colocar um setTarefa() com um string vazia e um setTempo() como 00:00.
+
+setTarefas(tarefasAntigas => 
+    [
+        ...tarefasAntigas,
+        {
+            tarefa,
+            tempo,
+            selecionado: false,
+            completado: false,
+            id: uuidv4()
+        }
+    ]
+);
+    setTarefa("");
+    setTempo("00:00")
+    
+Agora, value será igual a tarefa, em onChange no lugar de this.setState() vamos 
+colocar o setTarefa() como evento.target.value.
+
+<input
+    type="text"
+    name="tarefa"
+    id="tarefa"
+    value={tarefa}
+    onChance={evento => setTarefa(evento.target.value)}
+    placeholder="O que você quer estudar"
+    required
+/>
+
+Com tempo faremos o mesmo, em vez de value receber this.state.tempo ele sereá 
+apenas tempo e em onChange() no lugar de this.setState() temos o setTempo() 
+passando o evento.target.value.
+
+<input
+    type="time"
+    step="1"
+    name="tempo"
+    value={tempo}
+    onChange={evento => setTempo(evento.target.value)}
+    id:"tempo"
+    min"00:00:00"
+    max="01:30:00"
+    required
+/>
+
+Resolvemos! Agora podemos excluir o class Formulario1. Notem como o function 
+component deixa o código mais enxuto.
+
+function Formulario({ setTarefas }: Props) {
+  const [tarefa, setTarefa] = useState("");
+  const [tempo, setTempo] = useState("00:00")
+  function adicionarTarefa(evento: React.FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    setTarefas(tarefasAntigas =>
+      [
+        ...tarefasAntigas,
+        {
+          tarefa,
+          tempo,
+          selecionado: false,
+          completado: false,
+          id: uuidv4()
+        }
+      ]
+    );
+    setTarefa("");
+    setTempo("00:00");
+  }
+  return (
+    <form className={style.novaTarefa} onSubmit={adicionarTarefa}>
+      <div className={style.inputContainer}>
+        <label htmlFor="tarefa">
+          Adicione um novo estudo
+        <label>
+        <input
+          type="text"
+          name="tarefa"
+          id="tarefa"
+          value={tarefa}
+          onChange={evento => setTarefa(evento.target.value)}
+          placeholder="O que você quer estudar"
+          required
+        />
+      </div>
+      <div className={style.inputContainer}>
+        <label htmlFor="tempo">Tempo</label>
+        <input
+          type="time"
+          step="1"
+          name="tempo"
+          onChange={(evento) => setTempo(evento.target.value)}
+          id="tempo"
+          value={tempo}
+          min="00:00:00"
+          max="01:30:00"
+          required
+        />
+      </div>
+      <Botao type="submit">
+        Adicionar
+      </Botao>
+    </form>
+  )
+}
+
+Agora temos um componente mais legível sem o problema do bind e não precisamos 
+mais lidar com setState, que é um estado gigantesco e difícil, podemos criar 
+vários useState diferentes para lidarmos com eles de forma individual. 
+Facilitamos muito a nossa vida usando práticas mais atuais do React!
+
+Completamos nosso projeto e estamos perto de finalizar nosso curso. Vejo vocês 
+no próximo vídeo!

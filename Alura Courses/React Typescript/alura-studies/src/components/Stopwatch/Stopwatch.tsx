@@ -3,17 +3,17 @@ import React from "react";
 
 import { timeToSeconds } from "../../common/utils/time";
 import { ITask } from "../../types/task";
-import Button from "../Button";
+import Button from "../Button/Button";
 
-import Clock from "./Clock";
+import Clock from "./Clock/Clock";
 import style from "./Stopwatch.module.scss";
 
-interface Props {
+interface StopwatchProps {
   selected: ITask | undefined;
   endingTask: () => void;
 }
 
-export default function Stopwatch({ selected, endingTask }: Props) {
+export default function Stopwatch({ selected, endingTask }: StopwatchProps) {
   const [time, setTime] = useState<number>();
 
   useEffect(() => {

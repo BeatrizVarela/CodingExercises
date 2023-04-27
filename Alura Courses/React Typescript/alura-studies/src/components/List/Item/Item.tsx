@@ -4,7 +4,7 @@ import { ITask } from "../../../types/task";
 
 import style from "./Item.module.scss";
 
-interface Props extends ITask {
+interface ItemProps extends ITask {
   selectTask: (selectedTask: ITask) => void;
 }
 
@@ -15,7 +15,7 @@ export default function Item({
   completed,
   id,
   selectTask,
-}: Props) {
+}: ItemProps) {
   return (
     <li
       className={`${style.item} ${selected ? style.selectedItem : ""} 
