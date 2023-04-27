@@ -13,6 +13,7 @@ To get started, make sure you have Node.js and npm installed on your machine. Th
 
 `npm start`
 <br />
+
 This will install all the necessary dependencies and start the development server.
 
 ## Concepts Covered
