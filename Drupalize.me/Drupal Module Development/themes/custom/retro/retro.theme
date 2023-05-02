@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the retro theme.
+ */
+
+use Drupal\Component\Utility\SafeMarkup;
+use Drupal\node\Entity\Node;
+
+
+/**
+* Implements hook_preprocess_page() for PAGE document templates.
+* Applies the retro theme only to the front page.
+*/
+function retro_preprocess_page(&$variables) {
+  if ($variables['is_front'] == TRUE) {
+    $variables['#attached']['library'][] = 'retro/retro';
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter
+ * Applies the retro theme to the node listing page.
+ */
+function retro_page_attachments_alter(array &$page) {
+  // Get current path
+  $path = \Drupal::service('path.current')->getPath();
+  // If we're on the node listing page, add our retro library.
+  if ($path == '/node') {
+    $page['#attached']['library'][] = 'retro/retro';
+  }
+}

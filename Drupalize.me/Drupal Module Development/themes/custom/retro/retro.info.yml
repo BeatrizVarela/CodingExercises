@@ -1,0 +1,11 @@
+name: retro
+type: theme
+description: An amazing Retro theme
+package: Other
+core_version_requirement: ^8 || ^9
+base theme: bartik
+
+# libraries:
+#   - retro/retro
+#   - retro/global-styling
+#   - retro/rainbow
