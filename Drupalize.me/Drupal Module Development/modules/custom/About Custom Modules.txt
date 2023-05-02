@@ -1,0 +1,19 @@
+With custom modules, we learned the essentials of adding a new module to
+extend or alter Drupal's functionality.
+
+- The project name you specify should be unique, it becomes the machine name
+  for your module
+- Use the exact machine name to key your folder, file and function names
+- Your project folder must exist in a module's directory in your codebase
+- Best practices suggest you create custom and contrib subfolders to organize
+  your projects
+- Two files are required to be recongnized as a module: .info and .module
+    - .info.yml declares information to Drupal
+    - .module will hold many of your hook functions definitions
+
+Understanding hooks in one of the keys to creating Drupal modules. Almost
+every phase of Drupal's page building process can be intercepted and the data
+modified.
+
+Using Drupal's API as a reference helps you understand how to implement the
+hooks you need.

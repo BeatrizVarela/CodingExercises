@@ -1,0 +1,13 @@
+Database Integration:
+Now that we have our database tables all set up, it's time to create a Stub
+function to define how the data gets added to our new table when a user signs
+up.
+The database substration layer allows the usage of different database servers
+to use the same base code to manage data.
+
+- Add signup data to the database
+function db_insert db_insert($table, array $options=array())
+
+Parameters:
+string $table: The table into which to insert.
+array $options: An array of options to control how the query operates.

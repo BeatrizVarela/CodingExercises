@@ -1,0 +1,69 @@
+Example Form Structure:
+- Array keys starting with '#' are specific form API attributes
+- All others are // Basic Text Field
+$form['name'] = array(
+  '#type' => 'textfield',
+  '#title' => t("First and Last name"),
+);
+
+Submit Buttons:
+- Submit buttons can have their own submit function, allowing different
+buttons to do different things in a simple way.
+$form['submit-button'] = array(
+  '#type' => 'submit',
+  '#value' => t("Submit"),
+);
+
+Types of fields and Attributes you can give them:
+Types:
+- checkbox
+- checkboxes
+- filedset
+- password
+- radio
+- radios
+- select
+- textfield
+- hidden
+- button
+- submit
+- value
+- markup
+- textarea
+
+Attributes:
+#type
+#access
+#attributes
+#default_value
+#description
+#disabled
+#empty
+#title
+#weight
+#tree
+#value
+#options
+#required
+#collapsed
+
+Form Submission:
+- Use FormBase to build it
+- Added a Stub function
+- Added the \Drupal::messenger()->addMessage(t('Lorem ipsum'));
+
+Creating a Path for Display:
+- Created rsvplist.routing.yml
+  - path: '/rsvplist'
+  - form: '\Drupal::formBuilder()->getForm()'
+- View form at name.lndo.site/rsvplist
+
+Form Validator:
+- Validates the field content
+- Displays error messages
+
+So, we need to add a Validation Handler:
+- FormBase method
+  - validateForm
+- Use Drupal::service('email.validator') to see if it meets standards
+- Use setErrorByName() to stop submission and display error
