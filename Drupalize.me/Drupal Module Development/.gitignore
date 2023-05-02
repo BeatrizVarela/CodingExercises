@@ -140,3 +140,11 @@ simpletest
 /sites/*/intercept_form_submit/
 /sites/*/user_restrictions/
 /sites/*/config_devel/
+/.csslintrc
+/.editorconfig
+/.eslintignore
+/.eslintrc.json
+/.gitattributes
+/.ht.router.php
+/.htaccess
+/example.gitignore
