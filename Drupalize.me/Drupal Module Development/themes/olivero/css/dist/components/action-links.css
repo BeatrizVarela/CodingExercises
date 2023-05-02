@@ -1,0 +1,15 @@
+.action-links{
+  list-style:none;
+}[dir] .action-links{
+  margin:0;
+  padding:0;
+}
+.action-links li{
+    display:inline-block;
+  }
+.action-links li a{
+      color:#0d77b5;
+    }
+.action-links-item{
+  display:inline-block;
+}

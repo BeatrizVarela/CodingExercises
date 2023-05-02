@@ -1,0 +1,17 @@
+[dir] .region--content{
+  margin-bottom:18px;
+}
+
+@media (min-width: 700px){
+
+[dir] .region--content{
+    margin-bottom:36px
+}
+  }
+
+@media (min-width: 1000px){
+
+[dir] .region--content{
+    margin-bottom:54px
+}
+  }

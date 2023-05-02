@@ -1,0 +1,32 @@
+.links.inline{
+  list-style:none;
+}[dir] .links.inline{
+  padding:0;
+}[dir=ltr] .links.inline{
+  margin-left:0;
+}[dir=rtl] .links.inline{
+  margin-right:0;
+}
+
+.links.inline > *{
+    display:inline;
+  }
+
+[dir=ltr] .links.inline > *:not(:last-child){
+  padding-right:1em;
+    }
+
+[dir=rtl] .links.inline > *:not(:last-child){
+      padding-left:1em;
+    }
+
+@media (min-width: 700px){
+
+[dir=ltr] .node--type-book .links.inline{
+    text-align:right
+  }
+
+[dir=rtl] .node--type-book .links.inline{
+      text-align:left
+  }
+    }
