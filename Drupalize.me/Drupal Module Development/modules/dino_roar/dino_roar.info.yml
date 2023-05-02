@@ -1,6 +1,0 @@
-name: Dino ROAR
-type: module
-description: 'ROAR at you'
-package: Sample
-core: 9.x
-core_version_requirement: ^9
