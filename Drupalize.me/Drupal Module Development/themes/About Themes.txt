@@ -1,0 +1,29 @@
+What is an Info File?
+
+Info files are used to provide Drupal the metadata about the theme (eg. The
+name and description that are presented to users when administer themes in the
+user interface. Or the version of Drupal core the theme is compatible with.).
+The file name is the internal name of the theme, which also means there are
+some restrictions that apply:
+- lowercase
+- alphanumeric
+- starts with a letter
+- spaces replaced with an underscore "_"
+- unique (theme, module or installation profile already in use by the project)
+- .info.yml extension required
+
+Info files also give the theme their machine readable name, or the name that
+will be used to refer to the theme internally by Drupal, and in code.
+
+Info files are written in YAML, and consist of a combination of a few required
+key/value pairs, and a few optional ones. There are 4 properties that are
+required:
+- name
+- description
+- core
+- type
+
+Info files are the only required component of a theme. This is all we need to
+have Drupal recognize and install the theme.
+
+Info files must be in the root directory of the theme that they belong to.
