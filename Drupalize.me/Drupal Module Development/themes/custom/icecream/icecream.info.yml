@@ -1,0 +1,24 @@
+# themename.info.yml file for Ice Cream example theme.
+# Required keys
+name: 'Ice Cream'
+type: theme
+description: 'A great theme for warm summer days.'
+core_version_requirement: ^8 || ^9
+
+base theme: classy
+package: Custom
+
+libraries:
+  - icecream/base-styles
+
+#Region meta-data.
+regions:
+  header: 'Header'
+  content: 'Content'
+  content_bottom: 'Content (bottom)'
+  primary_menu: 'Primary menu'
+  banner_top: 'Banner (top)'
+  banner_bottom: 'Banner (bottom)'
+  footer: 'Footer'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
