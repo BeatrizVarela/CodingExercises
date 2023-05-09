@@ -6,7 +6,7 @@ This repository contains a collection of projects and courses completed by the u
 
 ```
 CodingExercises/
-├── Alura Courses/
+├── Alura/
 │   └── React Typescript/
 ├── Card Reveal Effect/
 │   ├── index.html
