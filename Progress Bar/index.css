@@ -1,0 +1,26 @@
+body {
+  background-color: #2f021a;
+}
+
+.progress {
+  background-color: white;
+  width: 16rem;
+  height: 0.25rem;
+  overflow: hidden;
+}
+
+.progress .inner {
+  background-color: rgb(255, 51, 153);
+  height: 100%;
+  transform-origin: left;
+  animation: progress 1s infinite;
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(5%) translateX(-5%);
+  }
+  to {
+    transform: scaleX(75%) translateX(130%);
+  }
+}
