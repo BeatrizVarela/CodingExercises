@@ -26,7 +26,8 @@ CodingExercises/
 │   ├── main.js
 │   └── README.md
 └── Udemy/
-    └── Vue - The Complete Guide/
+│   └── Vue - The Complete Guide/
+└── README.md
 ```
 
 The top-level directory contains six subdirectories, one for each project or course. The projects are contained within their own directories (`Card Reveal Effect`, `Dark Mode Toggle`, `Neon Text Effect`) and each course is contained within its own directory (`Alura Courses`, `Drupalize.me`, `Udemy`).
