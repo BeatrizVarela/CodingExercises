@@ -1,6 +1,6 @@
 # Repository Description
 
-This repository contains a collection of projects and courses completed by the user. The projects include a Card Reveal Effect and a Dark Mode Toggle, while the courses are from [Alura](https://www.alura.com.br/), [Drupalize.me](https://drupalize.me/), and [Udemy](https://www.udemy.com/).
+This repository contains a collection of projects and courses completed by me. The projects include small exercises, while the courses are from [Alura](https://www.alura.com.br/), [Drupalize.me](https://drupalize.me/), and [Udemy](https://www.udemy.com/).
 
 ## Repository Structure
 
@@ -8,39 +8,31 @@ This repository contains a collection of projects and courses completed by the u
 CodingExercises/
 ├── Alura/
 │   └── React Typescript/
-├── Card Reveal Effect/
-│   ├── index.html
-│   ├── main.css
-│   └── README.md
-├── Dark Mode Toggle/
-│   ├── index.html
-│   ├── main.css
-│   ├── main.js
-│   └── README.md
 ├── Drupalize.me/
 │   ├── Drupal Module and Theme Development/
 │   └── Theming Drupal Sites/
-├── Neon Text Effect/
-│   ├── index.html
-│   ├── main.css
-│   ├── main.js
+├── Exercises/
+│   ├── Card Reveal Effect/
+│   ├── Dark Mode Toggle/
+│   ├── Neon Text Effect/
+│   ├── Progress Bar/
 │   └── README.md
 └── Udemy/
 │   └── Vue - The Complete Guide/
 └── README.md
 ```
 
-The top-level directory contains six subdirectories, one for each project or course. The projects are contained within their own directories (`Card Reveal Effect`, `Dark Mode Toggle`, `Neon Text Effect`) and each course is contained within its own directory (`Alura Courses`, `Drupalize.me`, `Udemy`).
+The top-level directory contains four subdirectories, one for each project or course. The projects are contained within the `Exercises` directory, and each course is contained within its own directory (`Alura Courses`, `Drupalize.me`, and `Udemy`).
 
 ## Getting Started
 
-To get started with one of the projects, navigate to the appropriate subdirectory and open the `index.html` file in your web browser. The projects are static web pages and do not require any additional setup.
+To get started with one of the projects from the `Exercises` directory, navigate to the subdirectory and open the `index.html` file in your web browser. The projects are static web pages and do not require any additional setup.
 
-To access the courses, navigate to the appropriate subdirectory and choose a course directory. Each course directory contains its own materials and instructions on how to get started.
+To access the courses, navigate to the subdirectory and choose a course directory. Each course directory contains its own materials and instructions on how to get started.
 
 ## Contributing
 
-This repository is not currently open to contributions.
+This repository is not open to contributions.
 
 ## License
 
